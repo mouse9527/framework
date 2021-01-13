@@ -1,4 +1,6 @@
 allprojects {
+    if (projectDir.parentFile.name != "framework") return
+
     apply plugin: 'java-library'
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
@@ -6,6 +8,8 @@ allprojects {
     apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
     apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
 
+    group 'com.mouse.framework'
+    version '0.0.1-SNAPSHOTS'
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
@@ -26,4 +30,8 @@ allprojects {
     }
 
     test.dependsOn(checkstyleMain)
+
+    test.dependsOn({
+        println("group: ${project.getGroup()}, name: ${project.getName()}, version: ${project.getVersion()}")
+    })
 }
