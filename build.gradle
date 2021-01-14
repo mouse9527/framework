@@ -1,3 +1,8 @@
+plugins {
+    id 'java-library'
+    id 'java'
+}
+
 allprojects {
     if (projectDir.parentFile.name != "framework") return
 
