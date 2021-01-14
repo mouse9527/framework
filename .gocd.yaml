@@ -1,0 +1,13 @@
+format_version: 10
+framework:
+  group: mouse
+  materials:
+    framework-git:
+      git: git@scm.mouse.center:mouse/framework.git
+  stages:
+    - test:
+        jobs:
+          test:
+            tasks:
+              - exec:
+                  command:
