@@ -30,8 +30,4 @@ allprojects {
     }
 
     test.dependsOn(checkstyleMain)
-
-    test.dependsOn({
-        println("group: ${project.getGroup()}, name: ${project.getName()}, version: ${project.getVersion()}")
-    })
 }
