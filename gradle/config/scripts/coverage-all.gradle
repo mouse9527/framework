@@ -3,7 +3,6 @@ class CoverageExtension {
             excludes = []
 }
 
-apply plugin: 'java'
 apply plugin: 'jacoco'
 
 project.ext.set('coverage', new CoverageExtension())

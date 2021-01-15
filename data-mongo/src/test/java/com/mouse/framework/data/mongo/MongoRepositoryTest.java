@@ -2,7 +2,6 @@ package com.mouse.framework.data.mongo;
 
 import com.mouse.framework.domain.core.AggregationNotFoundException;
 import com.mouse.framework.test.EnableEmbeddedMongoDB;
-import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,8 +27,10 @@ class MongoRepositoryTest {
     public static final String LISA_SU = "lisa su";
     public static final String COLLECTION_NAME = "test-entities";
     private final TestEntity entity = new TestEntity(MOCK_ID, LISA_SU);
-    private @Resource MongoTestEntityRepository mongoTestEntityRepository;
-    private @Resource MongoTemplate mongoTemplate;
+    @Resource
+    private MongoTestEntityRepository mongoTestEntityRepository;
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     @AfterEach
     void tearDown() {
@@ -138,15 +140,27 @@ class MongoRepositoryTest {
         assertThat(mongoTestEntityRepository.findOptional(query(where("name").is("unknown")))).isEmpty();
     }
 
-    @SuppressWarnings("FieldMayBeFinal")
-    @EqualsAndHashCode
     static class TestEntity {
+        @SuppressWarnings("FieldMayBeFinal")
         private String id;
         private String name;
 
         public TestEntity(String id, String name) {
             this.id = id;
             this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TestEntity that = (TestEntity) o;
+            return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name);
         }
     }
 

@@ -1,5 +1,4 @@
 plugins {
-    id 'java-library'
     id 'java'
 }
 
@@ -11,22 +10,12 @@ allprojects {
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
     apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
-    apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
 
     group 'com.mouse.framework'
     version '0.0.1-SNAPSHOTS'
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
-        implementation "org.apache.commons:commons-lang3"
-        implementation "org.apache.logging.log4j:log4j-core"
-        implementation "org.apache.logging.log4j:log4j-slf4j-impl"
-
-        compileOnly "org.projectlombok:lombok:$lombokVersion"
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
-        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        testImplementation "com.jayway.jsonpath:json-path"
     }
 
 
