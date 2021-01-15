@@ -9,10 +9,4 @@
 
 rootProject.name = 'framework'
 
-rootDir.eachDir() { dir ->
-    dir.eachFileMatch({ it == 'build.gradle' },
-            {
-                include dir.name
-                project(":${dir.name}").projectDir = dir
-            })
-}
+include 'domain-core', 'test', 'data-mongo'
