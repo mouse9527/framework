@@ -8,7 +8,7 @@ pipelines:
     group: mouse
     materials:
       framework-git:
-        git: git@scm.mouse.center/mouse/framework.git
+        git: git@scm.mouse.center:mouse/framework.git
     stages:
       - build:
           jobs:
