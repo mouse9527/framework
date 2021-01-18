@@ -2,9 +2,7 @@ plugins {
     id 'java'
 }
 
-allprojects {
-    if (projectDir.parentFile.name != "framework") return
-
+subprojects {
     apply plugin: 'java-library'
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
@@ -17,7 +15,6 @@ allprojects {
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
     }
-
 
     jar {
         enabled = true
