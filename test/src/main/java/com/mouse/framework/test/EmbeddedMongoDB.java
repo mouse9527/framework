@@ -22,6 +22,7 @@ public final class EmbeddedMongoDB {
         mongoDbReplicaSet.waitForMaster();
     }
 
+
     public static EmbeddedMongoDB getInstance() {
         if (instance == null) {
             synchronized (LOCK) {
