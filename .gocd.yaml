@@ -18,12 +18,12 @@ pipelines:
                 - exec:
                     command: gradle
                     arguments:
+                      - --fail-fast
                       - clean
                       - build
                       - test
-                      - --fail-fast
                 - exec:
                     command: gradle
                     arguments:
-                      - publish
                       - --fail-fast
+                      - publish
