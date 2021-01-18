@@ -16,14 +16,12 @@ pipelines:
               elastic_profile_id: k8s
               tasks:
                 - exec:
-                    command: gradle
+                    command: gradle --fail-fast
                     arguments:
-                      - --fail-fast
                       - clean
                       - build
                       - test
                 - exec:
-                    command: gradle
+                    command: gradle --fail-fast
                     arguments:
-                      - --fail-fast
                       - publish
