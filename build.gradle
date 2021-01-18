@@ -8,9 +8,10 @@ subprojects {
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
     apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+    apply from: "$rootDir/gradle/config/scripts/publish.gradle"
 
     group 'com.mouse.framework'
-    version '0.0.1-SNAPSHOTS'
+    version '0.0.1-SNAPSHOT'
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
