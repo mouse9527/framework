@@ -1,13 +1,16 @@
 format_version: 10
-framework:
-  group: mouse
-  materials:
-    framework-git:
-      git: git@scm.mouse.center:mouse/framework.git
-  stages:
-    - test:
-        jobs:
-          test:
-            tasks:
-              - exec:
-                  command:
+pipelines:
+  framework:
+    group: mouse
+    materials:
+      framework-git:
+        git: git@scm.mouse.center:mouse/framework.git
+    stages:
+      - build:
+          jobs:
+            test-and-build:
+              tasks:
+                - exec:
+                    command: gradle clean test build
+                - exec:
+                    command: gradle publish
