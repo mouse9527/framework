@@ -21,7 +21,7 @@ pipelines:
                       - clean
                       - build
                       - test
-                      - "--fail-fast"
+                      - --fail-fast
                 - exec:
                     command: gradle
                     arguments:
