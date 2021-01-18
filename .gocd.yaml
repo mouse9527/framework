@@ -13,7 +13,7 @@ pipelines:
       - build:
           jobs:
             test-and-build:
-              elastic-agent-profile-id: k8s
+              elastic_profile_id: k8s
               tasks:
                 - exec:
                     command: gradle clean test build
