@@ -21,7 +21,9 @@ pipelines:
                       - clean
                       - build
                       - test
+                      - --fail-fast
                 - exec:
                     command: gradle
                     arguments:
                       - publish
+                      - --fail-fast
