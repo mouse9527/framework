@@ -8,7 +8,7 @@ pipelines:
     group: mouse
     materials:
       framework-git:
-        git: git@scm.mouse.center/mouse/framework.git
+        git: https://scm.mouse.center:1443/mouse/framework.git
         usernaem: builder
         encrypted_password: GIT_BUILDER_PASSWORD
     stages:
