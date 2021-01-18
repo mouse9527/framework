@@ -1,4 +1,8 @@
 format_version: 10
+environments:
+  k8s:
+    pipelines:
+      - framework
 pipelines:
   framework:
     group: mouse
@@ -9,6 +13,7 @@ pipelines:
       - build:
           jobs:
             test-and-build:
+              elastic-agent-profile-id: k8s
               tasks:
                 - exec:
                     command: gradle clean test build
