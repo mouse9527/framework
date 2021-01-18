@@ -26,4 +26,3 @@ pipelines:
                     command: gradle
                     arguments:
                       - publish
-                      - "--fail-fast"
