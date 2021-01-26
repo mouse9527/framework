@@ -1,18 +1,14 @@
 plugins {
     id 'java'
 }
-boolean isJacocoProject(Project aProject) {
-    if (aProject.subprojects.size() > 0 && aProject.name != rootProject.name) return false
-    return aProject.pluginManager.hasPlugin('jacoco')
-}
 
 subprojects {
     apply plugin: 'java-library'
-    apply plugin: 'jacoco'
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
     apply from: "$rootDir/gradle/config/scripts/publish.gradle"
+    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 
     group 'com.mouse.framework'
     version '0.0.1-SNAPSHOT'
@@ -27,40 +23,6 @@ subprojects {
     jar {
         enabled = true
     }
-
-    jacocoTestReport {
-        reports {
-            html.enabled true
-            xml.enabled true
-        }
-    }
-
-    jacocoTestCoverageVerification {
-        violationRules {
-            rule {
-                element = 'PACKAGE'
-                limit {
-                    counter = 'LINE'
-                    value = 'COVEREDRATIO'
-                    minimum = 1.0
-                }
-                limit {
-                    counter = 'CLASS'
-                    value = 'COVEREDRATIO'
-                    minimum = 1.0
-                }
-                limit {
-                    counter = 'BRANCH'
-                    value = 'COVEREDRATIO'
-                    minimum = 1.0
-                }
-            }
-        }
-    }
-
-
-    jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
-    check.dependsOn(jacocoTestCoverageVerification)
 
     test.dependsOn(checkstyleMain)
 }
