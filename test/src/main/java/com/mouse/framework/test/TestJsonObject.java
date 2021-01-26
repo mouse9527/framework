@@ -4,11 +4,10 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.Objects;
 
-public class JsonObject {
-
+public class TestJsonObject {
     private final String json;
 
-    public JsonObject(String json) {
+    public TestJsonObject(String json) {
         this.json = json;
     }
 
@@ -35,5 +34,9 @@ public class JsonObject {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public <T> T value(String jsonPath) {
+        return JsonPath.compile(jsonPath).read(json);
     }
 }

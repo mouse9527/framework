@@ -2,7 +2,10 @@ dependencies {
     implementation("com.github.silaev:mongodb-replica-set:$mongodbReplicaSetVersion") {
         exclude group: "org.testcontainers", module: 'toxiproxy'
     }
+    implementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
     implementation "org.testcontainers:toxiproxy:$toxiproxyVersion"
     implementation "com.jayway.jsonpath:json-path:$jsonPathVersion"
+
 }
