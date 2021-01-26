@@ -4,7 +4,7 @@ environments:
     pipelines:
       - framework
 pipelines:
-  framework:
+  framework-build:
     group: mouse
     materials:
       framework-git:
@@ -19,8 +19,7 @@ pipelines:
                     command: gradle
                     arguments:
                       - clean
-                      - build
-                      - test
+                      - check
                       - --fail-fast
                 - exec:
                     command: gradle

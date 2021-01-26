@@ -1,6 +1,7 @@
 package com.mouse.framework.test;
 
 import com.github.silaev.mongodb.replicaset.MongoDbReplicaSet;
+import lombok.Generated;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
@@ -22,7 +23,7 @@ public final class EmbeddedMongoDB {
         mongoDbReplicaSet.waitForMaster();
     }
 
-
+    @Generated
     public static EmbeddedMongoDB getInstance() {
         if (instance == null) {
             synchronized (LOCK) {
