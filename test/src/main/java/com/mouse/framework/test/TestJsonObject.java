@@ -12,19 +12,19 @@ public class TestJsonObject {
     }
 
     public String strVal(String jsonPath) {
-        return JsonPath.compile(jsonPath).read(json);
+        return value(jsonPath);
     }
 
     public Integer intVal(String jsonPath) {
-        return JsonPath.compile(jsonPath).read(json);
+        return value(jsonPath);
     }
 
     public Boolean booleanVal(String jsonPath) {
-        return JsonPath.compile(jsonPath).read(json);
+        return value(jsonPath);
     }
 
     public Double doubleVal(String jsonPath) {
-        return JsonPath.compile(jsonPath).read(json);
+        return value(jsonPath);
     }
 
     public Boolean has(String jsonPath) {
