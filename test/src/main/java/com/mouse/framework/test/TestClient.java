@@ -28,6 +28,10 @@ public class TestClient {
         return new TestResponse(execute(uriTemplate, HttpMethod.POST, body, urlVariables));
     }
 
+    public TestResponse put(String uriTemplate, Object body, Object... urlVariables) {
+        return new TestResponse(execute(uriTemplate, HttpMethod.PUT, body, urlVariables));
+    }
+
     private ResponseEntity<String> execute(String uriTemplate, HttpMethod method, Object body, Object[] urlVariables) {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> request = new HttpEntity<>(body, headers);
