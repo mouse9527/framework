@@ -26,6 +26,10 @@ public class TestClientTest {
     void should_be_able_to_get_rest_response() {
         TestResponse response = testClient.get("/test?a={a}&b={b}", "a", "b");
 
+        assertParam(response);
+    }
+
+    private void assertParam(TestResponse response) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getRaw()).isNotNull();
         TestJsonObject body = response.getBody();
@@ -40,6 +44,17 @@ public class TestClientTest {
 
         TestResponse response = testClient.post("/test?a={a}&b={b}", body, "a", "b");
 
+        assertParamAndBody(body, response);
+    }
+
+    @Test
+    void should_be_able_to_post_reset_response_with_out_body() {
+        TestResponse response = testClient.post("/test?a={a}&b={b}", "a", "b");
+
+        assertParam(response);
+    }
+
+    private void assertParamAndBody(Map<String, Object> body, TestResponse response) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getRaw()).isNotNull();
         TestJsonObject responseBody = response.getBody();
@@ -55,12 +70,14 @@ public class TestClientTest {
 
         TestResponse response = testClient.put("/test?a={a}&b={b}", body, "a", "b");
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getRaw()).isNotNull();
-        TestJsonObject responseBody = response.getBody();
-        assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
-        assertThat(responseBody.strVal("$.param.a")).isEqualTo("a");
-        assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
+        assertParamAndBody(body, response);
+    }
+
+    @Test
+    void should_be_able_to_put_reset_response_with_out_body() {
+        TestResponse response = testClient.put("/test?a={a}&b={b}", "a", "b");
+
+        assertParam(response);
     }
 
     @Test
@@ -70,12 +87,14 @@ public class TestClientTest {
 
         TestResponse response = testClient.patch("/test?a={a}&b={b}", body, "a", "b");
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getRaw()).isNotNull();
-        TestJsonObject responseBody = response.getBody();
-        assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
-        assertThat(responseBody.strVal("$.param.a")).isEqualTo("a");
-        assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
+        assertParamAndBody(body, response);
+    }
+
+    @Test
+    void should_be_able_to_patch_reset_response_with_out_body() {
+        TestResponse response = testClient.patch("/test?a={a}&b={b}", "a", "b");
+
+        assertParam(response);
     }
 
     @Test
@@ -85,14 +104,15 @@ public class TestClientTest {
 
         TestResponse response = testClient.delete("/test?a={a}&b={b}", body, "a", "b");
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getRaw()).isNotNull();
-        TestJsonObject responseBody = response.getBody();
-        assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
-        assertThat(responseBody.strVal("$.param.a")).isEqualTo("a");
-        assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
+        assertParamAndBody(body, response);
     }
 
+    @Test
+    void should_be_able_to_delete_reset_response_with_out_body() {
+        TestResponse response = testClient.delete("/test?a={a}&b={b}", "a", "b");
+
+        assertParam(response);
+    }
 
     @RestController
     static class TestController {

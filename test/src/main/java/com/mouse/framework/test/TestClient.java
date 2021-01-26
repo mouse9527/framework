@@ -11,6 +11,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Component
 public class TestClient {
@@ -26,20 +27,36 @@ public class TestClient {
         return new TestResponse(execute(uriTemplate, HttpMethod.GET, Collections.emptyMap(), urlVariables));
     }
 
-    public TestResponse post(String uriTemplate, Object body, Object... urlVariables) {
+    public TestResponse post(String uriTemplate, Map<String, Object> body, Object... urlVariables) {
         return new TestResponse(execute(uriTemplate, HttpMethod.POST, body, urlVariables));
     }
 
-    public TestResponse put(String uriTemplate, Object body, Object... urlVariables) {
+    public TestResponse post(String uriTemplate, Object... urlVariables) {
+        return post(uriTemplate, Collections.emptyMap(), urlVariables);
+    }
+
+    public TestResponse put(String uriTemplate, Map<String, Object> body, Object... urlVariables) {
         return new TestResponse(execute(uriTemplate, HttpMethod.PUT, body, urlVariables));
     }
 
-    public TestResponse patch(String uriTemplate, Object body, Object... urlVariables) {
+    public TestResponse put(String uriTemplate, Object... urlVariables) {
+        return put(uriTemplate, Collections.emptyMap(), urlVariables);
+    }
+
+    public TestResponse patch(String uriTemplate, Map<String, Object> body, Object... urlVariables) {
         return new TestResponse(execute(uriTemplate, HttpMethod.PATCH, body, urlVariables));
     }
 
-    public TestResponse delete(String uriTemplate, Object body, Object... urlVariables) {
+    public TestResponse patch(String uriTemplate, Object... urlVariables) {
+        return patch(uriTemplate, Collections.emptyMap(), urlVariables);
+    }
+
+    public TestResponse delete(String uriTemplate, Map<String, Object> body, Object... urlVariables) {
         return new TestResponse(execute(uriTemplate, HttpMethod.DELETE, body, urlVariables));
+    }
+
+    public TestResponse delete(String uriTemplate, Object... urlVariables) {
+        return delete(uriTemplate, Collections.emptyMap(), urlVariables);
     }
 
     private ResponseEntity<String> execute(String uriTemplate, HttpMethod method, Object body, Object[] urlVariables) {
