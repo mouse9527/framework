@@ -63,6 +63,37 @@ public class TestClientTest {
         assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
     }
 
+    @Test
+    void should_be_able_to_patch_rest_response() {
+        Map<String, Object> body = new HashMap<>();
+        body.put("a", "a1");
+
+        TestResponse response = testClient.patch("/test?a={a}&b={b}", body, "a", "b");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getRaw()).isNotNull();
+        TestJsonObject responseBody = response.getBody();
+        assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
+        assertThat(responseBody.strVal("$.param.a")).isEqualTo("a");
+        assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
+    }
+
+    @Test
+    void should_be_able_to_delete_rest_response() {
+        Map<String, Object> body = new HashMap<>();
+        body.put("a", "a1");
+
+        TestResponse response = testClient.delete("/test?a={a}&b={b}", body, "a", "b");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getRaw()).isNotNull();
+        TestJsonObject responseBody = response.getBody();
+        assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
+        assertThat(responseBody.strVal("$.param.a")).isEqualTo("a");
+        assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
+    }
+
+
     @RestController
     static class TestController {
         @RequestMapping("/test")

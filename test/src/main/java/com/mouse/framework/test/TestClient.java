@@ -7,6 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -18,6 +19,7 @@ public class TestClient {
 
     public TestClient(TestRestTemplate testRestTemplate) {
         this.testRestTemplate = testRestTemplate;
+        this.testRestTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
     }
 
     public TestResponse get(String uriTemplate, Object... urlVariables) {
@@ -30,6 +32,14 @@ public class TestClient {
 
     public TestResponse put(String uriTemplate, Object body, Object... urlVariables) {
         return new TestResponse(execute(uriTemplate, HttpMethod.PUT, body, urlVariables));
+    }
+
+    public TestResponse patch(String uriTemplate, Object body, Object... urlVariables) {
+        return new TestResponse(execute(uriTemplate, HttpMethod.PATCH, body, urlVariables));
+    }
+
+    public TestResponse delete(String uriTemplate, Object body, Object... urlVariables) {
+        return new TestResponse(execute(uriTemplate, HttpMethod.DELETE, body, urlVariables));
     }
 
     private ResponseEntity<String> execute(String uriTemplate, HttpMethod method, Object body, Object[] urlVariables) {
