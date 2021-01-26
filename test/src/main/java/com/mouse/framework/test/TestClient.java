@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
-import java.util.Map;
 
 @Component
 public class TestClient {
@@ -25,15 +24,19 @@ public class TestClient {
         return new TestResponse(execute(uriTemplate, HttpMethod.GET, Collections.emptyMap(), urlVariables));
     }
 
-    private ResponseEntity<String> execute(String uriTemplate, HttpMethod method, Map<String, Object> body, Object[] urlVariables) {
+    public TestResponse post(String uriTemplate, Object body, Object... urlVariables) {
+        return new TestResponse(execute(uriTemplate, HttpMethod.POST, body, urlVariables));
+    }
+
+    private ResponseEntity<String> execute(String uriTemplate, HttpMethod method, Object body, Object[] urlVariables) {
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        HttpEntity<Object> request = new HttpEntity<>(body, headers);
         ResponseEntity<String> responseEntity = testRestTemplate.exchange(uriTemplate, method, request, String.class, urlVariables);
         log(request, responseEntity);
         return responseEntity;
     }
 
-    private void log(HttpEntity<Map<String, Object>> request, ResponseEntity<String> responseEntity) {
+    private void log(HttpEntity<Object> request, ResponseEntity<String> responseEntity) {
         logger.info("request: \n{}", request);
         logger.info("response: \n{}", responseEntity);
     }

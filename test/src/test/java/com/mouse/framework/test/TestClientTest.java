@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableTestClient
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(IntegrationTestTest.TestController.class)
-public class IntegrationTestTest {
+@Import(TestClientTest.TestController.class)
+public class TestClientTest {
     @Resource
     private TestClient testClient;
 
     @Test
-    void should_be_able_get_rest_response() {
+    void should_be_able_to_get_rest_response() {
         TestResponse response = testClient.get("/test?a={a}&b={b}", "a", "b");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -31,6 +31,19 @@ public class IntegrationTestTest {
         TestJsonObject body = response.getBody();
         assertThat(body.strVal("$.param.a")).isEqualTo("a");
         assertThat(body.strVal("$.param.b")).isEqualTo("b");
+    }
+
+    @Test
+    void should_be_able_to_post_reset_response() {
+        Map<String, Object> body = new HashMap<>();
+        body.put("a", "a1");
+
+        TestResponse response = testClient.post("/test?a={a}&b={b}", body, "a", "b");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getRaw()).isNotNull();
+        TestJsonObject responseBody = response.getBody();
+        assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
     }
 
     @RestController
