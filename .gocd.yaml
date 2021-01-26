@@ -5,7 +5,7 @@ environments:
       - framework
 pipelines:
   framework:
-    group: mouse
+    group: build
     materials:
       framework-git:
         git: git@scm.mouse.center:mouse/framework.git
