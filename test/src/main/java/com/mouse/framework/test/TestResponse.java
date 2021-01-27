@@ -3,6 +3,7 @@ package com.mouse.framework.test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+// TODO remove it
 public class TestResponse {
     private final ResponseEntity<String> responseEntity;
     private final TestJsonObject body;

@@ -2,6 +2,7 @@ package com.mouse.framework.test;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.time.Instant;
 import java.util.Objects;
 
 public class TestJsonObject {
@@ -38,5 +39,10 @@ public class TestJsonObject {
 
     public <T> T value(String jsonPath) {
         return JsonPath.compile(jsonPath).read(json);
+    }
+
+    public Instant instantVal(String jsonPath) {
+        if (!has(jsonPath)) return null;
+        return Instant.parse(this.<String>value(jsonPath));
     }
 }
