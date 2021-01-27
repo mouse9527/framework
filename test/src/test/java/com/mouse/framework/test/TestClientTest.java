@@ -6,21 +6,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.net.URI;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.URI_TYPE;
 
 @EnableTestClient
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -130,15 +124,34 @@ public class TestClientTest {
         assertParam(response);
     }
 
+    @Test
+    void should_be_able_to_parse_header_with_test_client() {
+        testClient.mockLanguage(Locale.SIMPLIFIED_CHINESE);
+        testClient.mockToken("mock-token");
+
+        TestResponse response = testClient.get("/header");
+
+        assertThat(response.getBody().strVal("$.accept-language")).isEqualTo("zh-cn");
+        assertThat(response.getBody().strVal("$.authorization")).isEqualTo("Bearer mock-token");
+        TestResponse second = testClient.get("/header");
+        assertThat(second.getBody().has("$.accept-language")).isFalse();
+        assertThat(second.getBody().has("$.authorization")).isFalse();
+    }
+
     @RestController
     static class TestController {
         @RequestMapping("/test")
-        public Object get(@RequestParam(required = false) Map<String, Object> param,
-                          @RequestBody(required = false) Map<String, Object> body) {
+        public Object test(@RequestParam(required = false) Map<String, Object> param,
+                           @RequestBody(required = false) Map<String, Object> body) {
             Map<String, Object> result = new HashMap<>();
             result.put("param", param);
             result.put("body", body);
             return result;
+        }
+
+        @RequestMapping("/header")
+        public Object header(@RequestHeader Map<String, Object> header) {
+            return header;
         }
     }
 }
