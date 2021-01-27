@@ -9,7 +9,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 public class TestClient {
     private final TestRestTemplate testRestTemplate;
@@ -78,7 +77,7 @@ public class TestClient {
         RequestEntity<?> request = new RequestEntity<>(entity.getBody(), entity.getHeaders(), method, url);
         ResponseEntity<String> response = testRestTemplate.exchange(request, String.class);
         log(request, response);
-        return ResponseEntity.of(Optional.of(new TestJsonObject(response.getBody())));
+        return new ResponseEntity<>(new TestJsonObject(response.getBody()), response.getHeaders(), response.getStatusCode());
     }
 
     private void log(RequestEntity<?> request, ResponseEntity<String> response) {
