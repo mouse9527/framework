@@ -71,7 +71,7 @@ public class TestClient {
      * @param method       {@link HttpMethod}
      * @param entity       {@link HttpEntity}
      * @param urlVariables argument of uriTemplate {@link org.springframework.web.util.UriTemplateHandler}
-     * @return {@link TestResponse}
+     * @return {@link ResponseEntity<TestJsonObject>}
      */
     public ResponseEntity<TestJsonObject> exchange(String uriTemplate, HttpMethod method, HttpEntity<?> entity, Object... urlVariables) {
         URI url = testRestTemplate.getRestTemplate().getUriTemplateHandler().expand(uriTemplate, urlVariables);
