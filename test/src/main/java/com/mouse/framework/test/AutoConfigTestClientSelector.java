@@ -8,7 +8,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import java.util.Map;
 
 @Generated
-public class AutoConfigTestClient implements ImportSelector {
+public class AutoConfigTestClientSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
         Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(EnableTestClient.class.getName(), false);

@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(AutoConfigTestClient.class)
+@Import(AutoConfigTestClientSelector.class)
 public @interface EnableTestClient {
     @AliasFor("headerMockerClass")
     Class<? extends HeaderMocker> value() default HeaderMocker.class;
