@@ -16,12 +16,14 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableTestClient
+@EnableTestClient(ThreadSafeHeaderMockerGiven.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestClientTest.TestController.class)
+@Import({TestClientTest.TestController.class})
 public class TestClientTest {
     @Resource
     private TestClient testClient;
+    @Resource
+    private HeaderGiven headerGiven;
 
     @Test
     void should_be_able_to_get_rest_response() {
@@ -126,8 +128,8 @@ public class TestClientTest {
 
     @Test
     void should_be_able_to_parse_header_with_test_client() {
-        testClient.mockLanguage(Locale.SIMPLIFIED_CHINESE);
-        testClient.mockToken("mock-token");
+        headerGiven.mockLanguage(Locale.SIMPLIFIED_CHINESE);
+        headerGiven.mockToken("mock-token");
 
         TestResponse response = testClient.get("/header");
 

@@ -16,12 +16,14 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableTestClient
+@EnableTestClient(ThreadSafeHeaderMockerGiven.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestClientTest.TestController.class)
+@Import({TestClientTest.TestController.class})
 public class MultithreadingMockTest {
     @Resource
     private TestClient testClient;
+    @Resource
+    private HeaderGiven headerGiven;
 
     private static Stream<Pair<Locale, String>> mockData() {
         return Stream.of(Pair.of(Locale.SIMPLIFIED_CHINESE, "1"),
@@ -34,8 +36,9 @@ public class MultithreadingMockTest {
     @MethodSource("mockData")
     @Execution(ExecutionMode.CONCURRENT)
     void should_be_able_to_mock_in_multithreading(Pair<Locale, String> mockData) {
-        testClient.mockLanguage(mockData.getFirst());
-        testClient.mockToken(mockData.getSecond());
+        headerGiven.mockLanguage(mockData.getFirst());
+        headerGiven.mockToken(mockData.getSecond());
+        headerGiven.mock("x", mockData.getSecond());
         TestResponse response = testClient.get("/header");
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -45,5 +48,6 @@ public class MultithreadingMockTest {
 
         assertThat(response.getBody().strVal("$.accept-language")).isEqualTo(acceptLanguage);
         assertThat(response.getBody().strVal("$.authorization")).isEqualTo(String.format("Bearer %s", mockData.getSecond()));
+        assertThat(response.getBody().strVal("$.x")).isEqualTo(mockData.getSecond());
     }
 }
