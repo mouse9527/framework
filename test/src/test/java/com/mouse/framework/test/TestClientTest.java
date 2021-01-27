@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,15 +28,15 @@ public class TestClientTest {
 
     @Test
     void should_be_able_to_get_rest_response() {
-        TestResponse response = testClient.get("/test?a={a}&b={b}", "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.get("/test?a={a}&b={b}", "a", "b");
 
         assertParam(response);
     }
 
-    private void assertParam(TestResponse response) {
+    private void assertParam(ResponseEntity<TestJsonObject> response) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getRaw()).isNotNull();
         TestJsonObject body = response.getBody();
+        assertThat(body).isNotNull();
         assertThat(body.strVal("$.param.a")).isEqualTo("a");
         assertThat(body.strVal("$.param.b")).isEqualTo("b");
     }
@@ -45,22 +46,22 @@ public class TestClientTest {
         Map<String, Object> body = new HashMap<>();
         body.put("a", "a1");
 
-        TestResponse response = testClient.post("/test?a={a}&b={b}", body, "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.post("/test?a={a}&b={b}", body, "a", "b");
 
         assertParamAndBody(body, response);
     }
 
     @Test
     void should_be_able_to_post_rest_response_with_out_body() {
-        TestResponse response = testClient.post("/test?a={a}&b={b}", "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.post("/test?a={a}&b={b}", "a", "b");
 
         assertParam(response);
     }
 
-    private void assertParamAndBody(Map<String, Object> body, TestResponse response) {
+    private void assertParamAndBody(Map<String, Object> body, ResponseEntity<TestJsonObject> response) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getRaw()).isNotNull();
         TestJsonObject responseBody = response.getBody();
+        assertThat(responseBody).isNotNull();
         assertThat(responseBody.<Map<String, Object>>value("$.body")).isEqualTo(body);
         assertThat(responseBody.strVal("$.param.a")).isEqualTo("a");
         assertThat(responseBody.strVal("$.param.b")).isEqualTo("b");
@@ -71,14 +72,14 @@ public class TestClientTest {
         Map<String, Object> body = new HashMap<>();
         body.put("a", "a1");
 
-        TestResponse response = testClient.put("/test?a={a}&b={b}", body, "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.put("/test?a={a}&b={b}", body, "a", "b");
 
         assertParamAndBody(body, response);
     }
 
     @Test
     void should_be_able_to_put_rest_response_with_out_body() {
-        TestResponse response = testClient.put("/test?a={a}&b={b}", "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.put("/test?a={a}&b={b}", "a", "b");
 
         assertParam(response);
     }
@@ -88,14 +89,14 @@ public class TestClientTest {
         Map<String, Object> body = new HashMap<>();
         body.put("a", "a1");
 
-        TestResponse response = testClient.patch("/test?a={a}&b={b}", body, "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.patch("/test?a={a}&b={b}", body, "a", "b");
 
         assertParamAndBody(body, response);
     }
 
     @Test
     void should_be_able_to_patch_rest_response_with_out_body() {
-        TestResponse response = testClient.patch("/test?a={a}&b={b}", "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.patch("/test?a={a}&b={b}", "a", "b");
 
         assertParam(response);
     }
@@ -105,14 +106,14 @@ public class TestClientTest {
         Map<String, Object> body = new HashMap<>();
         body.put("a", "a1");
 
-        TestResponse response = testClient.delete("/test?a={a}&b={b}", body, "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.delete("/test?a={a}&b={b}", body, "a", "b");
 
         assertParamAndBody(body, response);
     }
 
     @Test
     void should_be_able_to_delete_rest_response_with_out_body() {
-        TestResponse response = testClient.delete("/test?a={a}&b={b}", "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.delete("/test?a={a}&b={b}", "a", "b");
 
         assertParam(response);
     }
@@ -121,7 +122,7 @@ public class TestClientTest {
     void should_be_able_to_exchange_rest_response() {
         HttpEntity<?> entity = new HttpEntity<>(Collections.emptyMap());
 
-        TestResponse response = testClient.exchange("/test?a={a}&b={b}", HttpMethod.GET, entity, "a", "b");
+        ResponseEntity<TestJsonObject> response = testClient.exchange("/test?a={a}&b={b}", HttpMethod.GET, entity, "a", "b");
 
         assertParam(response);
     }
@@ -131,11 +132,13 @@ public class TestClientTest {
         headerGiven.setLanguage(Locale.SIMPLIFIED_CHINESE);
         headerGiven.setToken("mock-token");
 
-        TestResponse response = testClient.get("/header");
+        ResponseEntity<TestJsonObject> response = testClient.get("/header");
 
+        assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().strVal("$.accept-language")).isEqualTo("zh-cn");
         assertThat(response.getBody().strVal("$.authorization")).isEqualTo("Bearer mock-token");
-        TestResponse second = testClient.get("/header");
+        ResponseEntity<TestJsonObject> second = testClient.get("/header");
+        assertThat(second.getBody()).isNotNull();
         assertThat(second.getBody().has("$.accept-language")).isFalse();
         assertThat(second.getBody().has("$.authorization")).isFalse();
     }

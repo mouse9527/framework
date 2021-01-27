@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Resource;
 import java.util.Collections;
@@ -39,13 +40,12 @@ public class MultithreadingMockTest {
         headerGiven.setLanguage(mockData.getFirst());
         headerGiven.setToken(mockData.getSecond());
         headerGiven.set("x", mockData.getSecond());
-        TestResponse response = testClient.get("/header");
+
+        ResponseEntity<TestJsonObject> response = testClient.get("/header");
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAcceptLanguageAsLocales(Collections.singletonList(mockData.getFirst()));
-
         String acceptLanguage = httpHeaders.getFirst(HttpHeaders.ACCEPT_LANGUAGE);
-
         assertThat(response.getBody().strVal("$.accept-language")).isEqualTo(acceptLanguage);
         assertThat(response.getBody().strVal("$.authorization")).isEqualTo(String.format("Bearer %s", mockData.getSecond()));
         assertThat(response.getBody().strVal("$.x")).isEqualTo(mockData.getSecond());
