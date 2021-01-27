@@ -36,9 +36,9 @@ public class MultithreadingMockTest {
     @MethodSource("mockData")
     @Execution(ExecutionMode.CONCURRENT)
     void should_be_able_to_mock_in_multithreading(Pair<Locale, String> mockData) {
-        headerGiven.mockLanguage(mockData.getFirst());
-        headerGiven.mockToken(mockData.getSecond());
-        headerGiven.mock("x", mockData.getSecond());
+        headerGiven.setLanguage(mockData.getFirst());
+        headerGiven.setToken(mockData.getSecond());
+        headerGiven.set("x", mockData.getSecond());
         TestResponse response = testClient.get("/header");
 
         HttpHeaders httpHeaders = new HttpHeaders();

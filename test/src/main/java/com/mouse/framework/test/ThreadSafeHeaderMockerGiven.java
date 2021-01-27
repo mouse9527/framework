@@ -24,7 +24,7 @@ public class ThreadSafeHeaderMockerGiven implements HeaderMocker, HeaderGiven {
     }
 
     @Override
-    public void mockLanguage(Locale locale) {
+    public void setLanguage(Locale locale) {
         HttpHeaders headers = getOrDefault();
         headers.setAcceptLanguageAsLocales(Collections.singletonList(locale));
     }
@@ -39,12 +39,12 @@ public class ThreadSafeHeaderMockerGiven implements HeaderMocker, HeaderGiven {
     }
 
     @Override
-    public void mockToken(String token) {
+    public void setToken(String token) {
         getOrDefault().setBearerAuth(token);
     }
 
     @Override
-    public void mock(String key, String value) {
+    public void set(String key, String value) {
         getOrDefault().set(key, value);
     }
 }

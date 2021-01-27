@@ -128,8 +128,8 @@ public class TestClientTest {
 
     @Test
     void should_be_able_to_parse_header_with_test_client() {
-        headerGiven.mockLanguage(Locale.SIMPLIFIED_CHINESE);
-        headerGiven.mockToken("mock-token");
+        headerGiven.setLanguage(Locale.SIMPLIFIED_CHINESE);
+        headerGiven.setToken("mock-token");
 
         TestResponse response = testClient.get("/header");
 
