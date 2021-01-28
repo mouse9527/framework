@@ -8,6 +8,7 @@ import lombok.Setter;
 public class SnowFlakeProperties {
     private static final Long DEFAULT_SEQUENCE_BITS = 12L;
     private static final Long DEFAULT_WORKER_ID_BITS = 10L;
+    // 2020-01-01T00:00:00Z
     private static final Long DEFAULT_START_TIMESTAMP = 1577836800000L;
     private Long sequenceBits;
     private Long workerIdBits;

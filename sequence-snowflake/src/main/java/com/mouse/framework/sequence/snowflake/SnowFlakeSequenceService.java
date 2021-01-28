@@ -5,7 +5,6 @@ import lombok.Generated;
 
 @Generated
 public class SnowFlakeSequenceService implements SequenceService {
-    // 2020-01-01T00:00:00Z
     private final long startTimestamp;
 
     private final long sequenceMask;
