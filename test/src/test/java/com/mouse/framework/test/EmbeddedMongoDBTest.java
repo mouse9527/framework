@@ -12,7 +12,7 @@ class EmbeddedMongoDBTest {
 
     @Test
     void should_be_able_to_create_mongo_replica_set() {
-        EmbeddedMongoDB embeddedMongoDB = EmbeddedMongoDB.getInstance();
+        EmbeddedMongoDB embeddedMongoDB = EmbeddedMongoDB.getInstance("mongo:4.4.0");
 
         MongoDatabaseFactory mongoDatabaseFactory = embeddedMongoDB.getMongoDatabaseFactory();
         assertThat(embeddedMongoDB.getReplicaSetUrl()).isNotEmpty();

@@ -1,0 +1,4 @@
+application:
+  test:
+    embedded-mongo:
+      image: mongo:4.4.3
