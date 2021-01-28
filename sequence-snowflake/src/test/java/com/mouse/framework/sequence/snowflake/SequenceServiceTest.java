@@ -1,4 +1,4 @@
-package com.mouse.framework.sequence.core;
+package com.mouse.framework.sequence.snowflake;
 
 import com.mouse.framework.domain.core.SequenceService;
 import com.mouse.framework.sequence.snowflake.IllegalWorkerIdException;
