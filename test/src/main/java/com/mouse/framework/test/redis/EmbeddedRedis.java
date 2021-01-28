@@ -1,9 +1,11 @@
 package com.mouse.framework.test.redis;
 
+import lombok.Generated;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
+@Generated
 public final class EmbeddedRedis {
     public static final int PORT = 6379;
     private static final Object LOCK = new Object();

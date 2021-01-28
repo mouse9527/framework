@@ -29,7 +29,7 @@ public class EmbeddedRedisConfiguration {
     }
 
 
-    @Bean
+    @Bean(destroyMethod = "stop")
     public EmbeddedRedis embeddedRedis() {
         return EmbeddedRedis.getInstance(image == null ? DEFAULT_IMAGE : image);
     }
