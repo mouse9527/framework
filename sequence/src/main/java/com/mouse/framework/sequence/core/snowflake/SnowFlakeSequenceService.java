@@ -15,9 +15,13 @@ public class SnowFlakeSequenceService implements SequenceService {
     private long sequence;
 
     public SnowFlakeSequenceService(long workerId, SnowFlakeProperties properties) {
-        this.startTimestamp = properties.getStartTimestamp();
-        this.workerId = workerId;
+        long maxWorkerId = (1L << properties.getWorkerIdBits()) - 1;
+        if (workerId < 0 || workerId > maxWorkerId) {
+            throw new IllegalWorkerIdException(workerId, maxWorkerId);
+        }
 
+        this.workerId = workerId;
+        this.startTimestamp = properties.getStartTimestamp();
         this.sequenceMask = ~(-1L << properties.getSequenceBits());
         this.workerIdShift = properties.getSequenceBits();
         this.timestampShift = (long) properties.getWorkerIdBits() + properties.getSequenceBits();

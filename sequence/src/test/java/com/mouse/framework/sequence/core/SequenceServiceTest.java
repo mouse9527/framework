@@ -1,20 +1,29 @@
 package com.mouse.framework.sequence.core;
 
+import com.mouse.framework.sequence.core.snowflake.IllegalWorkerIdException;
 import com.mouse.framework.sequence.core.snowflake.SnowFlakeProperties;
 import com.mouse.framework.sequence.core.snowflake.SnowFlakeSequenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 class SequenceServiceTest {
     private SequenceService sequenceService;
+
+    private static Stream<Long> illegalWorkId() {
+        return Stream.of(-1L, 1024L, 1025L);
+    }
 
     @BeforeEach
     void setUp() {
@@ -45,5 +54,15 @@ class SequenceServiceTest {
         countDown.await();
 
         assertThat(ids.keySet()).hasSize(count);
+    }
+
+    @ParameterizedTest
+    @MethodSource("illegalWorkId")
+    void should_be_able_to_raise_exception_with_illegal_work_id(Long illegalWorkId) {
+        Throwable throwable = catchThrowable(() -> new SnowFlakeSequenceService(illegalWorkId, new SnowFlakeProperties()));
+
+        assertThat(throwable).isNotNull();
+        assertThat(throwable).isInstanceOf(IllegalWorkerIdException.class);
+        assertThat(throwable).hasMessage(String.format("Illegal workerId %d, range: [0 ~ 1023]", illegalWorkId));
     }
 }
