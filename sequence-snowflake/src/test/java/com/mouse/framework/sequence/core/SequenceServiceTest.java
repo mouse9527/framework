@@ -1,11 +1,11 @@
 package com.mouse.framework.sequence.core;
 
-import com.mouse.framework.sequence.core.snowflake.IllegalWorkerIdException;
-import com.mouse.framework.sequence.core.snowflake.SnowFlakeProperties;
-import com.mouse.framework.sequence.core.snowflake.SnowFlakeSequenceService;
+import com.mouse.framework.domain.core.SequenceService;
+import com.mouse.framework.sequence.snowflake.IllegalWorkerIdException;
+import com.mouse.framework.sequence.snowflake.SnowFlakeProperties;
+import com.mouse.framework.sequence.snowflake.SnowFlakeSequenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -40,7 +40,6 @@ class SequenceServiceTest {
     }
 
     @Test
-    @Timeout(1)
     void should_be_able_to_create_many_in_second() throws InterruptedException {
         Map<Long, Integer> ids = new ConcurrentHashMap<>();
         int count = 10000;

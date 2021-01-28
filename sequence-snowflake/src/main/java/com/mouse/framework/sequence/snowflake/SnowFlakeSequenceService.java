@@ -1,7 +1,9 @@
-package com.mouse.framework.sequence.core.snowflake;
+package com.mouse.framework.sequence.snowflake;
 
-import com.mouse.framework.sequence.core.SequenceService;
+import com.mouse.framework.domain.core.SequenceService;
+import lombok.Generated;
 
+@Generated
 public class SnowFlakeSequenceService implements SequenceService {
     // 2020-01-01T00:00:00Z
     private final long startTimestamp;

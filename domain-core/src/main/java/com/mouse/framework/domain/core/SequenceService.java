@@ -1,4 +1,4 @@
-package com.mouse.framework.sequence.core;
+package com.mouse.framework.domain.core;
 
 public interface SequenceService {
     Long next();
