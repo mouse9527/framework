@@ -1,5 +1,6 @@
 package com.mouse.framework.sequence.core;
 
+import com.mouse.framework.sequence.core.snowflake.SnowFlakeProperties;
 import com.mouse.framework.sequence.core.snowflake.SnowFlakeSequenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,8 @@ class SequenceServiceTest {
 
     @BeforeEach
     void setUp() {
-        sequenceService = new SnowFlakeSequenceService(1L);
+        SnowFlakeProperties properties = new SnowFlakeProperties();
+        sequenceService = new SnowFlakeSequenceService(1L, properties);
     }
 
     @Test

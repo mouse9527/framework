@@ -3,24 +3,24 @@ package com.mouse.framework.sequence.core.snowflake;
 import com.mouse.framework.sequence.core.SequenceService;
 
 public class SnowFlakeSequenceService implements SequenceService {
-    private final long sequenceBits = 12L;
-    private final long workerIdBits = 10L;
     // 2020-01-01T00:00:00Z
-    private final long startTimestamp = 1577836800000L;
+    private final long startTimestamp;
 
-    private final long sequenceMask = ~(-1L << sequenceBits);
-
-    private final long workerIdShift = sequenceBits;
-    private final long timestampShift = workerIdBits + sequenceBits;
+    private final long sequenceMask;
+    private final long workerIdShift;
+    private final long timestampShift;
 
     private final long workerId;
-
     private long lastTimestamp;
-
     private long sequence;
 
-    public SnowFlakeSequenceService(long workerId) {
+    public SnowFlakeSequenceService(long workerId, SnowFlakeProperties properties) {
+        this.startTimestamp = properties.getStartTimestamp();
         this.workerId = workerId;
+
+        this.sequenceMask = ~(-1L << properties.getSequenceBits());
+        this.workerIdShift = properties.getSequenceBits();
+        this.timestampShift = (long) properties.getWorkerIdBits() + properties.getSequenceBits();
     }
 
     @Override
