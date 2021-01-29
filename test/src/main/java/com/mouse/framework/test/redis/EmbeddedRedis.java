@@ -10,20 +10,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class EmbeddedRedis {
     private static final Map<String, EmbeddedRedis> CACHE = new ConcurrentHashMap<>();
     private final RedisContainer container;
-    private final EmbeddedRedisPropertiesConfiguration.EmbeddedRedisProperties properties;
+    private final Integer port;
 
-    public EmbeddedRedis(EmbeddedRedisPropertiesConfiguration.EmbeddedRedisProperties properties) {
-        this.container = new RedisContainer(properties.getImage())
-                .withExposedPorts(properties.getPort())
+    private EmbeddedRedis(String image, Integer port) {
+        this.port = port;
+        this.container = new RedisContainer(image)
+                .withExposedPorts(this.port)
                 .waitingFor(Wait.forListeningPort());
-        this.properties = properties;
     }
 
-    public static EmbeddedRedis getInstance(EmbeddedRedisPropertiesConfiguration.EmbeddedRedisProperties properties) {
-        String key = String.format("%s-%s", properties.getImage(), properties.getPort());
+    public static EmbeddedRedis getInstance(String image, Integer port) {
+        String key = String.format("%s-%s", image, port);
         EmbeddedRedis embeddedRedis = EmbeddedRedis.CACHE.get(key);
         if (embeddedRedis == null) {
-            embeddedRedis = new EmbeddedRedis(properties);
+            embeddedRedis = new EmbeddedRedis(image, port);
             embeddedRedis.start();
             CACHE.put(key, embeddedRedis);
         }
@@ -33,11 +33,11 @@ public final class EmbeddedRedis {
     public RedisProperties getProperties() {
         RedisProperties redisProperties = new RedisProperties();
         redisProperties.setHost(container.getHost());
-        redisProperties.setPort(container.getMappedPort(properties.getPort()));
+        redisProperties.setPort(container.getMappedPort(port));
         return redisProperties;
     }
 
-    public void start() {
+    private void start() {
         this.container.start();
     }
 

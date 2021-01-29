@@ -19,7 +19,7 @@ public class EmbeddedRedisPropertiesConfiguration {
     @Bean
     @Primary
     public RedisProperties redisProperties(EmbeddedRedisProperties properties) {
-        return EmbeddedRedis.getInstance(properties).getProperties();
+        return EmbeddedRedis.getInstance(properties.getImage(), properties.getPort()).getProperties();
     }
 
     @Setter
