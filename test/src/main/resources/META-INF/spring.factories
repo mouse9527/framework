@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.mouse.framework.test.mongo.EmbeddedMongoDBConfiguration,\
+  com.mouse.framework.test.redis.EmbeddedRedisPropertiesConfiguration
