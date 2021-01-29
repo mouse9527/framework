@@ -47,6 +47,7 @@ public class SnowFlakeProperties {
 
     @Setter
     @Getter
+    @Generated
     static class WorkerIdProperties {
         private String keyPrefix;
         private Long heartbeatIntervalSeconds;

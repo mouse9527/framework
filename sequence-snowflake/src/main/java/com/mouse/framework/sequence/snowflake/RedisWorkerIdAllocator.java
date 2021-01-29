@@ -1,5 +1,6 @@
 package com.mouse.framework.sequence.snowflake;
 
+import lombok.Generated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -52,6 +53,7 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
         heartbeats.get(workerId).cancel();
     }
 
+    @Generated
     private boolean usable(long workerId) {
         Boolean success = redisTemplate.opsForValue()
                 .setIfAbsent(properties.createKey(workerId),
@@ -76,6 +78,7 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
         }
 
         @Override
+        @Generated
         public void run() {
             Long heartbeatCount = redisTemplate.opsForValue().get(key);
             if (heartbeatCount == null) {
