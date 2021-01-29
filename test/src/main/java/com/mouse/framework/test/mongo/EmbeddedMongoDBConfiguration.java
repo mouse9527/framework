@@ -1,5 +1,6 @@
 package com.mouse.framework.test.mongo;
 
+import lombok.Generated;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,6 +28,7 @@ public class EmbeddedMongoDBConfiguration {
     }
 
     @Setter
+    @Generated
     @ConfigurationProperties(prefix = "test.embedded.mongodb")
     public static class EmbeddedMongoDBProperties {
         public static final String DEFAULT_IMAGE = "mongo:4.4";

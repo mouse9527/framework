@@ -1,5 +1,6 @@
 package com.mouse.framework.test.redis;
 
+import lombok.Generated;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,6 +24,7 @@ public class EmbeddedRedisPropertiesConfiguration {
     }
 
     @Setter
+    @Generated
     @ConfigurationProperties(prefix = "test.embedded.redis")
     public static class EmbeddedRedisProperties {
         private static final String DEFAULT_IMAGE = "redis";
