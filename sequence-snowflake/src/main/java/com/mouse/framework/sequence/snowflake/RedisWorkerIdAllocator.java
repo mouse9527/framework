@@ -22,18 +22,33 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
 
     @Override
     public long allocate(long maxWorkerId) {
-        String key = "WorkerId:0";
+        int id = -1; // TODO
+        for (int i = 0; i < maxWorkerId; i++) {
+            Boolean exists = redisTemplate.hasKey(String.format("%s:%d", properties.getKeyPrefix(), i));
+            if (exists != null && !exists) {
+                id = i;
+                break;
+            }
+        }
+
+        final String key = String.format("%s:%d", properties.getKeyPrefix(), id);
         redisTemplate.opsForValue().set(key, 1L);
         redisTemplate.expire(key, maxEffectiveSeconds, TimeUnit.SECONDS);
         long interval = properties.getHeartbeatIntervalSeconds() * BASE;
-        timer.schedule(new TimerTask() {
+
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 Long count = redisTemplate.opsForValue().get(key);
+                if (count == null) {
+                    this.cancel();
+                    return;
+                }
                 redisTemplate.opsForValue().set(key, count + 1);
                 redisTemplate.expire(key, maxEffectiveSeconds, TimeUnit.SECONDS);
             }
-        }, interval, interval);
-        return 0L;
+        };
+        timer.schedule(task, interval, interval);
+        return id;
     }
 }
