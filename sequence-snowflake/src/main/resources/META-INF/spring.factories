@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.mouse.framework.sequence.snowflake.WorkerAllocatorAutoConfiguration,\
+  com.mouse.framework.sequence.snowflake.SnowFlakeSequenceAutoConfiguration
