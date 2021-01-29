@@ -26,8 +26,8 @@ public final class EmbeddedRedis {
         return START_TIMES.get();
     }
 
-
     public static EmbeddedRedis getInstance() {
+        START_TIMES.incrementAndGet();
         if (instance == null) {
             synchronized (EmbeddedRedis.class) {
                 if (instance == null) {
@@ -42,11 +42,6 @@ public final class EmbeddedRedis {
 
     public static void close() {
         EmbeddedRedis.instance.stop();
-    }
-
-    public static Object create() {
-        START_TIMES.incrementAndGet();
-        return getInstance();
     }
 
     public static EmbeddedRedis get() {

@@ -12,7 +12,7 @@ public class RedisExtensionTest {
     @Test
     void should_be_able_to_create_mongo_container_once() {
         assertThat(EmbeddedRedis.startTimes()).isEqualTo(1);
-        RedisProperties properties = EmbeddedRedis.getInstance().getProperties();
+        RedisProperties properties = EmbeddedRedis.get().getProperties();
         assertThat(properties).isNotNull();
         assertThat(properties.getHost()).isNotNull();
         assertThat(properties.getPort()).isNotNull();
@@ -25,7 +25,7 @@ class RedisExtensionRepeatTest {
     @Test
     void should_be_able_to_create_mongo_container_once() {
         assertThat(EmbeddedRedis.startTimes()).isEqualTo(1);
-        RedisProperties properties = EmbeddedRedis.getInstance().getProperties();
+        RedisProperties properties = EmbeddedRedis.get().getProperties();
         assertThat(properties).isNotNull();
         assertThat(properties.getHost()).isNotNull();
         assertThat(properties.getPort()).isNotNull();

@@ -9,7 +9,7 @@ public class RedisExtension implements BeforeAllCallback {
     @Override
     public void beforeAll(ExtensionContext context) {
         context.getRoot().getStore(NAMESPACE)
-                .getOrComputeIfAbsent(EmbeddedRedis.class, v -> EmbeddedRedis.create());
+                .getOrComputeIfAbsent(EmbeddedRedis.class, v -> EmbeddedRedis.getInstance());
 
         registerCloser(context);
     }
