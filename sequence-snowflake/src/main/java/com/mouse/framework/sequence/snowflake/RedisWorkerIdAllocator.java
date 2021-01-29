@@ -7,13 +7,11 @@ import java.util.stream.LongStream;
 
 public class RedisWorkerIdAllocator implements WorkerIdAllocator {
     private final RedisTemplate<String, Long> redisTemplate;
-    private final long maxEffectiveSeconds;
     private final SnowFlakeProperties.WorkerIdProperties properties;
 
     public RedisWorkerIdAllocator(RedisTemplate<String, Long> redisTemplate, SnowFlakeProperties.WorkerIdProperties properties) {
         this.redisTemplate = redisTemplate;
         this.properties = properties;
-        this.maxEffectiveSeconds = properties.getHeartbeatIntervalSeconds() * properties.getMaxFailedTimes();
     }
 
     @Override
@@ -23,7 +21,7 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
                 .findFirst().orElseThrow(() -> new IllegalStateException("WorkerId is exhausted!!!"));
         final String key = properties.createKey(workerId);
         redisTemplate.opsForValue().set(key, 1L);
-        redisTemplate.expire(key, maxEffectiveSeconds, TimeUnit.SECONDS);
+        redisTemplate.expire(key, properties.getMaxEffectiveSeconds(properties), TimeUnit.SECONDS);
         return workerId;
     }
 

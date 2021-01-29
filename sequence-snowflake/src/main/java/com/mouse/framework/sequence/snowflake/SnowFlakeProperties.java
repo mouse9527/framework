@@ -53,5 +53,9 @@ public class SnowFlakeProperties {
         String createKey(long workerId) {
             return String.format("%s:%d", getKeyPrefix(), workerId);
         }
+
+        long getMaxEffectiveSeconds(WorkerIdProperties properties) {
+            return properties.getHeartbeatIntervalSeconds() * properties.getMaxFailedTimes();
+        }
     }
 }
