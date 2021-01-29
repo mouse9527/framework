@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.concurrent.TimeUnit;
+
 @Setter
 @Generated
 @ConfigurationProperties("sequence.snowflake")
@@ -39,6 +41,10 @@ public class SnowFlakeProperties {
         return workerId;
     }
 
+    long getMaxWorkerId() {
+        return (1L << getWorkerIdBits()) - 1;
+    }
+
     @Setter
     @Getter
     static class WorkerIdProperties {
@@ -56,6 +62,10 @@ public class SnowFlakeProperties {
 
         long getMaxEffectiveSeconds(WorkerIdProperties properties) {
             return properties.getHeartbeatIntervalSeconds() * properties.getMaxFailedTimes();
+        }
+
+        long getHeartBeatIntervalMillisecond() {
+            return TimeUnit.SECONDS.toMillis(heartbeatIntervalSeconds);
         }
     }
 }

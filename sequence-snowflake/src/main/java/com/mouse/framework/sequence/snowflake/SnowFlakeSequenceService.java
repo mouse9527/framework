@@ -16,7 +16,7 @@ public class SnowFlakeSequenceService implements SequenceService {
     private long sequence;
 
     public SnowFlakeSequenceService(long workerId, SnowFlakeProperties properties) {
-        long maxWorkerId = (1L << properties.getWorkerIdBits()) - 1;
+        long maxWorkerId = properties.getMaxWorkerId();
         if (workerId < 0 || workerId > maxWorkerId) {
             throw new IllegalWorkerIdException(workerId, maxWorkerId);
         }
