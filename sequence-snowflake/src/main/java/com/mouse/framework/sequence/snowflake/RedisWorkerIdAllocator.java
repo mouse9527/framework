@@ -1,39 +1,40 @@
 package com.mouse.framework.sequence.snowflake;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class RedisWorkerIdAllocator implements WorkerIdAllocator {
     private final RedisTemplate<String, Long> redisTemplate;
     private final SnowFlakeProperties.WorkerIdProperties properties;
     private final Timer timer;
-    private final List<TimerTask> heartbeats;
+    private final Map<Long, TimerTask> heartbeats;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public RedisWorkerIdAllocator(RedisTemplate<String, Long> redisTemplate, SnowFlakeProperties.WorkerIdProperties properties) {
         this.redisTemplate = redisTemplate;
         this.properties = properties;
         this.timer = new Timer();
-        heartbeats = new ArrayList<>();
+        this.heartbeats = new ConcurrentHashMap<>();
     }
 
     @Override
     public synchronized long allocate(long maxWorkerId) {
         final long workerId = getUsableWorkerId(maxWorkerId);
         final String key = properties.createKey(workerId);
-        long maxEffectiveSeconds = properties.getMaxEffectiveSeconds(properties);
+        long maxEffectiveSeconds = properties.getMaxEffectiveSeconds();
 
-        redisTemplate.opsForValue().set(key, 1L);
-        redisTemplate.expire(key, maxEffectiveSeconds, TimeUnit.SECONDS);
-
-        TimerTask workerIdHeartbeat = new WorkerIdHeartbeat(key, maxEffectiveSeconds, redisTemplate);
+        TimerTask workerIdHeartbeat = new WorkerIdHeartbeat(workerId, key, maxEffectiveSeconds, redisTemplate);
         long heartBeatIntervalMillisecond = properties.getHeartBeatIntervalMillisecond();
         timer.schedule(workerIdHeartbeat, heartBeatIntervalMillisecond, heartBeatIntervalMillisecond);
-        heartbeats.add(workerIdHeartbeat);
+        heartbeats.put(workerId, workerIdHeartbeat);
+        logger.info("WorkerId allocate success! workerId: [{}]", workerId);
         return workerId;
     }
 
@@ -41,26 +42,34 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
         for (int i = 0; i < maxWorkerId; i++) {
             if (this.usable(i)) return i;
         }
+        logger.error("WorkerId is exhausted!!!");
         throw new IllegalStateException("WorkerId is exhausted!!!");
     }
 
     @Override
     public synchronized void recycle(long workerId) {
         redisTemplate.delete(properties.createKey(workerId));
-        heartbeats.forEach(TimerTask::cancel);
+        heartbeats.get(workerId).cancel();
     }
 
     private boolean usable(long workerId) {
-        Boolean exists = redisTemplate.hasKey(properties.createKey(workerId));
-        return exists != null && !exists;
+        Boolean success = redisTemplate.opsForValue()
+                .setIfAbsent(properties.createKey(workerId),
+                        1L,
+                        properties.getMaxEffectiveSeconds(),
+                        TimeUnit.SECONDS);
+        return success != null && success;
     }
 
     private static class WorkerIdHeartbeat extends TimerTask {
+        private final long workerId;
         private final String key;
         private final RedisTemplate<String, Long> redisTemplate;
         private final Long maxEffectiveSeconds;
+        private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-        WorkerIdHeartbeat(String key, Long maxEffectiveSeconds, RedisTemplate<String, Long> redisTemplate) {
+        WorkerIdHeartbeat(long workerId, String key, Long maxEffectiveSeconds, RedisTemplate<String, Long> redisTemplate) {
+            this.workerId = workerId;
             this.key = key;
             this.redisTemplate = redisTemplate;
             this.maxEffectiveSeconds = maxEffectiveSeconds;
@@ -70,10 +79,13 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
         public void run() {
             Long heartbeatCount = redisTemplate.opsForValue().get(key);
             if (heartbeatCount == null) {
+                logger.error("WorkerId heartbeat Failed!, workerId: {} has been recycled", workerId);
                 throw new IllegalStateException("WorkerId timeout!!!");
             }
-            redisTemplate.opsForValue().set(key, heartbeatCount + 1);
-            redisTemplate.expire(key, maxEffectiveSeconds, TimeUnit.SECONDS);
+            long newCount = heartbeatCount + 1;
+            redisTemplate.opsForValue()
+                    .setIfPresent(key, newCount, maxEffectiveSeconds, TimeUnit.SECONDS);
+            logger.debug("WorkerId: [{}] heartbeat success, total heartbeat {} times", workerId, newCount);
         }
     }
 }
