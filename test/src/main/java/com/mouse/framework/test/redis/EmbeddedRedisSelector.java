@@ -6,6 +6,6 @@ import org.springframework.core.type.AnnotationMetadata;
 public class EmbeddedRedisSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-        return new String[]{EmbeddedRedisProperties.class.getName(), EmbeddedRedis.class.getName()};
+        return new String[]{EmbeddedRedisPropertiesConfiguration.class.getName()};
     }
 }

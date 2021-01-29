@@ -1,5 +1,6 @@
 package com.mouse.framework.test.redis;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -7,6 +8,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({EmbeddedRedisSelector.class, EmbeddedRedisPropertiesConfiguration.class})
+@ExtendWith(RedisExtension.class)
+@Import(EmbeddedRedisSelector.class)
 public @interface EnableEmbeddedRedis {
 }

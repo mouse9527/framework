@@ -2,13 +2,15 @@ package com.mouse.framework.test.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
-public final class EmbeddedRedis implements InitializingBean, DisposableBean {
+import java.util.concurrent.atomic.AtomicInteger;
+
+public final class EmbeddedRedis {
+    private static final AtomicInteger START_TIMES = new AtomicInteger();
+    private static EmbeddedRedis instance;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final RedisContainer container;
     private final EmbeddedRedisProperties properties;
@@ -20,14 +22,39 @@ public final class EmbeddedRedis implements InitializingBean, DisposableBean {
         this.properties = properties;
     }
 
-    @Override
-    public void destroy() {
+    public static Integer startTimes() {
+        return START_TIMES.get();
+    }
+
+
+    public static EmbeddedRedis getInstance() {
+        if (instance == null) {
+            synchronized (EmbeddedRedis.class) {
+                if (instance == null) {
+                    EmbeddedRedis instance = new EmbeddedRedis(new EmbeddedRedisProperties());
+                    instance.init();
+                    EmbeddedRedis.instance = instance;
+                }
+            }
+        }
+        return instance;
+    }
+
+    public static void close() {
+        EmbeddedRedis.instance.stop();
+    }
+
+    public static Object create() {
+        START_TIMES.incrementAndGet();
+        return getInstance();
+    }
+
+    private void stop() {
         this.container.stop();
         logger.info("EmbeddedRedis closed!");
     }
 
-    @Override
-    public void afterPropertiesSet() {
+    private void init() {
         this.container.start();
     }
 
