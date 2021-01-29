@@ -1,3 +1,10 @@
 dependencies {
-    api project(":domain-core")
+    api(project(":domain-core"))
+
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    testImplementation(project(":test")) {
+        exclude group: "org.springframework.boot"
+    }
 }

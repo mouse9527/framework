@@ -1,18 +1,23 @@
 package com.mouse.framework.sequence.snowflake;
 
 import lombok.Generated;
+import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Setter
 @Generated
+@ConfigurationProperties("sequence.snowflake")
 public class SnowFlakeProperties {
     private static final Long DEFAULT_SEQUENCE_BITS = 12L;
     private static final Long DEFAULT_WORKER_ID_BITS = 10L;
     // 2020-01-01T00:00:00Z
     private static final Long DEFAULT_START_TIMESTAMP = 1577836800000L;
+
     private Long sequenceBits;
     private Long workerIdBits;
     private Long startTimestamp;
+    private WorkerIdProperties workerId;
 
     public Long getSequenceBits() {
         return getOrDefault(sequenceBits, DEFAULT_SEQUENCE_BITS);
@@ -30,4 +35,19 @@ public class SnowFlakeProperties {
         return getOrDefault(startTimestamp, DEFAULT_START_TIMESTAMP);
     }
 
+    public WorkerIdProperties getWorkerId() {
+        return workerId;
+    }
+
+    @Setter
+    @Getter
+    static class WorkerIdProperties {
+        private String keyPrefix;
+        private Long heartbeatIntervalSeconds;
+        private Integer maxFailedTimes;
+
+        public void setKeyPrefix(String keyPrefix) {
+            this.keyPrefix = keyPrefix;
+        }
+    }
 }

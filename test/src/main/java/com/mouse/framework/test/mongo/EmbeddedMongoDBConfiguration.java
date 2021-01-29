@@ -3,6 +3,7 @@ package com.mouse.framework.test.mongo;
 import lombok.Generated;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
@@ -11,8 +12,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
+@ConditionalOnClass(MongoTemplate.class)
 @AutoConfigureBefore(MongoAutoConfiguration.class)
 @EnableConfigurationProperties(EmbeddedMongoDBConfiguration.EmbeddedMongoDBProperties.class)
 @ConditionalOnProperty(value = "test.embedded.mongodb.enable", havingValue = "true")

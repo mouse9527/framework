@@ -4,5 +4,7 @@ dependencies {
 
     testImplementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testImplementation project(":test")
+    testImplementation(project(":test")) {
+        exclude group: "org.springframework.boot"
+    }
 }

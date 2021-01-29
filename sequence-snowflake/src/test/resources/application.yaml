@@ -1,0 +1,11 @@
+test:
+  embedded:
+    redis:
+      enable: true
+sequence:
+  snowflake:
+    worker-id:
+      allocator-type: redis
+      key-prefix: WorkerId
+      heartbeat-interval-seconds: 1
+      max-failed-times: 10

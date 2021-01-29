@@ -1,12 +1,21 @@
+plugins {
+    id "java-library"
+}
+
 dependencies {
-    implementation("com.github.silaev:mongodb-replica-set:$mongodbReplicaSetVersion") {
+    api("com.github.silaev:mongodb-replica-set:$mongodbReplicaSetVersion") {
         exclude group: "org.testcontainers", module: 'toxiproxy'
     }
-    implementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion"
-    implementation "org.testcontainers:toxiproxy:$toxiproxyVersion"
-    implementation "com.jayway.jsonpath:json-path:$jsonPathVersion"
-    api "org.apache.httpcomponents:httpclient:$httpclientVersion"
+    api("org.testcontainers:toxiproxy:$toxiproxyVersion")
+    api("org.apache.httpcomponents:httpclient:$httpclientVersion")
+
+    implementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    implementation("com.jayway.jsonpath:json-path:$jsonPathVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
 }
