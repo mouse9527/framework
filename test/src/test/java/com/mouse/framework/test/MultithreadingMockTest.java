@@ -17,9 +17,9 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Import({TestClientTest.TestController.class})
 @EnableTestClient(ThreadSafeHeaderMockerGiven.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({TestClientTest.TestController.class})
 public class MultithreadingMockTest {
     @Resource
     private TestClient testClient;
@@ -46,6 +46,7 @@ public class MultithreadingMockTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAcceptLanguageAsLocales(Collections.singletonList(mockData.getFirst()));
         String acceptLanguage = httpHeaders.getFirst(HttpHeaders.ACCEPT_LANGUAGE);
+        assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().strVal("$.accept-language")).isEqualTo(acceptLanguage);
         assertThat(response.getBody().strVal("$.authorization")).isEqualTo(String.format("Bearer %s", mockData.getSecond()));
         assertThat(response.getBody().strVal("$.x")).isEqualTo(mockData.getSecond());

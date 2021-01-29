@@ -17,9 +17,9 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Import({TestClientTest.TestController.class})
 @EnableTestClient(ThreadSafeHeaderMockerGiven.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({TestClientTest.TestController.class})
 public class TestClientTest {
     @Resource
     private TestClient testClient;
