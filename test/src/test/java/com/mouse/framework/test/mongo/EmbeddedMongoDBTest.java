@@ -25,6 +25,7 @@ class EmbeddedMongoDBTest {
 
         TestEntity fromMongo = mongoTemplate.findOne(query(where("_id").is("test-id")), TestEntity.class, "test-entries");
 
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo.id).isEqualTo(entity.id);
         assertThat(fromMongo.name).isEqualTo(entity.name);

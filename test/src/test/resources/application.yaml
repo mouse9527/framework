@@ -1,0 +1,6 @@
+test:
+  embedded:
+    mongodb:
+      image: mongo:4.4.3
+    redis:
+      enable: true

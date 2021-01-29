@@ -4,8 +4,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Setter
-@SuppressWarnings("ConfigurationProperties")
-@ConfigurationProperties(prefix = "application.embedded.redis")
+@ConfigurationProperties(prefix = "test.embedded.redis")
 public class EmbeddedRedisProperties {
     private static final String DEFAULT_IMAGE = "redis";
     private static final Integer DEFAULT_PORT = 6379;

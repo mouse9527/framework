@@ -1,6 +1,7 @@
 package com.mouse.framework.data.mongo;
 
 import com.mouse.framework.domain.core.AggregationNotFoundException;
+import com.mouse.framework.test.mongo.EmbeddedMongoDB;
 import com.mouse.framework.test.mongo.EnableEmbeddedMongoDB;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ class MongoRepositoryTest {
         TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is(MOCK_ID)), TestEntity.class, COLLECTION_NAME);
 
         assertEqual(fromMongo);
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     private void assertEqual(TestEntity fromMongo) {
@@ -64,6 +66,7 @@ class MongoRepositoryTest {
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo.id).isEqualTo(MOCK_ID);
         assertThat(fromMongo.name).isEqualTo(modifiedName);
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -73,6 +76,7 @@ class MongoRepositoryTest {
         TestEntity fromMongo = mongoTestEntityRepository.load(MOCK_ID);
 
         assertEqual(fromMongo);
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -82,6 +86,7 @@ class MongoRepositoryTest {
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(AggregationNotFoundException.class);
         assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), COLLECTION_NAME));
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -89,6 +94,7 @@ class MongoRepositoryTest {
         mongoTemplate.save(entity, COLLECTION_NAME);
         Optional<TestEntity> optional = mongoTestEntityRepository.loadOptional(MOCK_ID);
         assertThat(optional).hasValue(entity);
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -96,6 +102,7 @@ class MongoRepositoryTest {
         Optional<TestEntity> empty = mongoTestEntityRepository.loadOptional(MOCK_ID);
 
         assertThat(empty).isEmpty();
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -108,6 +115,7 @@ class MongoRepositoryTest {
 
         assertThat(entities).hasSize(2);
         assertThat(entities).containsSequence(entity, entity2);
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -115,6 +123,7 @@ class MongoRepositoryTest {
         List<TestEntity> entities = mongoTestEntityRepository.listAll();
 
         assertThat(entities).isEmpty();
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -129,6 +138,7 @@ class MongoRepositoryTest {
         List<TestEntity> empty = mongoTestEntityRepository.list(query(where("name").is("unknown")));
 
         assertThat(empty).isEmpty();
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     @Test
@@ -138,6 +148,7 @@ class MongoRepositoryTest {
 
         assertThat(mongoTestEntityRepository.findOptional(query(where("name").is("lisa su")))).hasValue(entity);
         assertThat(mongoTestEntityRepository.findOptional(query(where("name").is("unknown")))).isEmpty();
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
     }
 
     static class TestEntity {
