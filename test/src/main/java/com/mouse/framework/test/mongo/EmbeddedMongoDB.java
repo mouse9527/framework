@@ -18,7 +18,7 @@ public final class EmbeddedMongoDB {
                 .build();
     }
 
-    public static EmbeddedMongoDB getInstance(String image) {
+    public static synchronized EmbeddedMongoDB getInstance(String image) {
         EmbeddedMongoDB embeddedMongoDB = EmbeddedMongoDB.CACHE.get(image);
         if (embeddedMongoDB == null) {
             embeddedMongoDB = new EmbeddedMongoDB(image);

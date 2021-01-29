@@ -19,7 +19,7 @@ public final class EmbeddedRedis {
                 .waitingFor(Wait.forListeningPort());
     }
 
-    public static EmbeddedRedis getInstance(String image, Integer port) {
+    public static synchronized EmbeddedRedis getInstance(String image, Integer port) {
         String key = String.format("%s-%s", image, port);
         EmbeddedRedis embeddedRedis = EmbeddedRedis.CACHE.get(key);
         if (embeddedRedis == null) {
