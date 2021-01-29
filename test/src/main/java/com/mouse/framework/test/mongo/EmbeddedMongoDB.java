@@ -27,10 +27,10 @@ public final class EmbeddedMongoDB {
     }
 
     public static EmbeddedMongoDB getInstance() {
-        START_TIMES.incrementAndGet();
         if (EmbeddedMongoDB.instance == null) {
             synchronized (EmbeddedMongoDB.class) {
                 if (EmbeddedMongoDB.instance == null) {
+                    START_TIMES.incrementAndGet();
                     EmbeddedMongoDB.instance = new EmbeddedMongoDB(new EmbeddedMongoDBProperties());
                     EmbeddedMongoDB.instance.init();
                 }

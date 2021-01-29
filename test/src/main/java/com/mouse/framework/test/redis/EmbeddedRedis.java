@@ -27,10 +27,10 @@ public final class EmbeddedRedis {
     }
 
     public static EmbeddedRedis getInstance() {
-        START_TIMES.incrementAndGet();
         if (instance == null) {
             synchronized (EmbeddedRedis.class) {
                 if (instance == null) {
+                    START_TIMES.incrementAndGet();
                     EmbeddedRedis instance = new EmbeddedRedis(new EmbeddedRedisProperties());
                     instance.init();
                     EmbeddedRedis.instance = instance;
