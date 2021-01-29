@@ -1,23 +1,33 @@
 package com.mouse.framework.test.redis;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
-public final class EmbeddedRedis implements InitializingBean, DisposableBean {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final RedisContainer container;
-    private final EmbeddedRedisProperties properties;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-    public EmbeddedRedis(EmbeddedRedisProperties properties) {
+public final class EmbeddedRedis {
+    private static final Map<String, EmbeddedRedis> CACHE = new ConcurrentHashMap<>();
+    private final RedisContainer container;
+    private final EmbeddedRedisPropertiesConfiguration.EmbeddedRedisProperties properties;
+
+    public EmbeddedRedis(EmbeddedRedisPropertiesConfiguration.EmbeddedRedisProperties properties) {
         this.container = new RedisContainer(properties.getImage())
                 .withExposedPorts(properties.getPort())
                 .waitingFor(Wait.forListeningPort());
         this.properties = properties;
+    }
+
+    public static EmbeddedRedis getInstance(EmbeddedRedisPropertiesConfiguration.EmbeddedRedisProperties properties) {
+        String key = String.format("%s-%s", properties.getImage(), properties.getPort());
+        EmbeddedRedis embeddedRedis = EmbeddedRedis.CACHE.get(key);
+        if (embeddedRedis == null) {
+            embeddedRedis = new EmbeddedRedis(properties);
+            embeddedRedis.start();
+            CACHE.put(key, embeddedRedis);
+        }
+        return embeddedRedis;
     }
 
     public RedisProperties getProperties() {
@@ -27,14 +37,7 @@ public final class EmbeddedRedis implements InitializingBean, DisposableBean {
         return redisProperties;
     }
 
-    @Override
-    public void destroy() {
-        this.container.stop();
-        logger.info("EmbeddedRedis closed!");
-    }
-
-    @Override
-    public void afterPropertiesSet() {
+    public void start() {
         this.container.start();
     }
 

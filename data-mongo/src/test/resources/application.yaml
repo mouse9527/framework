@@ -1,4 +1,5 @@
-application:
-  test:
-    embedded-mongo:
+test:
+  embedded:
+    mongodb:
+      enable: true
       image: mongo:4.4.3

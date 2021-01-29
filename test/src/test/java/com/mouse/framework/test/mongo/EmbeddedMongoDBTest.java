@@ -11,7 +11,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 @SpringBootTest
-@EnableEmbeddedMongoDB
 class EmbeddedMongoDBTest {
     @Resource
     private MongoTemplate mongoTemplate;

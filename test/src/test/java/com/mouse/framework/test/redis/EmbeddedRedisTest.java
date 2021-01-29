@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@EnableEmbeddedRedis
 class EmbeddedRedisTest {
     public static final String KEY = "x";
     public static final String VALUE = "xx";

@@ -1,6 +1,7 @@
 test:
   embedded:
     mongodb:
+      enable: true
       image: mongo:4.4.3
     redis:
       enable: true

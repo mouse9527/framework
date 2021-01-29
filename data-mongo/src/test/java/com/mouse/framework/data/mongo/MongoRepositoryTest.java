@@ -2,7 +2,6 @@ package com.mouse.framework.data.mongo;
 
 import com.mouse.framework.domain.core.AggregationNotFoundException;
 import com.mouse.framework.test.mongo.EmbeddedMongoDB;
-import com.mouse.framework.test.mongo.EnableEmbeddedMongoDB;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +20,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 @SpringBootTest
-@EnableEmbeddedMongoDB
 @Import(MongoRepositoryTest.MongoTestEntityRepository.class)
 class MongoRepositoryTest {
     public static final String MOCK_ID = "mock-id";
