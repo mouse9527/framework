@@ -9,7 +9,7 @@ public class MongoExtension implements BeforeAllCallback {
     @Override
     public void beforeAll(ExtensionContext context) {
         ExtensionContext.Store store = context.getRoot().getStore(NAMESPACE);
-        store.getOrComputeIfAbsent(EmbeddedMongoDB.class, v -> EmbeddedMongoDB.create());
+        store.getOrComputeIfAbsent(EmbeddedMongoDB.class, v -> EmbeddedMongoDB.getInstance());
         registerCloser(context);
     }
 
@@ -22,7 +22,7 @@ public class MongoExtension implements BeforeAllCallback {
     private static class EmbeddedMongoDBCloser implements ExtensionContext.Store.CloseableResource {
         @Override
         public void close() {
-            EmbeddedMongoDB.closeAll();
+            EmbeddedMongoDB.close();
         }
     }
 }

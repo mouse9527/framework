@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
@@ -14,10 +12,8 @@ public class MongoExtensionTest {
 
     @Test
     void should_be_able_to_create_mongo_container_once() {
-        List<EmbeddedMongoDB> mongoDBs = EmbeddedMongoDB.getInstances();
-
-        assertThat(mongoDBs).hasSize(1);
-        Throwable throwable = catchThrowable(() -> new MongoTemplate(mongoDBs.get(0).getMongoDatabaseFactory()).getCollection("test"));
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
+        Throwable throwable = catchThrowable(() -> new MongoTemplate(EmbeddedMongoDB.get().getMongoDatabaseFactory()).getCollection("test"));
         assertThat(throwable).isNull();
     }
 }
@@ -27,10 +23,8 @@ class MongoExtensionRepeatTest {
 
     @Test
     void should_be_able_to_create_mongo_container_once() {
-        List<EmbeddedMongoDB> mongoDBs = EmbeddedMongoDB.getInstances();
-
-        assertThat(mongoDBs).hasSize(1);
-        Throwable throwable = catchThrowable(() -> new MongoTemplate(mongoDBs.get(0).getMongoDatabaseFactory()).getCollection("test"));
+        assertThat(EmbeddedMongoDB.startTimes()).isEqualTo(1);
+        Throwable throwable = catchThrowable(() -> new MongoTemplate(EmbeddedMongoDB.get().getMongoDatabaseFactory()).getCollection("test"));
         assertThat(throwable).isNull();
     }
 }

@@ -10,6 +10,6 @@ public class EmbeddedRedisPropertiesConfiguration {
     @Bean
     @Primary
     public RedisProperties redisProperties() {
-        return EmbeddedRedis.getInstance().getProperties();
+        return EmbeddedRedis.get().getProperties();
     }
 }

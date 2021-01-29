@@ -1,7 +1,6 @@
 package com.mouse.framework.test.mongo;
 
 import com.github.silaev.mongodb.replicaset.MongoDbReplicaSet;
-import com.google.common.collect.ImmutableList;
 import lombok.Generated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +9,13 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Generated
 public final class EmbeddedMongoDB {
     private static final Object LOCK = new Object();
-    private static final List<EmbeddedMongoDB> INSTANCES = new ArrayList<>();
+    private static final AtomicInteger START_TIMES = new AtomicInteger();
+    private static EmbeddedMongoDB instance;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final MongoDbReplicaSet mongoDbReplicaSet;
     private SimpleMongoClientDatabaseFactory simpleMongoClientDatabaseFactory;
@@ -27,20 +26,29 @@ public final class EmbeddedMongoDB {
                 .build();
     }
 
-    public static List<EmbeddedMongoDB> getInstances() {
-        return ImmutableList.copyOf(INSTANCES);
+    public static EmbeddedMongoDB getInstance() {
+        START_TIMES.incrementAndGet();
+        if (EmbeddedMongoDB.instance == null) {
+            synchronized (EmbeddedMongoDB.class) {
+                if (EmbeddedMongoDB.instance == null) {
+                    EmbeddedMongoDB.instance = new EmbeddedMongoDB(new EmbeddedMongoDBProperties());
+                    EmbeddedMongoDB.instance.init();
+                }
+            }
+        }
+        return EmbeddedMongoDB.instance;
     }
 
-    public static synchronized EmbeddedMongoDB create() {
-        EmbeddedMongoDB mongoDB = new EmbeddedMongoDB(new EmbeddedMongoDBProperties());
-        mongoDB.init();
-        INSTANCES.add(mongoDB);
-        return mongoDB;
+    public static void close() {
+        EmbeddedMongoDB.instance.stop();
     }
 
-    public static void closeAll() {
-        INSTANCES.forEach(EmbeddedMongoDB::stop);
-        INSTANCES.clear();
+    public static Integer startTimes() {
+        return START_TIMES.get();
+    }
+
+    public static EmbeddedMongoDB get() {
+        return EmbeddedMongoDB.instance;
     }
 
     private void stop() {

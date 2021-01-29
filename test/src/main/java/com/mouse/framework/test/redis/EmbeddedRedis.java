@@ -49,6 +49,10 @@ public final class EmbeddedRedis {
         return getInstance();
     }
 
+    public static EmbeddedRedis get() {
+        return EmbeddedRedis.instance;
+    }
+
     private void stop() {
         this.container.stop();
         logger.info("EmbeddedRedis closed!");

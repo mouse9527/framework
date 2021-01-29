@@ -10,6 +10,6 @@ public class EmbeddedMongoDBConfiguration {
     @Bean
     @Primary
     public MongoDatabaseFactory mongoDatabaseFactory() {
-        return EmbeddedMongoDB.getInstances().get(0).getMongoDatabaseFactory();
+        return EmbeddedMongoDB.get().getMongoDatabaseFactory();
     }
 }
