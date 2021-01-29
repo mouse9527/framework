@@ -18,6 +18,9 @@ subprojects {
 
         compileOnly "org.projectlombok:lombok:$lombokVersion"
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
     }
 
     jar {
@@ -25,4 +28,9 @@ subprojects {
     }
 
     test.dependsOn(checkstyleMain)
+
+    configurations {
+        all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+        all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    }
 }

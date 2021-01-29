@@ -7,6 +7,6 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(EmbeddedRedisConfiguration.class)
+@Import({EmbeddedRedisSelector.class, EmbeddedRedisPropertiesConfiguration.class})
 public @interface EnableEmbeddedRedis {
 }

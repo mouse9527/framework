@@ -1,47 +1,40 @@
 package com.mouse.framework.test.redis;
 
-import lombok.Generated;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
-@Generated
-public final class EmbeddedRedis {
-    public static final int PORT = 6379;
-    private static final Object LOCK = new Object();
-    private static EmbeddedRedis instance;
+public final class EmbeddedRedis implements InitializingBean, DisposableBean {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final RedisContainer container;
+    private final EmbeddedRedisProperties properties;
 
-    private EmbeddedRedis(String imageName) {
-        this.container = new RedisContainer(imageName)
-                .withExposedPorts(PORT)
-                .waitingFor(
-                        Wait.forListeningPort()
-                );
+    public EmbeddedRedis(EmbeddedRedisProperties properties) {
+        this.container = new RedisContainer(properties.getImage())
+                .withExposedPorts(properties.getPort())
+                .waitingFor(Wait.forListeningPort());
+        this.properties = properties;
+    }
+
+    @Override
+    public void destroy() {
+        this.container.stop();
+        logger.info("EmbeddedRedis closed!");
+    }
+
+    @Override
+    public void afterPropertiesSet() {
         this.container.start();
     }
-
-    public static EmbeddedRedis getInstance(String mongoDockerImageName) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                if (instance == null) {
-                    instance = new EmbeddedRedis(mongoDockerImageName);
-                }
-            }
-        }
-        return instance;
-    }
-
-    public void stop() {
-        container.stop();
-        EmbeddedRedis.instance = null;
-    }
-
 
     public RedisProperties getProperties() {
         RedisProperties redisProperties = new RedisProperties();
         redisProperties.setHost(container.getHost());
-        redisProperties.setPort(container.getMappedPort(PORT));
+        redisProperties.setPort(container.getMappedPort(properties.getPort()));
         return redisProperties;
     }
 
@@ -50,5 +43,4 @@ public final class EmbeddedRedis {
             super(image);
         }
     }
-
 }

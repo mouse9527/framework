@@ -1,7 +1,7 @@
 package com.mouse.framework.data.mongo;
 
 import com.mouse.framework.domain.core.AggregationNotFoundException;
-import com.mouse.framework.test.EnableEmbeddedMongoDB;
+import com.mouse.framework.test.mongo.EnableEmbeddedMongoDB;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

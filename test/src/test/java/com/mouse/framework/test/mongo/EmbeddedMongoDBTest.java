@@ -1,24 +1,23 @@
-package com.mouse.framework.test;
+package com.mouse.framework.test.mongo;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+
+import javax.annotation.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+@SpringBootTest
+@EnableEmbeddedMongoDB
 class EmbeddedMongoDBTest {
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     @Test
     void should_be_able_to_create_mongo_replica_set() {
-        EmbeddedMongoDB embeddedMongoDB = EmbeddedMongoDB.getInstance("mongo:4.4.0");
-
-        MongoDatabaseFactory mongoDatabaseFactory = embeddedMongoDB.getMongoDatabaseFactory();
-        assertThat(embeddedMongoDB.getReplicaSetUrl()).isNotEmpty();
-        assertThat(mongoDatabaseFactory).isNotNull();
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoDatabaseFactory);
-
         TestEntity entity = new TestEntity();
         entity.id = "test-id";
         entity.name = "test-name";
@@ -29,8 +28,6 @@ class EmbeddedMongoDBTest {
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo.id).isEqualTo(entity.id);
         assertThat(fromMongo.name).isEqualTo(entity.name);
-
-        embeddedMongoDB.stop();
     }
 
     static class TestEntity {
