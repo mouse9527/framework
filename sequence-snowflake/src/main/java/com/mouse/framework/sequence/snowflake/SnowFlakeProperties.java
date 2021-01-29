@@ -49,5 +49,9 @@ public class SnowFlakeProperties {
         public void setKeyPrefix(String keyPrefix) {
             this.keyPrefix = keyPrefix;
         }
+
+        String createKey(long workerId) {
+            return String.format("%s:%d", getKeyPrefix(), workerId);
+        }
     }
 }

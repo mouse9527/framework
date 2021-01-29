@@ -7,8 +7,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 @SpringBootTest
 class WorkerIdAllocatorTest {
@@ -55,4 +57,14 @@ class WorkerIdAllocatorTest {
         assertThat(redisTemplate.getExpire("WorkerId:4", TimeUnit.SECONDS)).isBetween(9L, 10L);
     }
 
+    @Test
+    void should_be_able_to_raise_exception_when_worker_id_exhausted() {
+        IntStream.range(0, 10).forEach(i -> redisTemplate.opsForValue().set(String.format("WorkerId:%d", i), 1L));
+
+        Throwable throwable = catchThrowable(() -> workerIdAllocator.allocate(10));
+
+        assertThat(throwable).isNotNull();
+        assertThat(throwable).isInstanceOf(IllegalStateException.class);
+        assertThat(throwable).hasMessage("WorkerId is exhausted!!!");
+    }
 }
