@@ -1,0 +1,26 @@
+{
+  "properties": [
+    {
+      "name": "test.embedded.mongodb.enable",
+      "description": "Turn on the embedded mongodb switch",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "test.embedded.mongodb.image",
+      "description": "Setting embedded mongodb image, Need to open the test.embedded.mongodb.enable first",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "test.embedded.redis.enable",
+      "description": "Turn on the embedded redis switch",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "test.embedded.redis.image",
+      "description": "Setting embedded redis image, Need to open the test.embedded.redis.enable first",
+      "type": "java.lang.String"
+    }
+  ]
+}
