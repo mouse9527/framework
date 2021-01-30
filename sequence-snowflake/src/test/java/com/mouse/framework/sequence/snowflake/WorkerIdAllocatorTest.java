@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.LongStream;
 
@@ -99,5 +102,23 @@ class WorkerIdAllocatorTest {
         assertThat(redisTemplate.getExpire(key, TimeUnit.SECONDS)).isBetween(9L, 10L);
 
         workerIdAllocator.recycle(workerId);
+    }
+
+    @Test
+    void should_be_able_to_allocate_worker_id_in_multithreading() throws InterruptedException {
+        Set<Long> workerIds = Collections.synchronizedSet(new HashSet<>());
+        int count = 100;
+        CountDownLatch countDownLatch = new CountDownLatch(count);
+
+        for (int i = 0; i < count; i++) {
+            new Thread(() -> {
+                long allocate = workerIdAllocator.allocate(MAX_WORKER_ID);
+                workerIds.add(allocate);
+                countDownLatch.countDown();
+            }).start();
+        }
+        countDownLatch.await();
+
+        assertThat(workerIds).hasSize(count);
     }
 }
