@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class RedisWorkerIdAllocator implements WorkerIdAllocator {
+    public static final String HEARTBEAT_THREAD_NAME = "Worker-Id-Heartbeat";
     private final RedisTemplate<String, Long> redisTemplate;
     private final SnowFlakeProperties.WorkerIdProperties properties;
     private final Timer timer;
@@ -22,25 +23,29 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
     public RedisWorkerIdAllocator(RedisTemplate<String, Long> redisTemplate, SnowFlakeProperties.WorkerIdProperties properties) {
         this.redisTemplate = redisTemplate;
         this.properties = properties;
-        this.timer = new Timer(true);
+        this.timer = new Timer(HEARTBEAT_THREAD_NAME, true);
         this.heartbeats = new ConcurrentHashMap<>();
     }
 
     @Override
     public long allocate(long maxWorkerId) {
-        final long workerId = getUsableWorkerId(maxWorkerId);
-        final String key = properties.createKey(workerId);
-        long maxEffectiveSeconds = properties.getMaxEffectiveSeconds();
-
-        TimerTask workerIdHeartbeat = new WorkerIdHeartbeat(workerId, key, maxEffectiveSeconds, redisTemplate);
-        long heartBeatIntervalMillisecond = properties.getHeartBeatIntervalMillisecond();
-        timer.schedule(workerIdHeartbeat, heartBeatIntervalMillisecond, heartBeatIntervalMillisecond);
-        heartbeats.put(workerId, workerIdHeartbeat);
+        long workerId = allocateUsableWorkerId(maxWorkerId);
+        registerHeartBeat(workerId);
         logger.info("WorkerId allocate success! workerId: [{}]", workerId);
         return workerId;
     }
 
-    private long getUsableWorkerId(long maxWorkerId) {
+    private void registerHeartBeat(long workerId) {
+        TimerTask workerIdHeartbeat = new WorkerIdHeartbeat(workerId,
+                properties.createKey(workerId),
+                properties.getMaxEffectiveSeconds(),
+                redisTemplate);
+        long heartBeatIntervalMillisecond = properties.getHeartBeatIntervalMillisecond();
+        timer.schedule(workerIdHeartbeat, heartBeatIntervalMillisecond, heartBeatIntervalMillisecond);
+        heartbeats.put(workerId, workerIdHeartbeat);
+    }
+
+    private long allocateUsableWorkerId(long maxWorkerId) {
         for (int i = 0; i < maxWorkerId; i++) {
             if (this.usable(i)) return i;
         }
