@@ -1,9 +1,13 @@
 package com.mouse.framework.domain.core;
 
-public class Sequence {
+public final class Sequence {
     private static SequenceService sequenceService;
 
+    private Sequence() {
+    }
+
     public static Long next() {
+        if (sequenceService == null) throw new SequenceNotInitException();
         return sequenceService.next();
     }
 
