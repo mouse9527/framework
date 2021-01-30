@@ -8,4 +8,5 @@ dependencies {
 test {
     useJUnitPlatform()
     failFast = true
+    testLogging.showStandardStreams = true
 }
