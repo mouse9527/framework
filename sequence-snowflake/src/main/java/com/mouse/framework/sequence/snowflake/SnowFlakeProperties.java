@@ -16,9 +16,9 @@ public class SnowFlakeProperties {
     // 2020-01-01T00:00:00Z
     private static final Long DEFAULT_START_TIMESTAMP = 1577836800000L;
 
-    private Long sequenceBits;
-    private Long workerIdBits;
     private Long startTimestamp;
+    private Long workerIdBits;
+    private Long sequenceBits;
     private WorkerIdProperties workerId;
 
     public Long getSequenceBits() {

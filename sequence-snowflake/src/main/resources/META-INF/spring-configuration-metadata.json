@@ -1,0 +1,43 @@
+{
+  "properties": [
+    {
+      "name": "sequence.snowflake.start-timestamp",
+      "description": "Snowflake start timestamp, defaultValue: 2020-01-01T00:00:00Z",
+      "type": "java.lang.Long",
+      "defaultValue": 1577836800000
+    },
+    {
+      "name": "sequence.snowflake.worker-id_bits",
+      "description": "Snowflake worker id bits, defaultValue: 10 bits",
+      "type": "java.lang.Long",
+      "defaultValue": 10
+    },
+    {
+      "name": "sequence.snowflake.sequence-bits",
+      "description": "Snowflake sequence bits, defaultValue: 12 bits",
+      "type": "java.lang.Long",
+      "defaultValue": 12
+    },
+    {
+      "name": "sequence.snowflake.worker-id.allocator-type",
+      "description": "Snowflake workerId allocator type",
+      "defaultValue": "redis",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "sequence.snowflake.worker-id.key-prefix",
+      "description": "Snowflake workerId key prefix",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "sequence.snowflake.worker-id.heartbeat-interval-seconds",
+      "description": "Snowflake workerId heartbeat interval, unit: seconds",
+      "type": "java.lang.Long"
+    },
+    {
+      "name": "sequence.snowflake.worker-id.max-failed-times",
+      "description": "Snowflake workerId heartbeat interval max number of failures, workerId maxEffectiveSeconds = heartbeat-interval-seconds * max-failed-times",
+      "type": "java.lang.Integer"
+    }
+  ]
+}
