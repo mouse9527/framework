@@ -2,6 +2,11 @@ plugins {
     id 'java'
 }
 
+allprojects {
+    apply plugin: 'com.mouse.build.optional'
+}
+
+
 subprojects {
     apply plugin: 'java-library'
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
