@@ -32,6 +32,5 @@ public class OptionalPlugin implements Plugin<Project> {
         project.getPlugins().withType(EclipsePlugin.class,
                 (eclipsePlugin) -> project.getExtensions().getByType(EclipseModel.class)
                         .classpath((classpath) -> classpath.getPlusConfigurations().add(optional)));
-
     }
 }

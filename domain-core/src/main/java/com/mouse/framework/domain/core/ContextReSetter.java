@@ -2,7 +2,10 @@ package com.mouse.framework.domain.core;
 
 import java.time.Clock;
 
-public class ContextReSetter {
+public final class ContextReSetter {
+    private ContextReSetter() {
+    }
+
     public static void set(Clock clock) {
         Context.setClock(clock);
     }
