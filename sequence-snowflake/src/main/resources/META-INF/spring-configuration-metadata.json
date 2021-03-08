@@ -21,8 +21,12 @@
     {
       "name": "sequence.snowflake.worker-id.allocator-type",
       "description": "Snowflake workerId allocator type",
-      "defaultValue": "redis",
-      "type": "java.lang.String"
+      "type": "redis | fixed"
+    },
+    {
+      "name": "sequence.snowflake.worker-id.id",
+      "description": "Snowflake fixed worker id",
+      "type": "java.lang.Long"
     },
     {
       "name": "sequence.snowflake.worker-id.key-prefix",

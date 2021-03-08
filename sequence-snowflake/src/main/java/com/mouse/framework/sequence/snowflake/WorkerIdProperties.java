@@ -15,6 +15,7 @@ public class WorkerIdProperties {
     private String keyPrefix;
     private Long heartbeatIntervalSeconds;
     private Integer maxFailedTimes;
+    private Long id;
 
     // TODO: move it into WorkerIdUtils
     String createKey(long workerId) {
