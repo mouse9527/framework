@@ -4,14 +4,9 @@ import java.time.Clock;
 import java.time.Instant;
 
 public final class Context {
-    private static Clock clock;
+    private static Clock clock = Clock.systemUTC();
 
     private Context() {
-
-    }
-
-    static {
-        clock = Clock.systemUTC();
     }
 
     public static Instant now() {
@@ -19,6 +14,8 @@ public final class Context {
     }
 
     static void setClock(Clock clock) {
-        Context.clock = clock;
+        synchronized (Context.class) {
+            Context.clock = clock;
+        }
     }
 }

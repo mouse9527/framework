@@ -10,14 +10,21 @@ public class SequenceTest {
 
     @AfterEach
     void tearDown() {
-        SequenceSetter.reset(null);
+        SequenceSetter.set(null);
     }
 
     @Test
     void should_be_able_to_get_next_when_reset_sequence_service() {
-        SequenceSetter.reset(() -> 1L);
+        SequenceSetter.set(() -> 1L);
 
         assertThat(Sequence.next()).isEqualTo(1L);
+    }
+
+    @Test
+    void should_be_able_to_get_next_str_id() {
+        SequenceSetter.set(() -> 1L);
+
+        assertThat(Sequence.nextStr()).isEqualTo("1");
     }
 
     @Test

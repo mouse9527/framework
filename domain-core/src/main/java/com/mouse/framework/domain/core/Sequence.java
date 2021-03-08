@@ -11,7 +11,13 @@ public final class Sequence {
         return sequenceService.next();
     }
 
-    static void reset(SequenceService sequenceService) {
-        Sequence.sequenceService = sequenceService;
+    static void set(SequenceService sequenceService) {
+        synchronized (Sequence.class) {
+            Sequence.sequenceService = sequenceService;
+        }
+    }
+
+    public static String nextStr() {
+        return String.valueOf(next());
     }
 }
