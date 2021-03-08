@@ -7,7 +7,7 @@
       "defaultValue": 1577836800000
     },
     {
-      "name": "sequence.snowflake.worker-id_bits",
+      "name": "sequence.snowflake.worker-id-bits",
       "description": "Snowflake worker id bits, defaultValue: 10 bits",
       "type": "java.lang.Long",
       "defaultValue": 10

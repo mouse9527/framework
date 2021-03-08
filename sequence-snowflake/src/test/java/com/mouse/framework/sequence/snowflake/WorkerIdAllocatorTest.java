@@ -19,13 +19,12 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 
 @SpringBootTest
 class WorkerIdAllocatorTest {
-    public static final long MAX_WORKER_ID = 1204;
     @Resource
     private RedisTemplate<String, Long> redisTemplate;
     @Resource
     private WorkerIdAllocator workerIdAllocator;
     @Resource
-    private SnowFlakeProperties snowFlakeProperties;
+    private WorkerIdProperties workerIdProperties;
 
     @BeforeEach
     void setUp() {
@@ -41,7 +40,7 @@ class WorkerIdAllocatorTest {
 
     @Test
     void should_be_able_to_allocate_worker_id() {
-        long workerId = workerIdAllocator.allocate(MAX_WORKER_ID);
+        long workerId = workerIdAllocator.allocate();
 
         assertThat(workerId).isEqualTo(0);
 
@@ -53,7 +52,7 @@ class WorkerIdAllocatorTest {
 
     @Test
     void should_be_able_to_allocate_usable_work_id() {
-        long workerId = workerIdAllocator.allocate(MAX_WORKER_ID);
+        long workerId = workerIdAllocator.allocate();
 
         assertThat(workerId).isEqualTo(0L);
 
@@ -65,7 +64,7 @@ class WorkerIdAllocatorTest {
         redisTemplate.opsForValue().set("WorkerId:3", 1L);
         redisTemplate.opsForValue().set("WorkerId:5", 1L);
 
-        long allocate = workerIdAllocator.allocate(MAX_WORKER_ID);
+        long allocate = workerIdAllocator.allocate();
         assertThat(allocate).isEqualTo(4);
 
         assertThat(redisTemplate.opsForValue().get("WorkerId:4")).isEqualTo(1);
@@ -77,9 +76,11 @@ class WorkerIdAllocatorTest {
 
     @Test
     void should_be_able_to_raise_exception_when_worker_id_exhausted() {
-        LongStream.range(0, 10).forEach(i -> redisTemplate.opsForValue().set(createKey(i), 1L));
+        WorkerIdAllocator workerIdAllocator = new RedisWorkerIdAllocator(redisTemplate, 10, workerIdProperties);
 
-        Throwable throwable = catchThrowable(() -> workerIdAllocator.allocate(10));
+        LongStream.range(0, 10).forEach(i -> redisTemplate.opsForValue().set(workerIdProperties.createKey(i), 1L));
+
+        Throwable throwable = catchThrowable(workerIdAllocator::allocate);
 
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(IllegalStateException.class);
@@ -87,12 +88,12 @@ class WorkerIdAllocatorTest {
     }
 
     private String createKey(Long workerId) {
-        return snowFlakeProperties.getWorkerId().createKey(workerId);
+        return workerIdProperties.createKey(workerId);
     }
 
     @Test
     void should_be_able_to_heartbeat_worker_id() throws InterruptedException {
-        long workerId = workerIdAllocator.allocate(MAX_WORKER_ID);
+        long workerId = workerIdAllocator.allocate();
 
         String key = createKey(workerId);
         assertThat(redisTemplate.opsForValue().get(key)).isEqualTo(1L);
@@ -112,7 +113,7 @@ class WorkerIdAllocatorTest {
 
         for (int i = 0; i < count; i++) {
             new Thread(() -> {
-                long allocate = workerIdAllocator.allocate(MAX_WORKER_ID);
+                long allocate = workerIdAllocator.allocate();
                 workerIds.add(allocate);
                 countDownLatch.countDown();
             }).start();

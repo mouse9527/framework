@@ -15,13 +15,15 @@ import java.util.concurrent.TimeUnit;
 public class RedisWorkerIdAllocator implements WorkerIdAllocator {
     public static final String HEARTBEAT_THREAD_NAME = "Worker-Id-Heartbeat";
     private final RedisTemplate<String, Long> redisTemplate;
-    private final SnowFlakeProperties.WorkerIdProperties properties;
+    private final WorkerIdProperties properties;
     private final Timer timer;
     private final Map<Long, TimerTask> heartbeats;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final long maxWorkerId;
 
-    public RedisWorkerIdAllocator(RedisTemplate<String, Long> redisTemplate, SnowFlakeProperties.WorkerIdProperties properties) {
+    public RedisWorkerIdAllocator(RedisTemplate<String, Long> redisTemplate, long maxWorkerId, WorkerIdProperties properties) {
         this.redisTemplate = redisTemplate;
+        this.maxWorkerId = maxWorkerId;
         this.properties = properties;
         this.timer = new Timer(HEARTBEAT_THREAD_NAME, true);
         this.heartbeats = new ConcurrentHashMap<>();
@@ -57,6 +59,11 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
     public void recycle(long workerId) {
         redisTemplate.delete(properties.createKey(workerId));
         Optional.ofNullable(heartbeats.get(workerId)).ifPresent(TimerTask::cancel);
+    }
+
+    @Override
+    public long allocate() {
+        return allocate(maxWorkerId);
     }
 
     @Generated

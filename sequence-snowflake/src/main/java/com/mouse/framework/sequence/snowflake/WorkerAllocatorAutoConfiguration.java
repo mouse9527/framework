@@ -8,14 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(SnowFlakeProperties.class)
+@EnableConfigurationProperties({SnowFlakeProperties.class, WorkerIdProperties.class})
 @ConditionalOnMissingBean(WorkerIdAllocator.class)
 public class WorkerAllocatorAutoConfiguration {
 
     @Bean
     @SuppressWarnings({"rawtypes", "unchecked", "SpringJavaInjectionPointsAutowiringInspection"})
     @ConditionalOnProperty(value = "sequence.snowflake.worker-id.allocator-type", havingValue = "redis")
-    public WorkerIdAllocator workerIdAllocator(RedisTemplate redisTemplate, SnowFlakeProperties properties) {
-        return new RedisWorkerIdAllocator(redisTemplate, properties.getWorkerId());
+    public WorkerIdAllocator workerIdAllocator(RedisTemplate redisTemplate, SnowFlakeProperties snowFlakeProperties, WorkerIdProperties properties) {
+        return new RedisWorkerIdAllocator(redisTemplate, snowFlakeProperties.getMaxWorkerId(), properties);
     }
 }
