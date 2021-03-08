@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -28,14 +29,17 @@ class WorkerIdAllocatorTest {
 
     @BeforeEach
     void setUp() {
-        //noinspection ConstantConditions
-        redisTemplate.delete(redisTemplate.keys("WorkerId:*"));
+        recycleAll();
+    }
+
+    private void recycleAll() {
+        Optional.ofNullable(redisTemplate.keys("WorkerId:*")).orElse(Collections.emptySet())
+                .forEach(key -> workerIdAllocator.recycle(Long.parseLong(key.split(":")[1])));
     }
 
     @AfterEach
     void tearDown() {
-        //noinspection ConstantConditions
-        redisTemplate.delete(redisTemplate.keys("WorkerId:*"));
+        recycleAll();
     }
 
     @Test

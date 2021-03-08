@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @Disabled
 @SpringBootTest(properties = {"sequence.snowflake.worker-id.allocator-type=fixed", "sequence.snowflake.worker-id.id=1"})
 public class FixedWorkerIdAllocatorTest {
@@ -14,6 +16,8 @@ public class FixedWorkerIdAllocatorTest {
 
     @Test
     void should_be_able_to_Name() {
-//        workerIdAllocator.allocate();
+        assertThat(workerIdAllocator.allocate()).isEqualTo(1);
+        assertThat(workerIdAllocator.allocate()).isEqualTo(1);
+        assertThat(workerIdAllocator.allocate()).isEqualTo(1);
     }
 }

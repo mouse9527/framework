@@ -19,7 +19,7 @@ public class SnowFlakeSequenceAutoConfiguration {
     @Bean
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public SequenceService workerIdAllocator(WorkerIdAllocator workerIdAllocator, SnowFlakeProperties properties) {
-        SequenceService sequenceService = new SnowFlakeSequenceService(workerIdAllocator.allocate(properties.getMaxWorkerId()), properties);
+        SequenceService sequenceService = new SnowFlakeSequenceService(workerIdAllocator.allocate(), properties);
         SequenceSetter.reset(sequenceService);
         return sequenceService;
     }

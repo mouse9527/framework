@@ -3,6 +3,7 @@ package com.mouse.framework.sequence.snowflake;
 import lombok.Generated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public class RedisWorkerIdAllocator implements WorkerIdAllocator {
+public class RedisWorkerIdAllocator implements WorkerIdAllocator, DisposableBean {
     public static final String HEARTBEAT_THREAD_NAME = "Worker-Id-Heartbeat";
     private final RedisTemplate<String, Long> redisTemplate;
     private final WorkerIdProperties properties;
@@ -27,14 +28,6 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
         this.properties = properties;
         this.timer = new Timer(HEARTBEAT_THREAD_NAME, true);
         this.heartbeats = new ConcurrentHashMap<>();
-    }
-
-    @Override
-    public long allocate(long maxWorkerId) {
-        long workerId = allocateUsableWorkerId(maxWorkerId);
-        registerHeartBeat(workerId);
-        logger.info("WorkerId allocate success! workerId: [{}]", workerId);
-        return workerId;
     }
 
     private void registerHeartBeat(long workerId) {
@@ -63,7 +56,10 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
 
     @Override
     public long allocate() {
-        return allocate(maxWorkerId);
+        long workerId = allocateUsableWorkerId(maxWorkerId);
+        registerHeartBeat(workerId);
+        logger.info("WorkerId allocate success! workerId: [{}]", workerId);
+        return workerId;
     }
 
     @Generated
@@ -74,6 +70,11 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator {
                         properties.getMaxEffectiveSeconds(),
                         TimeUnit.SECONDS);
         return success != null && success;
+    }
+
+    @Override
+    public void destroy() {
+        heartbeats.values().forEach(TimerTask::cancel);
     }
 
     private static class WorkerIdHeartbeat extends TimerTask {
