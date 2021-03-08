@@ -73,6 +73,7 @@ public class RedisWorkerIdAllocator implements WorkerIdAllocator, DisposableBean
     }
 
     @Override
+    @Generated
     public void destroy() {
         heartbeats.values().forEach(TimerTask::cancel);
     }

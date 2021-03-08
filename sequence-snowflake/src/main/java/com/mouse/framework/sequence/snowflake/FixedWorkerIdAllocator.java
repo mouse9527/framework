@@ -14,6 +14,6 @@ public class FixedWorkerIdAllocator implements WorkerIdAllocator {
 
     @Override
     public void recycle(long workerId) {
-        // Do nothing
+        throw new UnsupportedOperationException("Can't recycle fixed worker-id");
     }
 }
