@@ -16,16 +16,18 @@ public class SnowFlakeSequenceService implements SequenceService {
     private long sequence;
 
     public SnowFlakeSequenceService(long workerId, SnowFlakeProperties properties) {
-        long maxWorkerId = properties.getMaxWorkerId();
-        if (workerId < 0 || workerId > maxWorkerId) {
-            throw new IllegalWorkerIdException(workerId, maxWorkerId);
-        }
-
+        validate(workerId, properties.getMaxWorkerId());
         this.workerId = workerId;
         this.startTimestamp = properties.getStartTimestamp();
         this.sequenceMask = ~(-1L << properties.getSequenceBits());
         this.workerIdShift = properties.getSequenceBits();
         this.timestampShift = (long) properties.getWorkerIdBits() + properties.getSequenceBits();
+    }
+
+    private void validate(long workerId, long maxWorkerId) {
+        if (workerId < 0 || workerId > maxWorkerId) {
+            throw new IllegalWorkerIdException(workerId, maxWorkerId);
+        }
     }
 
     @Override
