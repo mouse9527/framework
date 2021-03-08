@@ -1,11 +1,8 @@
 package com.mouse.framework.sequence.snowflake;
 
 import lombok.Generated;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.concurrent.TimeUnit;
 
 @Setter
 @Generated
@@ -19,7 +16,6 @@ public class SnowFlakeProperties {
     private Long startTimestamp;
     private Long workerIdBits;
     private Long sequenceBits;
-    private WorkerIdProperties workerId;
 
     public Long getSequenceBits() {
         return getOrDefault(sequenceBits, DEFAULT_SEQUENCE_BITS);
@@ -37,36 +33,7 @@ public class SnowFlakeProperties {
         return getOrDefault(startTimestamp, DEFAULT_START_TIMESTAMP);
     }
 
-    public WorkerIdProperties getWorkerId() {
-        return workerId;
-    }
-
     long getMaxWorkerId() {
         return (1L << getWorkerIdBits()) - 1;
-    }
-
-    @Setter
-    @Getter
-    @Generated
-    static class WorkerIdProperties {
-        private String keyPrefix;
-        private Long heartbeatIntervalSeconds;
-        private Integer maxFailedTimes;
-
-        public void setKeyPrefix(String keyPrefix) {
-            this.keyPrefix = keyPrefix;
-        }
-
-        String createKey(long workerId) {
-            return String.format("%s:%d", getKeyPrefix(), workerId);
-        }
-
-        long getMaxEffectiveSeconds() {
-            return heartbeatIntervalSeconds * maxFailedTimes;
-        }
-
-        long getHeartBeatIntervalMillisecond() {
-            return TimeUnit.SECONDS.toMillis(heartbeatIntervalSeconds);
-        }
     }
 }

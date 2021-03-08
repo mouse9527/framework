@@ -17,7 +17,6 @@ public class WorkerIdProperties {
     private Integer maxFailedTimes;
     private Long id;
 
-    // TODO: move it into WorkerIdUtils
     String createKey(long workerId) {
         return String.format("%s:%d", getKeyPrefix(), workerId);
     }
