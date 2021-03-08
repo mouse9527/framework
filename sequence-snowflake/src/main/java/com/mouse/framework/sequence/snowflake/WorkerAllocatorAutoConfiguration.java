@@ -20,6 +20,7 @@ public class WorkerAllocatorAutoConfiguration {
         return new RedisWorkerIdAllocator(redisTemplate, snowFlakeProperties.getMaxWorkerId(), properties);
     }
 
+    //FIXME: export bean with name workerIdAllocator
     @Bean
     @ConditionalOnMissingBean(WorkerIdAllocator.class)
     @ConditionalOnProperty(name = "sequence.snowflake.worker-id.allocator-type", havingValue = "fixed")

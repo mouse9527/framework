@@ -1,9 +1,8 @@
 package com.mouse.framework.sequence.snowflake;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.annotation.Resource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -11,7 +10,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 @SpringBootTest(properties = {"sequence.snowflake.worker-id.id=1",
         "sequence.snowflake.worker-id.allocator-type=fixed"})
 class FixedWorkerIdAllocatorTest {
-    @Resource
+    @Autowired
     private WorkerIdAllocator workerIdAllocator;
 
     @Test

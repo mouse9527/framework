@@ -15,10 +15,17 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnMissingBean(SequenceService.class)
 @EnableConfigurationProperties(SnowFlakeProperties.class)
 public class SnowFlakeSequenceAutoConfiguration {
+    private final WorkerIdAllocator workerIdAllocator;
+    private final SnowFlakeProperties properties;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    public SnowFlakeSequenceAutoConfiguration(WorkerIdAllocator workerIdAllocator, SnowFlakeProperties properties) {
+        this.workerIdAllocator = workerIdAllocator;
+        this.properties = properties;
+    }
 
     @Bean
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    public SequenceService workerIdAllocator(WorkerIdAllocator workerIdAllocator, SnowFlakeProperties properties) {
+    public SequenceService workerIdAllocator() {
         SequenceService sequenceService = new SnowFlakeSequenceService(workerIdAllocator.allocate(), properties);
         SequenceSetter.set(sequenceService);
         return sequenceService;
