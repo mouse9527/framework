@@ -1,5 +1,6 @@
 package com.mouse.framework.domain.core;
 
+import java.time.Instant;
 import java.util.Collection;
 
 public interface Token {
@@ -8,6 +9,10 @@ public interface Token {
     String getUsername();
 
     String getUserId();
+
+    Instant getIssuedAt();
+
+    Instant getExpirationTime();
 
     Collection<? extends Authority> getAuthorities();
 }
