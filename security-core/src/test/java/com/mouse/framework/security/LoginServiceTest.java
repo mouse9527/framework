@@ -1,6 +1,7 @@
 package com.mouse.framework.security;
 
 import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.domain.core.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,5 +47,4 @@ class LoginServiceTest {
 
         assertThat(throwable).isInstanceOf(AuthenticationException.class);
     }
-
 }

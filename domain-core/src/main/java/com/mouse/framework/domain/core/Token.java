@@ -6,9 +6,7 @@ import java.util.Collection;
 public interface Token {
     String getId();
 
-    String getUsername();
-
-    String getUserId();
+    User getUser();
 
     Instant getIssuedAt();
 
