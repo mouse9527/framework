@@ -1,4 +1,4 @@
-package com.mouse.users.signer;
+package com.mouse.framework.jwt;
 
 import java.util.Collection;
 

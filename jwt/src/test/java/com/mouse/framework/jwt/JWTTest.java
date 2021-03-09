@@ -1,4 +1,4 @@
-package com.mouse.users.signer;
+package com.mouse.framework.jwt;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +49,9 @@ public class JWTTest {
         assertThat(split[0]).isEqualTo(Base64.getEncoder().encodeToString(HEADER_STR.getBytes(StandardCharsets.UTF_8)));
         assertThat(split[1]).isEqualTo(Base64.getEncoder().encodeToString(PAYLOAD_STR.getBytes(StandardCharsets.UTF_8)));
         assertThat(split[2]).isEqualTo(Base64.getEncoder().encodeToString(SIGNATURE.getBytes(StandardCharsets.UTF_8)));
+        assertThat(split[0]).isEqualTo(jwt.getHeader());
+        assertThat(split[1]).isEqualTo(jwt.getPayload());
+        assertThat(split[2]).isEqualTo(jwt.getSignature());
     }
 
     @Test

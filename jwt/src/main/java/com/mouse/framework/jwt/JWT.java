@@ -1,7 +1,10 @@
-package com.mouse.users.signer;
+package com.mouse.framework.jwt;
+
+import lombok.Getter;
 
 import java.util.Base64;
 
+@Getter
 public class JWT {
     private final String header;
     private final String payload;
