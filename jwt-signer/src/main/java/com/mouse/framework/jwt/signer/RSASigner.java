@@ -20,8 +20,10 @@ public class RSASigner implements Signer {
     @Override
     public byte[] sign(String data) {
         try {
-            signer.update(data.getBytes(StandardCharsets.UTF_8));
-            return signer.sign();
+            synchronized (signer) {
+                signer.update(data.getBytes(StandardCharsets.UTF_8));
+                return signer.sign();
+            }
         } catch (SignatureException e) {
             // do nothing
             throw new RuntimeException("Failed sign with RSASigner", e);
