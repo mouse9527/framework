@@ -4,4 +4,6 @@ import com.mouse.framework.domain.core.User;
 
 public interface AuthenticationService {
     User authenticate(LoginCommand command) throws AuthenticationException;
+
+    Boolean isSupport(LoginCommand command);
 }

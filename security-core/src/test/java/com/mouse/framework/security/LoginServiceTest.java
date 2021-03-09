@@ -5,8 +5,11 @@ import com.mouse.framework.domain.core.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -20,9 +23,10 @@ class LoginServiceTest {
     @BeforeEach
     void setUp() {
         authenticationService = mock(AuthenticationService.class);
+        given(authenticationService.isSupport(any())).willReturn(true);
         authorizationService = mock(AuthorizationService.class);
         tokenService = mock(TokenService.class);
-        loginService = new LoginService(authenticationService, authorizationService, tokenService);
+        loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenService);
     }
 
     @Test
@@ -46,5 +50,18 @@ class LoginServiceTest {
         Throwable throwable = catchThrowable(() -> loginService.login(loginCommand));
 
         assertThat(throwable).isInstanceOf(AuthenticationException.class);
+    }
+
+    @Test
+    void should_be_able_to_raise_exception_when_no_support_authentication_service() {
+        AuthenticationService authenticationService = mock(AuthenticationService.class);
+        LoginCommand command = mock(LoginCommand.class);
+        given(authenticationService.isSupport(command)).willReturn(false);
+        LoginService loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenService);
+
+        Throwable throwable = catchThrowable(() -> loginService.login(command));
+
+        assertThat(throwable).isInstanceOf(UnsupportedLoginTypeException.class);
+        assertThat(throwable).hasMessage("error.unsupported-login-type");
     }
 }
