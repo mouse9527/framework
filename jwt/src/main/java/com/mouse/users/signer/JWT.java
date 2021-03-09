@@ -3,13 +3,13 @@ package com.mouse.users.signer;
 import java.util.Base64;
 
 public class JWT {
-    private final String headerStr;
-    private final String payloadStr;
+    private final String header;
+    private final String payload;
     private final String signature;
 
-    public JWT(String headerStr, String payloadStr, String signature) {
-        this.headerStr = headerStr;
-        this.payloadStr = payloadStr;
+    public JWT(String header, String payload, String signature) {
+        this.header = header;
+        this.payload = payload;
         this.signature = signature;
     }
 
@@ -17,9 +17,14 @@ public class JWT {
         return new Builder(mapper);
     }
 
+    public static JWT parse(String text) {
+        String[] split = text.split("\\.");
+        return new JWT(split[0], split[1], split[2]);
+    }
+
     @Override
     public String toString() {
-        return String.format("%s.%s.%s", headerStr, payloadStr, signature);
+        return String.format("%s.%s.%s", header, payload, signature);
     }
 
     public static final class Builder {
