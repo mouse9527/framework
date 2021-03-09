@@ -5,7 +5,7 @@ import java.time.Instant;
 
 public final class Context {
     private static Clock clock = Clock.systemUTC();
-    private static TokenRepository tokenRepository;
+    private static TokenHolder tokenHolder;
 
     private Context() {
     }
@@ -15,7 +15,8 @@ public final class Context {
     }
 
     public static Token current() {
-        return tokenRepository.load();
+        if (tokenHolder == null) throw new ContextException("Context.tokenHolder is null, please init it");
+        return tokenHolder.get();
     }
 
     static void setClock(Clock clock) {
@@ -24,9 +25,9 @@ public final class Context {
         }
     }
 
-    static void set(TokenRepository tokenRepository) {
+    static void set(TokenHolder tokenHolder) {
         synchronized (Context.class) {
-            Context.tokenRepository = tokenRepository;
+            Context.tokenHolder = tokenHolder;
         }
     }
 }

@@ -14,7 +14,7 @@ public final class ContextSetter {
         Context.setClock(Clock.systemUTC());
     }
 
-    public static void set(TokenRepository tokenRepository) {
-        Context.set(tokenRepository);
+    public static void set(TokenHolder tokenHolder) {
+        Context.set(tokenHolder);
     }
 }
