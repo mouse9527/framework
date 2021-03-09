@@ -2,8 +2,8 @@ package com.mouse.framework.domain.core;
 
 import java.time.Clock;
 
-public final class ContextReSetter {
-    private ContextReSetter() {
+public final class ContextSetter {
+    private ContextSetter() {
     }
 
     public static void set(Clock clock) {
@@ -12,5 +12,9 @@ public final class ContextReSetter {
 
     public static void reset() {
         Context.setClock(Clock.systemUTC());
+    }
+
+    public static void set(TokenRepository tokenRepository) {
+        Context.set(tokenRepository);
     }
 }
