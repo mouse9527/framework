@@ -13,8 +13,8 @@ public class JWT {
         this.signature = signature;
     }
 
-    public static JWTBuilder builder(Mapper mapper) {
-        return new JWTBuilder(mapper);
+    public static Builder builder(Mapper mapper) {
+        return new Builder(mapper);
     }
 
     @Override
@@ -22,21 +22,21 @@ public class JWT {
         return String.format("%s.%s.%s", headerStr, payloadStr, signature);
     }
 
-    public static class JWTBuilder {
+    public static final class Builder {
         private final Mapper mapper;
         private Header header;
         private Payload payload;
 
-        public JWTBuilder(Mapper mapper) {
+        private Builder(Mapper mapper) {
             this.mapper = mapper;
         }
 
-        public JWTBuilder header(Header header) {
+        public Builder header(Header header) {
             this.header = header;
             return this;
         }
 
-        public JWTBuilder payload(Payload payload) {
+        public Builder payload(Payload payload) {
             this.payload = payload;
             return this;
         }

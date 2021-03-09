@@ -19,8 +19,8 @@ public class Payload {
         this.cip = cip;
     }
 
-    public static PayloadBuilder builder() {
-        return new PayloadBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public Long getIat() {
@@ -47,7 +47,7 @@ public class Payload {
         return cip;
     }
 
-    public static class PayloadBuilder {
+    public static final class Builder {
         private long iat;
         private long exp;
         private String jti;
@@ -55,32 +55,35 @@ public class Payload {
         private String nam;
         private String cip;
 
-        public PayloadBuilder issuedAt(long iat) {
+        private Builder() {
+        }
+
+        public Builder issuedAt(long iat) {
             this.iat = iat;
             return this;
         }
 
-        public PayloadBuilder expirationTime(long exp) {
+        public Builder expirationTime(long exp) {
             this.exp = exp;
             return this;
         }
 
-        public PayloadBuilder jwtId(String jti) {
+        public Builder jwtId(String jti) {
             this.jti = jti;
             return this;
         }
 
-        public PayloadBuilder authorities(Collection<String> aut) {
+        public Builder authorities(Collection<String> aut) {
             this.aut = aut;
             return this;
         }
 
-        public PayloadBuilder name(String nam) {
+        public Builder name(String nam) {
             this.nam = nam;
             return this;
         }
 
-        public PayloadBuilder ciphertext(String cip) {
+        public Builder ciphertext(String cip) {
             this.cip = cip;
             return this;
         }
