@@ -1,5 +1,6 @@
 dependencies {
     api(project(":jwt-core"))
+    api(project(":security-core"))
     optional("com.fasterxml.jackson.core:jackson-databind:2.12.2")
 
     testImplementation(project(":test"))
