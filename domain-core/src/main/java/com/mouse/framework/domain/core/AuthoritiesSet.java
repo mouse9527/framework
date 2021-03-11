@@ -1,7 +1,6 @@
-package com.mouse.framework.security;
+package com.mouse.framework.domain.core;
 
 import com.google.common.collect.Sets;
-import com.mouse.framework.domain.core.Authority;
 
 import java.util.HashSet;
 import java.util.Optional;

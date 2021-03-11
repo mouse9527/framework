@@ -1,61 +1,26 @@
 package com.mouse.framework.jwt;
 
+import com.mouse.framework.domain.core.AuthoritiesSet;
+import com.mouse.framework.domain.core.Sequence;
+import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.domain.core.User;
 import lombok.Getter;
 
-import java.util.Base64;
+import java.time.Instant;
 
 @Getter
-public class JWT {
-    private final String header;
-    private final String payload;
-    private final String signature;
+public class JWT implements Token {
+    private final String id;
+    private final User user;
+    private final Instant issuedAt;
+    private final Instant expirationTime;
+    private final AuthoritiesSet authorities;
 
-    public JWT(String header, String payload, String signature) {
-        this.header = header;
-        this.payload = payload;
-        this.signature = signature;
-    }
-
-    public static Builder builder(Mapper mapper) {
-        return new Builder(mapper);
-    }
-
-    public static JWT parse(String text) {
-        String[] split = text.split("\\.");
-        return new JWT(split[0], split[1], split[2]);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s.%s.%s", header, payload, signature);
-    }
-
-    public static final class Builder {
-        private final Mapper mapper;
-        private Header header;
-        private Payload payload;
-
-        private Builder(Mapper mapper) {
-            this.mapper = mapper;
-        }
-
-        public Builder header(Header header) {
-            this.header = header;
-            return this;
-        }
-
-        public Builder payload(Payload payload) {
-            this.payload = payload;
-            return this;
-        }
-
-        public JWT sign(Signer signer) {
-            Base64.Encoder encoder = Base64.getEncoder();
-            String headerStr = encoder.encodeToString(mapper.writeToBytes(header));
-            String payloadStr = encoder.encodeToString(mapper.writeToBytes(payload));
-            return new JWT(headerStr,
-                    payloadStr,
-                    encoder.encodeToString(signer.sign(String.format("%s.%s", headerStr, payloadStr))));
-        }
+    public JWT(User user, AuthoritiesSet authorities, Instant iat, Instant exp) {
+        this.id = Sequence.nextStr();
+        this.user = user;
+        this.issuedAt = iat;
+        this.expirationTime = exp;
+        this.authorities = authorities;
     }
 }

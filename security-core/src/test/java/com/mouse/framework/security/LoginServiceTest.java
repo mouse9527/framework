@@ -1,5 +1,6 @@
 package com.mouse.framework.security;
 
+import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,19 +15,18 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 class LoginServiceTest {
-
     private LoginService loginService;
     private AuthenticationService authenticationService;
     private AuthorizationService authorizationService;
-    private TokenService tokenService;
+    private TokenAllocator tokenAllocator;
 
     @BeforeEach
     void setUp() {
         authenticationService = mock(AuthenticationService.class);
         given(authenticationService.isSupport(any())).willReturn(true);
         authorizationService = mock(AuthorizationService.class);
-        tokenService = mock(TokenService.class);
-        loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenService);
+        tokenAllocator = mock(TokenAllocator.class);
+        loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenAllocator);
     }
 
     @Test
@@ -37,7 +37,7 @@ class LoginServiceTest {
         AuthoritiesSet authorities = new AuthoritiesSet(() -> "authority-1");
         given(authorizationService.authorize(user)).willReturn(authorities);
         Token token = mock(Token.class);
-        given(tokenService.allocate(user, authorities)).willReturn(token);
+        given(tokenAllocator.allocate(user, authorities)).willReturn(token);
 
         assertThat(loginService.login(command)).isEqualTo(token);
     }
@@ -57,7 +57,7 @@ class LoginServiceTest {
         AuthenticationService authenticationService = mock(AuthenticationService.class);
         LoginCommand command = mock(LoginCommand.class);
         given(authenticationService.isSupport(command)).willReturn(false);
-        LoginService loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenService);
+        LoginService loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenAllocator);
 
         Throwable throwable = catchThrowable(() -> loginService.login(command));
 

@@ -1,6 +1,5 @@
-package com.mouse.framework.security;
+package com.mouse.framework.domain.core;
 
-import com.mouse.framework.domain.core.Authority;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;

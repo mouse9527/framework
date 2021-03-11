@@ -1,0 +1,6 @@
+dependencies {
+    api(project(":domain-core"))
+    optional("com.fasterxml.jackson.core:jackson-databind:2.12.2")
+
+    testImplementation(project(":test"))
+}

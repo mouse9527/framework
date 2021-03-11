@@ -1,7 +1,6 @@
 package com.mouse.framework.domain.core;
 
 import java.time.Instant;
-import java.util.Collection;
 
 public interface Token {
     String getId();
@@ -12,5 +11,17 @@ public interface Token {
 
     Instant getExpirationTime();
 
-    Collection<? extends Authority> getAuthorities();
+    AuthoritiesSet getAuthorities();
+
+    default Boolean isEffective() {
+        return Context.now().isBefore(getExpirationTime());
+    }
+
+    /**
+     * please use this method output
+     *
+     * @return token string
+     */
+    @Override
+    String toString();
 }
