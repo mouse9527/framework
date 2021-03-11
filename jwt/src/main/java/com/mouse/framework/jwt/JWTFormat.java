@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.security.TokenFormat;
-import com.mouse.framework.security.TokenParser;
 
 import java.util.Base64;
 import java.util.stream.Collectors;
 
-public class JWTFormat implements TokenFormat, TokenParser {
+public class JWTFormat implements TokenFormat {
     private final Encryptor encryptor;
     private final ObjectMapper objectMapper;
     private final Signer signer;
@@ -46,10 +45,5 @@ public class JWTFormat implements TokenFormat, TokenParser {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Token parse(String text) {
-        return null;
     }
 }
