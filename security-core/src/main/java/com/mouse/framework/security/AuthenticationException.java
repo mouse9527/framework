@@ -1,5 +1,8 @@
 package com.mouse.framework.security;
 
+import lombok.Generated;
+
+@Generated
 public abstract class AuthenticationException extends RuntimeException {
     public AuthenticationException() {
     }

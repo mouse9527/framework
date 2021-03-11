@@ -1,5 +1,7 @@
 package com.mouse.framework.jwt.sign;
 
+import lombok.Generated;
+
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
@@ -9,22 +11,35 @@ public class RsaSigner implements Signer {
     private final String type;
 
     public RsaSigner(PrivateKey privateKey) {
+        this.signer = init(privateKey);
+        this.type = String.format("RS%d", ((RSAPrivateKey) privateKey).getModulus().bitLength());
+    }
+
+    @Generated
+    private Signature init(PrivateKey privateKey) {
+        final Signature signer;
         try {
             signer = Signature.getInstance("SHA1WithRSA");
             signer.initSign(privateKey);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new JWTException(e);
         }
-        this.type = String.format("RS%d", ((RSAPrivateKey) privateKey).getModulus().bitLength());
+        return signer;
     }
 
     @Override
     public byte[] sign(String data) {
+        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+        synchronized (signer) {
+            return sign(bytes);
+        }
+    }
+
+    @Generated
+    private byte[] sign(byte[] bytes) {
         try {
-            synchronized (signer) {
-                signer.update(data.getBytes(StandardCharsets.UTF_8));
-                return signer.sign();
-            }
+            signer.update(bytes);
+            return signer.sign();
         } catch (SignatureException e) {
             throw new JWTException(e);
         }

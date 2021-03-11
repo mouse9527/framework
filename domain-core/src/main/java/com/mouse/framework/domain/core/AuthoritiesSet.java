@@ -1,11 +1,13 @@
 package com.mouse.framework.domain.core;
 
 import com.google.common.collect.Sets;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@EqualsAndHashCode
 public class AuthoritiesSet {
     private Set<Authority> authorities;
 

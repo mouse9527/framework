@@ -1,6 +1,7 @@
 package com.mouse.framework.security;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
+import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,7 @@ class LoginServiceTest {
         LoginCommand command = mock(LoginCommand.class);
         User user = mock(User.class);
         given(authenticationService.authenticate(command)).willReturn(user);
-        AuthoritiesSet authorities = new AuthoritiesSet(() -> "authority-1");
+        AuthoritiesSet authorities = new AuthoritiesSet(new Authority("authority-1"));
         given(authorizationService.authorize(user, command)).willReturn(authorities);
         Token token = mock(Token.class);
         given(tokenAllocator.allocate(user, authorities, command)).willReturn(token);

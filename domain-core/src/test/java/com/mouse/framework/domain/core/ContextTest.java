@@ -38,7 +38,7 @@ public class ContextTest {
         Token token = mock(Token.class);
         given(token.getId()).willReturn("mock-id");
         given(token.getUser()).willReturn(mock(User.class));
-        given(token.getAuthorities()).willReturn(new AuthoritiesSet(() -> "mock-authority"));
+        given(token.getAuthorities()).willReturn(new AuthoritiesSet(new Authority("mock-authority")));
         ContextSetter.set(() -> token);
 
         assertThat(Context.current()).isEqualTo(token);

@@ -1,10 +1,7 @@
 package com.mouse.framework.jwt.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouse.framework.domain.core.AuthoritiesSet;
-import com.mouse.framework.domain.core.SequenceSetter;
-import com.mouse.framework.domain.core.Token;
-import com.mouse.framework.domain.core.User;
+import com.mouse.framework.domain.core.*;
 import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.test.TestJsonObject;
@@ -35,7 +32,7 @@ class JWTFormatTest {
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);
-        AuthoritiesSet authorities = new AuthoritiesSet(() -> AUTHORITY_1);
+        AuthoritiesSet authorities = new AuthoritiesSet(new Authority(AUTHORITY_1));
         Instant iat = Instant.now();
         Instant exp = iat.plus(1, DAYS);
         Token jwt = new JWT(user, authorities, iat, exp);

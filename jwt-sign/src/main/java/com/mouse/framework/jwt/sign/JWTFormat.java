@@ -7,6 +7,7 @@ import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.jwt.Header;
 import com.mouse.framework.jwt.Payload;
 import com.mouse.framework.security.TokenFormat;
+import lombok.Generated;
 
 import java.util.Base64;
 import java.util.stream.Collectors;
@@ -41,6 +42,7 @@ public class JWTFormat implements TokenFormat {
         return String.format("%s.%s", part, signature);
     }
 
+    @Generated
     private byte[] writeValueAsBytes(Object value) {
         try {
             return objectMapper.writeValueAsBytes(value);

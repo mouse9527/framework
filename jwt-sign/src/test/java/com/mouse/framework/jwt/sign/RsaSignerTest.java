@@ -57,6 +57,7 @@ public class RsaSignerTest {
 
         countDownLatch.await();
 
-        assertThat(data.keySet()).allMatch(key -> Arrays.equals(data.get(key), signer.sign(key)));
+        assertThat(data.values()).hasSize(count);
+        assertThat(data.entrySet()).allMatch(entry -> Arrays.equals(entry.getValue(), signer.sign(entry.getKey())));
     }
 }
