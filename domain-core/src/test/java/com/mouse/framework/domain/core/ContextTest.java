@@ -9,7 +9,6 @@ import java.time.ZoneOffset;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 public class ContextTest {
@@ -39,7 +38,7 @@ public class ContextTest {
         Token token = mock(Token.class);
         given(token.getId()).willReturn("mock-id");
         given(token.getUser()).willReturn(mock(User.class));
-        doReturn(new AuthoritiesSet(() -> "mock-authority")).when(token).getAuthorities();
+        given(token.getAuthorities()).willReturn(new AuthoritiesSet(() -> "mock-authority"));
         ContextSetter.set(() -> token);
 
         assertThat(Context.current()).isEqualTo(token);
