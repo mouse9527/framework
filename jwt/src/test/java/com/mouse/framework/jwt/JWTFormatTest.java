@@ -3,6 +3,7 @@ package com.mouse.framework.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.SequenceSetter;
+import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.User;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.test.TestJsonObject;
@@ -29,16 +30,19 @@ class JWTFormatTest {
 
     @Test
     void should_be_able_to_parse_jwt_token_to_string() {
-        SequenceSetter.set(() -> 1L);
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);
         AuthoritiesSet authorities = new AuthoritiesSet(() -> AUTHORITY_1);
         Instant iat = Instant.now();
         Instant exp = iat.plus(1, DAYS);
-        JWT jwt = new JWT(user, authorities, iat, exp);
-        Encryptor encryptor = mock(Encryptor.class);
-        given(encryptor.encrypt(MOCK_USER_ID)).willReturn(ENCRYPTED);
+        Token jwt = mock(Token.class);
+        given(jwt.getUser()).willReturn(user);
+        given(jwt.getId()).willReturn("mock-jti");
+        given(jwt.getAuthorities()).willReturn(authorities);
+        given(jwt.getExpirationTime()).willReturn(exp);
+        given(jwt.getIssuedAt()).willReturn(iat);
+        Encryptor encryptor = it -> ENCRYPTED;
         Signer signer = mock(Signer.class);
         given(signer.sign(any())).willReturn(MOCK_SIGNATURE.getBytes(StandardCharsets.UTF_8));
         given(signer.getType()).willReturn(RS_1024);
@@ -53,7 +57,7 @@ class JWTFormatTest {
         assertThat(header.strVal("$.typ")).isEqualTo("JWT");
         assertThat(header.strVal("$.alg")).isEqualTo(RS_1024);
         TestJsonObject payload = new TestJsonObject(new String(Base64.getDecoder().decode(split[1])));
-        assertThat(payload.strVal("$.jti")).isEqualTo("1");
+        assertThat(payload.strVal("$.jti")).isEqualTo("mock-jti");
         assertThat(payload.strVal("$.nam")).isEqualTo(MOCK_USERNAME);
         assertThat(payload.<List<String>>value("$.aut")).containsOnly(AUTHORITY_1);
         assertThat(payload.intVal("$.iat")).isEqualTo(iat.getEpochSecond());

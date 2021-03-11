@@ -1,7 +1,10 @@
 package com.mouse.framework.jwt;
 
+import lombok.Getter;
+
 import java.util.Collection;
 
+@Getter
 public class Payload {
     private final Long iat;
     private final Long exp;
@@ -21,30 +24,6 @@ public class Payload {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public Long getIat() {
-        return iat;
-    }
-
-    public Long getExp() {
-        return exp;
-    }
-
-    public String getJti() {
-        return jti;
-    }
-
-    public Collection<String> getAut() {
-        return aut;
-    }
-
-    public String getNam() {
-        return nam;
-    }
-
-    public String getCip() {
-        return cip;
     }
 
     public static final class Builder {
