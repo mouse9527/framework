@@ -21,8 +21,10 @@ public class RsaSigner implements Signer {
     @Override
     public byte[] sign(String data) {
         try {
-            signer.update(data.getBytes(StandardCharsets.UTF_8));
-            return signer.sign();
+            synchronized (signer) {
+                signer.update(data.getBytes(StandardCharsets.UTF_8));
+                return signer.sign();
+            }
         } catch (SignatureException e) {
             throw new RuntimeException(e);
         }
