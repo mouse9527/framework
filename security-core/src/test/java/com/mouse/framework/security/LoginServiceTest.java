@@ -35,9 +35,9 @@ class LoginServiceTest {
         User user = mock(User.class);
         given(authenticationService.authenticate(command)).willReturn(user);
         AuthoritiesSet authorities = new AuthoritiesSet(() -> "authority-1");
-        given(authorizationService.authorize(user)).willReturn(authorities);
+        given(authorizationService.authorize(user, command)).willReturn(authorities);
         Token token = mock(Token.class);
-        given(tokenAllocator.allocate(user, authorities)).willReturn(token);
+        given(tokenAllocator.allocate(user, authorities, command)).willReturn(token);
 
         assertThat(loginService.login(command)).isEqualTo(token);
     }

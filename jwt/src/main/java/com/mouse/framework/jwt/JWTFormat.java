@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.security.TokenFormat;
+import com.mouse.framework.security.TokenParser;
 
 import java.util.Base64;
 import java.util.stream.Collectors;
 
-public class JWTFormat {
+public class JWTFormat implements TokenFormat, TokenParser {
     private final Encryptor encryptor;
     private final ObjectMapper objectMapper;
     private final Signer signer;
@@ -22,7 +24,7 @@ public class JWTFormat {
     }
 
     public String format(Token token) {
-        Header header = new Header("JWT", "RS1024");
+        Header header = new Header("JWT", signer.getType());
         Payload payload = Payload.builder()
                 .jwtId(token.getId())
                 .issuedAt(token.getIssuedAt().getEpochSecond())
@@ -44,5 +46,10 @@ public class JWTFormat {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Token parse(String text) {
+        return null;
     }
 }

@@ -19,8 +19,8 @@ public class LoginService {
 
     public Token login(LoginCommand command) {
         User user = findAuthenticationService(command).authenticate(command);
-        AuthoritiesSet authorities = authorizationService.authorize(user);
-        return tokenAllocator.allocate(user, authorities);
+        AuthoritiesSet authorities = authorizationService.authorize(user, command);
+        return tokenAllocator.allocate(user, authorities, command);
     }
 
     private AuthenticationService findAuthenticationService(LoginCommand command) {
