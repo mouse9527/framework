@@ -1,9 +1,11 @@
-package com.mouse.framework.jwt;
+package com.mouse.framework.jwt.sign;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.jwt.Header;
+import com.mouse.framework.jwt.Payload;
 import com.mouse.framework.security.TokenFormat;
 
 import java.util.Base64;
@@ -29,9 +31,9 @@ public class JWTFormat implements TokenFormat {
                 .issuedAt(token.getIssuedAt().getEpochSecond())
                 .expirationTime(token.getExpirationTime().getEpochSecond())
                 .name(token.getUser().getUsername())
-                .ciphertext(token.getUser().getId())
+                .ciphertext(encryptor.encrypt(token.getUser().getId()))
                 .authorities(token.getAuthorities().getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList()))
-                .build(encryptor);
+                .build();
         String headerStr = encoder.encodeToString(writeValueAsBytes(header));
         String payloadStr = encoder.encodeToString(writeValueAsBytes(payload));
         String part = String.format("%s.%s", headerStr, payloadStr);

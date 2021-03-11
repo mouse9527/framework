@@ -1,10 +1,11 @@
-package com.mouse.framework.jwt;
+package com.mouse.framework.jwt.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.SequenceSetter;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.User;
+import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.test.TestJsonObject;
 import org.junit.jupiter.api.Test;

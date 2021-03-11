@@ -1,4 +1,4 @@
-package com.mouse.framework.jwt;
+package com.mouse.framework.jwt.sign;
 
 public interface Signer {
     byte[] sign(String data);

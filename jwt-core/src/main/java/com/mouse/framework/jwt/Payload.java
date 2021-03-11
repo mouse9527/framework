@@ -67,8 +67,8 @@ public class Payload {
             return this;
         }
 
-        public Payload build(Encryptor encryptor) {
-            return new Payload(iat, exp, jti, aut, nam, encryptor.encrypt(cip));
+        public Payload build() {
+            return new Payload(iat, exp, jti, aut, nam, cip);
         }
     }
 }
