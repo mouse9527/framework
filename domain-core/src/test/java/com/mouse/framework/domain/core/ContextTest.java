@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -40,7 +39,7 @@ public class ContextTest {
         Token token = mock(Token.class);
         given(token.getId()).willReturn("mock-id");
         given(token.getUser()).willReturn(mock(User.class));
-        doReturn(Collections.singleton((Authority) () -> "mock-authority")).when(token).getAuthorities();
+        doReturn(new AuthoritiesSet(() -> "mock-authority")).when(token).getAuthorities();
         ContextSetter.set(() -> token);
 
         assertThat(Context.current()).isEqualTo(token);

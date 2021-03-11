@@ -16,12 +16,4 @@ public interface Token {
     default Boolean isEffective() {
         return Context.now().isBefore(getExpirationTime());
     }
-
-    /**
-     * please use this method output
-     *
-     * @return token string
-     */
-    @Override
-    String toString();
 }
