@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "security.jwt.sign-key",
+      "description": "jwt signer private key path. eg: classpath:private.pem",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "security.jwt.encrypt-key",
+      "description": "jwt encrypt private key path. eg: classpath:private.pem",
+      "type": "java.lang.String"
+    }
+  ]
+}

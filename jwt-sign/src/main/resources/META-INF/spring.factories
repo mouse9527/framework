@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+   com.mouse.framework.jwt.sign.config.JWTSignAutoConfiguration

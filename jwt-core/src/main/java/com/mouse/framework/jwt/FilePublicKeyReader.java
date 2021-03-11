@@ -7,20 +7,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FilePrivateKeyReader implements PrivateKeyReader {
-    private final PrivateKey privateKey;
+public class FilePublicKeyReader implements PublicKeyReader {
+    private final PublicKey publicKey;
 
     @Generated
-    public FilePrivateKeyReader(InputStream inputStream) {
+    public FilePublicKeyReader(InputStream inputStream) {
         try (BufferedReader reader = getReader(inputStream)) {
-            privateKey = getPrivateKey(reader.lines());
+            publicKey = getPrivateKey(reader.lines());
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -31,18 +31,18 @@ public class FilePrivateKeyReader implements PrivateKeyReader {
         return new BufferedReader(in);
     }
 
-    private PrivateKey getPrivateKey(Stream<String> lines) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String privateKeyString = lines
+    private PublicKey getPrivateKey(Stream<String> lines) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String data = lines
                 .collect(Collectors.joining())
-                .replace("-----BEGIN PRIVATE KEY-----", "")
-                .replace("-----END PRIVATE KEY-----", "")
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
                 .replaceAll("\\s", "");
         KeyFactory factory = KeyFactory.getInstance("RSA");
-        return factory.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyString)));
+        return factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(data)));
     }
 
     @Override
-    public PrivateKey read() {
-        return privateKey;
+    public PublicKey read() {
+        return publicKey;
     }
 }

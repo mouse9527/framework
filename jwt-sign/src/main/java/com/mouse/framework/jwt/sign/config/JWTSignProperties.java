@@ -1,12 +1,14 @@
-package com.mouse.framework.jwt.config;
+package com.mouse.framework.jwt.sign.config;
 
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @Setter
-@ConfigurationProperties("security.jwt.sign")
+@Generated
+@ConfigurationProperties("security.jwt")
 public class JWTSignProperties {
     private String signKey;
 
