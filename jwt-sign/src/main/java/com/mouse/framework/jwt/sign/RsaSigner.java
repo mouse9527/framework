@@ -13,7 +13,7 @@ public class RsaSigner implements Signer {
             signer = Signature.getInstance("SHA1WithRSA");
             signer.initSign(privateKey);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new RuntimeException(e);
+            throw new JWTException(e);
         }
         this.type = String.format("RS%d", ((RSAPrivateKey) privateKey).getModulus().bitLength());
     }
@@ -26,7 +26,7 @@ public class RsaSigner implements Signer {
                 return signer.sign();
             }
         } catch (SignatureException e) {
-            throw new RuntimeException(e);
+            throw new JWTException(e);
         }
     }
 

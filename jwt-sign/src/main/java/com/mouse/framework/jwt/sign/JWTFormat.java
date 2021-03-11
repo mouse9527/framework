@@ -45,7 +45,7 @@ public class JWTFormat implements TokenFormat {
         try {
             return objectMapper.writeValueAsBytes(value);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new JWTException(e);
         }
     }
 }
