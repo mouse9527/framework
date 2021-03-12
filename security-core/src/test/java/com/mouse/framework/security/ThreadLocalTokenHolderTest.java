@@ -2,16 +2,22 @@ package com.mouse.framework.security;
 
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.TokenHolder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 class ThreadLocalTokenHolderTest {
+    private TokenHolder tokenHolder;
+
+    @BeforeEach
+    void setUp() {
+        tokenHolder = new ThreadLocalTokenHolder();
+    }
 
     @Test
     void should_be_able_to_set_token() {
-        TokenHolder tokenHolder = new ThreadLocalTokenHolder();
         Token token = mock(Token.class);
 
         tokenHolder.refresh(token);
@@ -19,5 +25,27 @@ class ThreadLocalTokenHolderTest {
         assertThat(tokenHolder.get()).isEqualTo(token);
 
         tokenHolder.clean();
+    }
+
+    @Test
+    void should_be_able_to_holder_token_in_same_thread() throws InterruptedException {
+        Thread thread = new Thread(() -> {
+            Token token = mock(Token.class);
+            tokenHolder.refresh(token);
+        });
+
+        thread.start();
+
+        thread.join();
+        assertThat(tokenHolder.get()).isNull();
+    }
+
+    @Test
+    void should_be_able_to_clean_holder() {
+        tokenHolder.refresh(mock(Token.class));
+
+        tokenHolder.clean();
+
+        assertThat(tokenHolder.get()).isNull();
     }
 }
