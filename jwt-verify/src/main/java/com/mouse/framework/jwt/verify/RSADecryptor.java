@@ -1,6 +1,7 @@
 package com.mouse.framework.jwt.verify;
 
 import com.mouse.framework.jwt.JWTException;
+import lombok.Generated;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -15,19 +16,32 @@ public class RSADecryptor implements Decryptor {
     private final Cipher cipher;
 
     public RSADecryptor(PublicKey publicKey) {
+        this.cipher = getCipher(publicKey);
+    }
+
+    @Generated
+    private Cipher getCipher(PublicKey publicKey) {
+        final Cipher cipher;
         try {
             cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             throw new JWTException(e);
         }
+        return cipher;
     }
 
     @Override
     public String decrypt(String encrypted) {
-        byte[] bytes = Base64.getDecoder().decode(encrypted);
+        return new String(decrypt(Base64.getDecoder().decode(encrypted)));
+    }
+
+    @Generated
+    private byte[] decrypt(byte[] bytes) {
         try {
-            return new String(cipher.doFinal(bytes));
+            synchronized (cipher) {
+                return cipher.doFinal(bytes);
+            }
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new JWTException(e);
         }
