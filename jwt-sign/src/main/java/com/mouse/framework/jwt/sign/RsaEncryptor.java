@@ -1,5 +1,6 @@
 package com.mouse.framework.jwt.sign;
 
+import com.mouse.framework.jwt.JWTException;
 import lombok.Generated;
 
 import javax.crypto.BadPaddingException;

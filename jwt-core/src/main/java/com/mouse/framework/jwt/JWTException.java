@@ -1,4 +1,4 @@
-package com.mouse.framework.jwt.sign;
+package com.mouse.framework.jwt;
 
 import com.mouse.framework.security.AuthenticationException;
 import lombok.Generated;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.jwt.Header;
+import com.mouse.framework.jwt.JWTException;
 import com.mouse.framework.jwt.Payload;
 import com.mouse.framework.security.TokenFormat;
 import lombok.Generated;

@@ -1,5 +1,5 @@
 dependencies {
-    api(project(":domain-core"))
+    api(project(":security-core"))
 
     testImplementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
 }
