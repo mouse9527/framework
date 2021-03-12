@@ -1,5 +1,8 @@
 dependencies {
     api(project(":jwt-core"))
 
+    optional("com.fasterxml.jackson.core:jackson-databind:2.12.2")
+
+    testImplementation(project(":jwt-sign"))
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }

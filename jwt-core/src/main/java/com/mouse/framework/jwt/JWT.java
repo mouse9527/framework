@@ -23,9 +23,9 @@ public class JWT implements Token {
         this.authorities = authorities;
     }
 
-    public JWT(Payload payload) {
+    public JWT(Payload payload, String userId) {
         this.id = payload.getJti();
-        this.user = new SimpleUser(payload.getCip(), payload.getNam());
+        this.user = new SimpleUser(userId, payload.getNam());
         this.issuedAt = Instant.ofEpochSecond(payload.getIat());
         this.expirationTime = Instant.ofEpochSecond(payload.getExp());
         Set<Authority> collect = payload.getAut()

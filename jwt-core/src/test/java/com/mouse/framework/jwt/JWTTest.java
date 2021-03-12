@@ -40,9 +40,9 @@ class JWTTest {
 
     @Test
     void should_be_able_to_create_from_payload() {
-        Payload payload = new Payload(iat.getEpochSecond(), exp.getEpochSecond(), MOCK_JTI, Collections.singleton(AUTHORITY_1), MOCK_USERNAME, MOCK_USER_ID);
+        Payload payload = new Payload(iat.getEpochSecond(), exp.getEpochSecond(), MOCK_JTI, Collections.singleton(AUTHORITY_1), MOCK_USERNAME, "encrypted-user-id");
 
-        Token jwt = new JWT(payload);
+        Token jwt = new JWT(payload, "mock-user-id");
 
         assertJWT(jwt);
     }

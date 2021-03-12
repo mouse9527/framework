@@ -57,14 +57,15 @@ class RSADecryptorTest {
         int count = 100;
         Map<String, String> data = new ConcurrentHashMap<>(count);
         CountDownLatch countDownLatch = new CountDownLatch(count);
-        List<Thread> threads = IntStream.range(0, count).mapToObj(i -> {
-            String key = String.format("data-%d", i);
-            return Pair.of(key, getEncrypted(key));
-        }).map(pair -> new Thread(() -> {
-            String decrypt = decryptor.decrypt(pair.getValue());
-            data.put(pair.getKey(), decrypt);
-            countDownLatch.countDown();
-        })).collect(Collectors.toList());
+        List<Thread> threads = IntStream.range(0, count)
+                .mapToObj(i -> {
+                    String key = String.format("data-%d", i);
+                    return Pair.of(key, getEncrypted(key));
+                }).map(pair -> new Thread(() -> {
+                    String decrypt = decryptor.decrypt(pair.getValue());
+                    data.put(pair.getKey(), decrypt);
+                    countDownLatch.countDown();
+                })).collect(Collectors.toList());
 
         threads.forEach(Thread::start);
 

@@ -1,17 +1,22 @@
 package com.mouse.framework.jwt;
 
+import lombok.Generated;
 import lombok.Getter;
 
 import java.util.Collection;
 
 @Getter
 public class Payload {
-    private final Long iat;
-    private final Long exp;
-    private final String jti;
-    private final Collection<String> aut;
-    private final String nam;
-    private final String cip;
+    private Long iat;
+    private Long exp;
+    private String jti;
+    private Collection<String> aut;
+    private String nam;
+    private String cip;
+
+    @Generated
+    public Payload() {
+    }
 
     public Payload(Long iat, Long exp, String jti, Collection<String> aut, String nam, String cip) {
         this.iat = iat;
