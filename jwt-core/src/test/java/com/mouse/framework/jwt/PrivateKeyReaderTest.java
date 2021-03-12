@@ -1,10 +1,10 @@
 package com.mouse.framework.jwt;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +12,7 @@ class PrivateKeyReaderTest {
 
     @Test
     void should_be_able_to_read_private_key() throws IOException {
-        InputStream inputStream = Objects.requireNonNull(this.getClass().getClassLoader().getResource("privatekey.pem")).openStream();
+        InputStream inputStream = ResourceUtils.getURL("classpath:privatekey.pem").openStream();
 
         PrivateKeyReader privateKeyReader = new FilePrivateKeyReader(inputStream);
 
