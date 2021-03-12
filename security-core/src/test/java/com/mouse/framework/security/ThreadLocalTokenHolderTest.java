@@ -5,6 +5,8 @@ import com.mouse.framework.domain.core.TokenHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -22,7 +24,7 @@ class ThreadLocalTokenHolderTest {
 
         tokenHolder.refresh(token);
 
-        assertThat(tokenHolder.get()).isEqualTo(token);
+        assertThat(tokenHolder.get()).isEqualTo(Optional.of(token));
 
         tokenHolder.clean();
     }
@@ -37,7 +39,7 @@ class ThreadLocalTokenHolderTest {
         thread.start();
 
         thread.join();
-        assertThat(tokenHolder.get()).isNull();
+        assertThat(tokenHolder.get()).isEmpty();
     }
 
     @Test
@@ -46,6 +48,6 @@ class ThreadLocalTokenHolderTest {
 
         tokenHolder.clean();
 
-        assertThat(tokenHolder.get()).isNull();
+        assertThat(tokenHolder.get()).isEmpty();
     }
 }

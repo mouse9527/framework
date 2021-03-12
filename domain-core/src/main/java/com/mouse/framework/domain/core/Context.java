@@ -2,6 +2,7 @@ package com.mouse.framework.domain.core;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Optional;
 
 public final class Context {
     private static Clock clock = Clock.systemUTC();
@@ -14,7 +15,7 @@ public final class Context {
         return clock.instant();
     }
 
-    public static Token current() {
+    public static Optional<Token> current() {
         if (tokenHolder == null) throw new ContextException("Context.tokenHolder is null, please init it");
         return tokenHolder.get();
     }

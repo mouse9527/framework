@@ -3,6 +3,8 @@ package com.mouse.framework.security;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.TokenHolder;
 
+import java.util.Optional;
+
 public class ThreadLocalTokenHolder implements TokenHolder {
     private final ThreadLocal<Token> holder;
 
@@ -11,8 +13,8 @@ public class ThreadLocalTokenHolder implements TokenHolder {
     }
 
     @Override
-    public Token get() {
-        return holder.get();
+    public Optional<Token> get() {
+        return Optional.ofNullable(holder.get());
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.mouse.framework.domain.core;
 
+import java.util.Optional;
+
 public interface TokenHolder {
-    Token get();
+    Optional<Token> get();
 
     void refresh(Token token);
 
