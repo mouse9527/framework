@@ -21,14 +21,13 @@ public class RSADecryptor implements Decryptor {
 
     @Generated
     private Cipher getCipher(PublicKey publicKey) {
-        final Cipher cipher;
         try {
-            cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            return cipher;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             throw new JWTException(e);
         }
-        return cipher;
     }
 
     @Override

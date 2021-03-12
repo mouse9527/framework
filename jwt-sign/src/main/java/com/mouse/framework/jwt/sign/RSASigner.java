@@ -18,29 +18,27 @@ public class RSASigner implements Signer {
 
     @Generated
     private Signature init(PrivateKey privateKey) {
-        final Signature signer;
         try {
-            signer = Signature.getInstance("SHA1WithRSA");
+            Signature signer = Signature.getInstance("SHA1WithRSA");
             signer.initSign(privateKey);
+            return signer;
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new JWTException(e);
         }
-        return signer;
     }
 
     @Override
     public byte[] sign(String data) {
-        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
-        synchronized (signer) {
-            return sign(bytes);
-        }
+        return syncSign(data.getBytes(StandardCharsets.UTF_8));
     }
 
     @Generated
-    private byte[] sign(byte[] bytes) {
+    private byte[] syncSign(byte[] bytes) {
         try {
-            signer.update(bytes);
-            return signer.sign();
+            synchronized (signer) {
+                signer.update(bytes);
+                return signer.sign();
+            }
         } catch (SignatureException e) {
             throw new JWTException(e);
         }

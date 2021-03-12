@@ -24,32 +24,29 @@ public class RSAEncryptor implements Encryptor {
 
     @Generated
     private Cipher init(PrivateKey privateKey) {
-        final Cipher cipher;
         try {
-            cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            return cipher;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             throw new JWTException(e);
         }
-        return cipher;
     }
 
     @Override
     public String encrypt(String raw) {
-        byte[] src;
-        byte[] bytes = raw.getBytes(StandardCharsets.UTF_8);
-        synchronized (cipher) {
-            src = encrypt(bytes);
-        }
-        return encoder.encodeToString(src);
+        return encoder.encodeToString(syncEncrypt(raw.getBytes(StandardCharsets.UTF_8)));
     }
 
     @Generated
-    private byte[] encrypt(byte[] data) {
+    private byte[] syncEncrypt(byte[] bytes) {
         try {
-            return cipher.doFinal(data);
+            synchronized (cipher) {
+                return cipher.doFinal(bytes);
+            }
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new JWTException(e);
         }
     }
+
 }
