@@ -1,4 +1,4 @@
-package com.mouse.framework.jwt;
+package com.mouse.framework.jwt.sign;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;

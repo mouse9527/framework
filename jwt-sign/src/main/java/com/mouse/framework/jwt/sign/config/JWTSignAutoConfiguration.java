@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.sign.config;
 
-import com.mouse.framework.jwt.FilePrivateKeyReader;
-import com.mouse.framework.jwt.PrivateKeyReader;
+import com.mouse.framework.jwt.sign.FilePrivateKeyReader;
+import com.mouse.framework.jwt.sign.PrivateKeyReader;
 import com.mouse.framework.jwt.sign.Encryptor;
 import com.mouse.framework.jwt.sign.RsaEncryptor;
 import com.mouse.framework.jwt.sign.RsaSigner;

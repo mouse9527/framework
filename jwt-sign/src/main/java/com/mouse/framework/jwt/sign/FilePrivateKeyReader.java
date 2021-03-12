@@ -1,4 +1,4 @@
-package com.mouse.framework.jwt;
+package com.mouse.framework.jwt.sign;
 
 import lombok.Generated;
 
