@@ -21,8 +21,8 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RsaEncryptorTest {
-    private RsaEncryptor encryptor;
+class RSAEncryptorTest {
+    private RSAEncryptor encryptor;
     private Cipher decrypt;
 
     @BeforeEach
@@ -30,7 +30,7 @@ class RsaEncryptorTest {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
-        encryptor = new RsaEncryptor(keyPair.getPrivate());
+        encryptor = new RSAEncryptor(keyPair.getPrivate());
         decrypt = Cipher.getInstance("RSA");
         decrypt.init(Cipher.DECRYPT_MODE, keyPair.getPublic());
     }

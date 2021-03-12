@@ -13,11 +13,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.util.Base64;
 
-public class RsaEncryptor implements Encryptor {
+public class RSAEncryptor implements Encryptor {
     private final Cipher cipher;
     private final Base64.Encoder encoder;
 
-    public RsaEncryptor(PrivateKey privateKey) {
+    public RSAEncryptor(PrivateKey privateKey) {
         this.cipher = init(privateKey);
         this.encoder = Base64.getEncoder();
     }

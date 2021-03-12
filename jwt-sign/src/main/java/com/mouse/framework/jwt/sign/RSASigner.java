@@ -7,11 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 
-public class RsaSigner implements Signer {
+public class RSASigner implements Signer {
     private final Signature signer;
     private final String type;
 
-    public RsaSigner(PrivateKey privateKey) {
+    public RSASigner(PrivateKey privateKey) {
         this.signer = init(privateKey);
         this.type = String.format("RS%d", ((RSAPrivateKey) privateKey).getModulus().bitLength());
     }

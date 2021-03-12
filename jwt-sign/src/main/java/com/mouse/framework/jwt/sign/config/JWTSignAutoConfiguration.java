@@ -24,13 +24,13 @@ public class JWTSignAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(Signer.class)
     public Signer signer(PrivateKeyReader signKeyReader) {
-        return new RsaSigner(signKeyReader.read());
+        return new RSASigner(signKeyReader.read());
     }
 
     @Bean
     @ConditionalOnMissingBean(Encryptor.class)
     public Encryptor encryptor(PrivateKeyReader encryptorKeyReader) {
-        return new RsaEncryptor(encryptorKeyReader.read());
+        return new RSAEncryptor(encryptorKeyReader.read());
     }
 
     @Bean

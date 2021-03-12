@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RsaSignerTest {
+public class RSASignerTest {
     private static final String DATA = "data";
     private Signer signer;
 
@@ -26,7 +26,7 @@ public class RsaSignerTest {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
-        signer = new RsaSigner(keyPair.getPrivate());
+        signer = new RSASigner(keyPair.getPrivate());
     }
 
     @Test
