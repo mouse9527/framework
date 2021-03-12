@@ -1,11 +1,10 @@
 package com.mouse.framework.jwt.sign.config;
 
-import com.mouse.framework.jwt.sign.FilePrivateKeyReader;
-import com.mouse.framework.jwt.sign.PrivateKeyReader;
-import com.mouse.framework.jwt.sign.Encryptor;
-import com.mouse.framework.jwt.sign.RsaEncryptor;
-import com.mouse.framework.jwt.sign.RsaSigner;
-import com.mouse.framework.jwt.sign.Signer;
+import com.mouse.framework.jwt.sign.*;
+import com.mouse.framework.security.AuthenticationService;
+import com.mouse.framework.security.AuthorizationService;
+import com.mouse.framework.security.LoginService;
+import com.mouse.framework.security.TokenAllocator;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,6 +14,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 @Generated
 @Configuration(proxyBeanMethods = false)
@@ -49,5 +49,14 @@ public class JWTSignAutoConfiguration {
         try (InputStream inputStream = ResourceUtils.getURL(path).openStream()) {
             return new FilePrivateKeyReader(inputStream);
         }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(LoginService.class)
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    public LoginService loginService(Set<AuthenticationService> authenticationServices,
+                                     AuthorizationService authorizationService,
+                                     TokenAllocator tokenAllocator) {
+        return new LoginService(authenticationServices, authorizationService, tokenAllocator);
     }
 }
