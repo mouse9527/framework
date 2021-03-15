@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 
 class JWTStringTest {
 
-    private static Stream<String> illegalText() {
+    private static Stream<String> illegalTexts() {
         return Stream.of(null, "", "x", "x.x", "x.x.x.x", "x.x.x", "1.1.1");
     }
 
@@ -36,7 +36,7 @@ class JWTStringTest {
     }
 
     @ParameterizedTest
-    @MethodSource("illegalText")
+    @MethodSource("illegalTexts")
     void should_be_able_to_raise_exception_with_illegal_text(String illegalText) {
         Throwable throwable = catchThrowable(() -> new JWTString(illegalText));
 
