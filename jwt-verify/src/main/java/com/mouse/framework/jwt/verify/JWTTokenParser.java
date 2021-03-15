@@ -10,7 +10,6 @@ import com.mouse.framework.security.TokenParser;
 import java.util.Base64;
 
 public class JWTTokenParser implements TokenParser {
-    private static final int JWT_LENGTH = 3;
     private final Decryptor decryptor;
     private final Verifier verifier;
     private final ObjectMapper objectMapper;
@@ -25,15 +24,17 @@ public class JWTTokenParser implements TokenParser {
 
     @Override
     public Token parse(String text) throws IllegalTokenException {
-        Payload payload = parsePayload(text);
+        JWTString jwt = new JWTString(text);
+        if (!verifier.verify(jwt)) {
+            throw new IllegalTokenException();
+        }
+        Payload payload = parsePayload(jwt.getPayload());
         return new JWT(payload, decryptor.decrypt(payload.getCip()));
     }
 
-    private Payload parsePayload(String text) {
+    private Payload parsePayload(String payload) {
         try {
-            String[] split = text.split("\\.");
-            if (split.length != JWT_LENGTH) throw new IllegalTokenException();
-            return objectMapper.readValue(decoder.decode(split[1]), Payload.class);
+            return objectMapper.readValue(decoder.decode(payload), Payload.class);
         } catch (Exception e) {
             throw new IllegalTokenException(e);
         }

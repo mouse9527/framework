@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class JWTString {
-    private static final int TOKEN_LENGH = 3;
+    private static final int JWT_LENGTH = 3;
     private final String header;
     private final String payload;
     private final String signature;
@@ -18,7 +18,7 @@ public class JWTString {
             throw new IllegalTokenException();
         }
         String[] split = text.split("\\.");
-        if (split.length != TOKEN_LENGH) {
+        if (split.length != JWT_LENGTH) {
             throw new IllegalTokenException();
         }
         this.header = split[0];

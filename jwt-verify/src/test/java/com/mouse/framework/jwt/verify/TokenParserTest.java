@@ -12,14 +12,16 @@ import com.mouse.framework.security.TokenParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -36,7 +38,7 @@ class TokenParserTest {
         generator.initialize(1024);
         keyPair = generator.generateKeyPair();
         verifier = mock(Verifier.class);
-        given(verifier.verify(anyString())).willReturn(true);
+        given(verifier.verify(any(JWTString.class))).willReturn(true);
         tokenParser = new JWTTokenParser(new RSADecryptor(keyPair.getPublic()), verifier, new ObjectMapper());
     }
 
@@ -65,9 +67,10 @@ class TokenParserTest {
 
     @Test
     void should_be_able_to_raise_exception_when_failed_to_verify() {
-        given(verifier.verify("illegal-token")).willReturn(false);
+        String illegalToken = String.format("illegal.xxx.%s", Base64.getEncoder().encodeToString("token".getBytes(StandardCharsets.UTF_8)));
+        given(verifier.verify(any())).willReturn(false);
 
-        Throwable throwable = catchThrowable(() -> tokenParser.parse("illegal-token"));
+        Throwable throwable = catchThrowable(() -> tokenParser.parse(illegalToken));
 
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(IllegalTokenException.class);
