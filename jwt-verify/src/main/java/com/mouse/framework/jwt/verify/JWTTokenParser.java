@@ -28,13 +28,16 @@ public class JWTTokenParser implements TokenParser {
 
     @Override
     public Optional<Token> parse(String text) {
-        JWTString jwt;
         try {
-            jwt = new JWTString(text);
+            JWTString jwt = new JWTString(text);
+            return parse(jwt);
         } catch (Exception e) {
             logger.warn("Illegal token: {}", text, e);
             return Optional.empty();
         }
+    }
+
+    private Optional<Token> parse(JWTString jwt) {
         if (!verifier.verify(jwt)) {
             return Optional.empty();
         }
