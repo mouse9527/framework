@@ -6,41 +6,38 @@ import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.sign.JWTFormat;
 import com.mouse.framework.jwt.sign.RSAEncryptor;
 import com.mouse.framework.jwt.sign.RSASigner;
+import com.mouse.framework.security.IllegalTokenException;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.security.TokenParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 class TokenParserTest {
-
     private static final String MOCK_USER_ID = "mock-user-id";
     private static final String MOCK_USERNAME = "mock-username";
     private TokenParser tokenParser;
     private KeyPair keyPair;
-
-    private static Stream<String> illegalJwt() {
-        return Stream.of(null, "", "x.x", "xx.xx.xx", "x.x.x.x");
-    }
+    private Verifier verifier;
 
     @BeforeEach
     void setUp() throws NoSuchAlgorithmException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
         keyPair = generator.generateKeyPair();
-        tokenParser = new JWTTokenParser(new RSADecryptor(keyPair.getPublic()), new ObjectMapper());
+        verifier = mock(Verifier.class);
+        given(verifier.verify(anyString())).willReturn(true);
+        tokenParser = new JWTTokenParser(new RSADecryptor(keyPair.getPublic()), verifier, new ObjectMapper());
     }
 
     @Test
@@ -66,10 +63,11 @@ class TokenParserTest {
         assertThat(token.getAuthorities()).isEqualTo(authorities);
     }
 
-    @ParameterizedTest
-    @MethodSource("illegalJwt")
-    void should_be_able_to_raise_exception_with_illegal_jwt_text(String illegalJwt) {
-        Throwable throwable = catchThrowable(() -> tokenParser.parse(illegalJwt));
+    @Test
+    void should_be_able_to_raise_exception_when_failed_to_verify() {
+        given(verifier.verify("illegal-token")).willReturn(false);
+
+        Throwable throwable = catchThrowable(() -> tokenParser.parse("illegal-token"));
 
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(IllegalTokenException.class);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.Payload;
+import com.mouse.framework.security.IllegalTokenException;
 import com.mouse.framework.security.TokenParser;
 
 import java.util.Base64;
@@ -11,17 +12,19 @@ import java.util.Base64;
 public class JWTTokenParser implements TokenParser {
     private static final int JWT_LENGTH = 3;
     private final Decryptor decryptor;
+    private final Verifier verifier;
     private final ObjectMapper objectMapper;
     private final Base64.Decoder decoder;
 
-    public JWTTokenParser(Decryptor decryptor, ObjectMapper objectMapper) {
+    public JWTTokenParser(Decryptor decryptor, Verifier verifier, ObjectMapper objectMapper) {
         this.decryptor = decryptor;
+        this.verifier = verifier;
         this.objectMapper = objectMapper;
         this.decoder = Base64.getDecoder();
     }
 
     @Override
-    public Token parse(String text) {
+    public Token parse(String text) throws IllegalTokenException {
         Payload payload = parsePayload(text);
         return new JWT(payload, decryptor.decrypt(payload.getCip()));
     }

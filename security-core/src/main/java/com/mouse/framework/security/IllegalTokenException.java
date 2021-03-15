@@ -1,7 +1,8 @@
-package com.mouse.framework.jwt.verify;
+package com.mouse.framework.security;
 
-import com.mouse.framework.security.AuthenticationException;
+import lombok.Generated;
 
+@Generated
 public class IllegalTokenException extends AuthenticationException {
     public IllegalTokenException(Throwable throwable) {
         super("error.illegal-token", throwable);
