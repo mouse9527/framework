@@ -35,4 +35,14 @@ public class AuthoritiesSetTest {
         assertThat(one).isNotEqualTo(four);
         assertThat(one).isNotEqualTo(five);
     }
+
+    @Test
+    void should_be_able_to_contains_authorities() {
+        AuthoritiesSet authorities = new AuthoritiesSet(new Authority("authority-1"), new Authority("authority-2"));
+
+        assertThat(authorities.contains("authority-1")).isTrue();
+        assertThat(authorities.contains("authority-4")).isFalse();
+        assertThat(authorities.contains("authority-1", "authority-2")).isTrue();
+        assertThat(authorities.contains("authority-1", "authority-4")).isFalse();
+    }
 }

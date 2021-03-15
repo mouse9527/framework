@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @EqualsAndHashCode
 public class AuthoritiesSet {
@@ -30,5 +32,10 @@ public class AuthoritiesSet {
 
     public Set<Authority> getAuthorities() {
         return Optional.ofNullable(authorities).orElseGet(HashSet::new);
+    }
+
+    public Boolean contains(String... authorities) {
+        Set<String> authorityValues = getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toSet());
+        return Stream.of(authorities).allMatch(authorityValues::contains);
     }
 }
