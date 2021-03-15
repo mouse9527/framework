@@ -17,24 +17,24 @@ import static org.mockito.Mockito.mock;
 
 class LoginServiceTest {
     private LoginService loginService;
-    private AuthenticationService authenticationService;
+    private IdentificationService identificationService;
     private AuthorizationService authorizationService;
     private TokenAllocator tokenAllocator;
 
     @BeforeEach
     void setUp() {
-        authenticationService = mock(AuthenticationService.class);
-        given(authenticationService.isSupport(any())).willReturn(true);
+        identificationService = mock(IdentificationService.class);
+        given(identificationService.isSupport(any())).willReturn(true);
         authorizationService = mock(AuthorizationService.class);
         tokenAllocator = mock(TokenAllocator.class);
-        loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenAllocator);
+        loginService = new LoginService(Collections.singleton(identificationService), authorizationService, tokenAllocator);
     }
 
     @Test
     void should_be_able_to_login_with_command() {
         LoginCommand command = mock(LoginCommand.class);
         User user = mock(User.class);
-        given(authenticationService.authenticate(command)).willReturn(user);
+        given(identificationService.identify(command)).willReturn(user);
         AuthoritiesSet authorities = new AuthoritiesSet(new Authority("authority-1"));
         given(authorizationService.authorize(user, command)).willReturn(authorities);
         Token token = mock(Token.class);
@@ -46,7 +46,7 @@ class LoginServiceTest {
     @Test
     void should_be_able_to_raise_exception_when_failed_to_authenticate() {
         LoginCommand loginCommand = mock(LoginCommand.class);
-        given(authenticationService.authenticate(loginCommand)).willThrow(new UsernameNotFoundException());
+        given(identificationService.identify(loginCommand)).willThrow(new UsernameNotFoundException());
 
         Throwable throwable = catchThrowable(() -> loginService.login(loginCommand));
 
@@ -55,10 +55,10 @@ class LoginServiceTest {
 
     @Test
     void should_be_able_to_raise_exception_when_no_support_authentication_service() {
-        AuthenticationService authenticationService = mock(AuthenticationService.class);
+        IdentificationService identificationService = mock(IdentificationService.class);
         LoginCommand command = mock(LoginCommand.class);
-        given(authenticationService.isSupport(command)).willReturn(false);
-        LoginService loginService = new LoginService(Collections.singleton(authenticationService), authorizationService, tokenAllocator);
+        given(identificationService.isSupport(command)).willReturn(false);
+        LoginService loginService = new LoginService(Collections.singleton(identificationService), authorizationService, tokenAllocator);
 
         Throwable throwable = catchThrowable(() -> loginService.login(command));
 

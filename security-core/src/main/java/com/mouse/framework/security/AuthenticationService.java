@@ -1,9 +1,15 @@
 package com.mouse.framework.security;
 
-import com.mouse.framework.domain.core.User;
+import com.mouse.framework.domain.core.TokenHolder;
 
-public interface AuthenticationService {
-    User authenticate(LoginCommand command) throws AuthenticationException;
+public class AuthenticationService {
+    private final TokenHolder tokenHolder;
 
-    Boolean isSupport(LoginCommand command);
+    public AuthenticationService(TokenHolder tokenHolder) {
+        this.tokenHolder = tokenHolder;
+    }
+
+    public void requireLogged() {
+        if (tokenHolder.get().isEmpty()) throw new IllegalTokenException();
+    }
 }
