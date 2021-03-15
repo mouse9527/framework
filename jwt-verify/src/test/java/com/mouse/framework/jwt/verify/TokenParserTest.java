@@ -6,11 +6,12 @@ import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.sign.JWTFormat;
 import com.mouse.framework.jwt.sign.RSAEncryptor;
 import com.mouse.framework.jwt.sign.RSASigner;
-import com.mouse.framework.security.IllegalTokenException;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.security.TokenParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
@@ -18,9 +19,10 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -31,6 +33,11 @@ class TokenParserTest {
     private TokenParser tokenParser;
     private KeyPair keyPair;
     private Verifier verifier;
+
+    private static Stream<String> illegalJWTs() {
+        String illegalToken = String.format("illegal.xxx.%s", Base64.getEncoder().encodeToString("token".getBytes(StandardCharsets.UTF_8)));
+        return Stream.of(null, "", "x", "x.x", "x.x.x.x", "x.x.x", illegalToken);
+    }
 
     @BeforeEach
     void setUp() throws NoSuchAlgorithmException {
@@ -54,9 +61,10 @@ class TokenParserTest {
         given(user.getUsername()).willReturn(MOCK_USERNAME);
         String text = tokenFormat.format(new JWT(user, authorities, iat, exp));
 
-        Token token = tokenParser.parse(text);
+        Optional<Token> optional = tokenParser.parse(text);
 
-        assertThat(token).isNotNull();
+        assertThat(optional).isPresent();
+        Token token = optional.get();
         assertThat(token.getId()).isEqualTo("1");
         assertThat(token.getUser().getId()).isEqualTo(MOCK_USER_ID);
         assertThat(token.getUser().getUsername()).isEqualTo(MOCK_USERNAME);
@@ -65,15 +73,13 @@ class TokenParserTest {
         assertThat(token.getAuthorities()).isEqualTo(authorities);
     }
 
-    @Test
-    void should_be_able_to_raise_exception_when_failed_to_verify() {
-        String illegalToken = String.format("illegal.xxx.%s", Base64.getEncoder().encodeToString("token".getBytes(StandardCharsets.UTF_8)));
+    @ParameterizedTest
+    @MethodSource("illegalJWTs")
+    void should_be_able_to_get_empty_when_failed_to_verify(String illegalToken) {
         given(verifier.verify(any())).willReturn(false);
 
-        Throwable throwable = catchThrowable(() -> tokenParser.parse(illegalToken));
+        Optional<Token> optional = tokenParser.parse(illegalToken);
 
-        assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(IllegalTokenException.class);
-        assertThat(throwable).hasMessage("error.illegal-token");
+        assertThat(optional).isEmpty();
     }
 }

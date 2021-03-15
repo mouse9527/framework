@@ -6,10 +6,14 @@ import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.Payload;
 import com.mouse.framework.security.IllegalTokenException;
 import com.mouse.framework.security.TokenParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
+import java.util.Optional;
 
 public class JWTTokenParser implements TokenParser {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final Decryptor decryptor;
     private final Verifier verifier;
     private final ObjectMapper objectMapper;
@@ -23,19 +27,26 @@ public class JWTTokenParser implements TokenParser {
     }
 
     @Override
-    public Token parse(String text) throws IllegalTokenException {
-        JWTString jwt = new JWTString(text);
+    public Optional<Token> parse(String text) {
+        JWTString jwt;
+        try {
+            jwt = new JWTString(text);
+        } catch (Exception e) {
+            logger.warn("Illegal token: {}", text, e);
+            return Optional.empty();
+        }
         if (!verifier.verify(jwt)) {
-            throw new IllegalTokenException();
+            return Optional.empty();
         }
         Payload payload = parsePayload(jwt.getPayload());
-        return new JWT(payload, decryptor.decrypt(payload.getCip()));
+        return Optional.of(new JWT(payload, decryptor.decrypt(payload.getCip())));
     }
 
     private Payload parsePayload(String payload) {
         try {
             return objectMapper.readValue(decoder.decode(payload), Payload.class);
         } catch (Exception e) {
+            logger.error("Failed to read jwt.payload", e);
             throw new IllegalTokenException(e);
         }
     }
