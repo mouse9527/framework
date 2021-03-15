@@ -50,7 +50,7 @@ class LoginServiceTest {
 
         Throwable throwable = catchThrowable(() -> loginService.login(loginCommand));
 
-        assertThat(throwable).isInstanceOf(AuthenticationException.class);
+        assertThat(throwable).isInstanceOf(SecurityException.class);
     }
 
     @Test

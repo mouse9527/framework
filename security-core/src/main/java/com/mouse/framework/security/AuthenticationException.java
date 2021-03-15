@@ -1,25 +1,7 @@
 package com.mouse.framework.security;
 
-import lombok.Generated;
-
-@Generated
-public abstract class AuthenticationException extends RuntimeException {
-    public AuthenticationException() {
-    }
-
+public class AuthenticationException extends SecurityException {
     public AuthenticationException(String message) {
         super(message);
-    }
-
-    public AuthenticationException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public AuthenticationException(Throwable cause) {
-        super(cause);
-    }
-
-    public AuthenticationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

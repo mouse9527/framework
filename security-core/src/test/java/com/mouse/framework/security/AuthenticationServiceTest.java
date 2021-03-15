@@ -1,5 +1,7 @@
 package com.mouse.framework.security;
 
+import com.mouse.framework.domain.core.AuthoritiesSet;
+import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.TokenHolder;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,4 +44,29 @@ public class AuthenticationServiceTest {
         assertThat(throwable).isInstanceOf(IllegalTokenException.class);
         assertThat(throwable).hasMessage("error.illegal-token");
     }
+
+    @Test
+    void should_be_able_to_authenticate_authorities() {
+        Token token = mock(Token.class);
+        given(token.getAuthorities()).willReturn(new AuthoritiesSet(new Authority("authority-1"), new Authority("authority-2")));
+        given(tokenHolder.get()).willReturn(Optional.of(token));
+
+        Throwable throwable = catchThrowable(() -> authenticationService.requireAuthorities("authority-1", "authority-2"));
+
+        assertThat(throwable).isNull();
+
+        Throwable forbidden = catchThrowable(() -> authenticationService.requireAuthorities("authority-1", "authority-3"));
+        assertThat(forbidden).isNotNull();
+        assertThat(forbidden).isInstanceOf(AuthenticationException.class);
+        assertThat(forbidden).hasMessage("error.failed-to-authentication");
+
+        given(tokenHolder.get()).willReturn(Optional.empty());
+
+        Throwable unLogin = catchThrowable(() -> authenticationService.requireAuthorities("authority-1"));
+
+        assertThat(unLogin).isNotNull();
+        assertThat(unLogin).isInstanceOf(IllegalTokenException.class);
+        assertThat(unLogin).hasMessage("error.illegal-token");
+    }
+
 }

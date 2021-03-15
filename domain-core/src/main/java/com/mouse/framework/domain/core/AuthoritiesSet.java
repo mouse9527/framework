@@ -35,7 +35,9 @@ public class AuthoritiesSet {
     }
 
     public Boolean contains(String... authorities) {
-        Set<String> authorityValues = getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toSet());
+        Set<String> authorityValues = getAuthorities().stream()
+                .map(Authority::getAuthority)
+                .collect(Collectors.toSet());
         return Stream.of(authorities).allMatch(authorityValues::contains);
     }
 }
