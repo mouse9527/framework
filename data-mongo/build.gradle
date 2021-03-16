@@ -1,8 +1,8 @@
 dependencies {
-    api project(":domain-core")
-    api "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
+    api(project(":domain-core"))
+    optional("org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion")
 
-    testImplementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testImplementation(project(":test"))
 }
