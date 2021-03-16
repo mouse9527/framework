@@ -1,11 +1,13 @@
 package com.mouse.framework.jwt.verify.config;
 
+import com.mouse.framework.domain.core.ContextSetter;
 import com.mouse.framework.domain.core.TokenHolder;
 import com.mouse.framework.jwt.verify.ApplicationAspect;
 import com.mouse.framework.jwt.verify.ApplicationAspectExecutor;
 import com.mouse.framework.security.AuthenticationService;
 import com.mouse.framework.security.ThreadLocalTokenHolder;
 import lombok.Generated;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -31,7 +33,10 @@ public class JWTVerifyAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(TokenHolder.class)
     public TokenHolder tokenHolder() {
-        return new ThreadLocalTokenHolder();
+        TokenHolder tokenHolder = new ThreadLocalTokenHolder();
+        ContextSetter.set(tokenHolder);
+        return tokenHolder;
     }
 }

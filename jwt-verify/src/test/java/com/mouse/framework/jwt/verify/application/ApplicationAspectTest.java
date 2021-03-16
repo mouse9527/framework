@@ -15,12 +15,12 @@ import javax.annotation.Resource;
 
 import static org.mockito.BDDMockito.then;
 
-@SpringBootTest(classes = TestApplication.class)
 @Import({ApplicationAspectTest.TestRequireLoggedQueryApplication.class,
         TestApplicationInIllegalPackage.class,
         ApplicationAspectTest.TestApplicationWithoutAnnotation.class,
         ApplicationAspectTest.TestApplicationWithCommandApplication.class,
 })
+@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ApplicationAspectTest {
     @MockBean
     private ApplicationAspectExecutor applicationAspectExecutor;

@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.mouse.framework.jwt.verify.config.JWTVerifyAutoConfiguration
+  com.mouse.framework.jwt.verify.config.JWTVerifyAutoConfiguration,\
+  com.mouse.framework.jwt.verify.config.OnceFilterAutoConfiguration
