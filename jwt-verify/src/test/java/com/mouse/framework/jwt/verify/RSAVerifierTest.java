@@ -14,7 +14,6 @@ import java.util.Base64;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RSAVerifierTest {
-
     private static final String CONTEXT = "xxx.xxxx";
     private Verifier verifier;
     private Signer signer;

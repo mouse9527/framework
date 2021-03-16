@@ -8,6 +8,7 @@ import com.mouse.framework.security.AuthenticationService;
 import com.mouse.framework.security.ThreadLocalTokenHolder;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Generated
 @EnableAspectJAutoProxy
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(name = "security.jwt.enable-authenticate", havingValue = "true")
 public class AuthenticateAutoConfiguration {
 
     @Bean

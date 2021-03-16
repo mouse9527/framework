@@ -11,8 +11,13 @@
       "type": "java.lang.String"
     },
     {
-      "name": "security.jwt.authenticate.enable",
+      "name": "security.jwt.enable-authenticate",
       "description": "enable QueryApplication and CommandApplication authenticate",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "security.jwt.enable-web-token-filter",
+      "description": "enable TokenLoaderFilter AutoConfiguration",
       "type": "java.lang.Boolean"
     }
   ]

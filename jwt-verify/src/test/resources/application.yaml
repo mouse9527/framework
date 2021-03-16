@@ -2,3 +2,5 @@ security:
   jwt:
     verify-key: classpath:publickey.pem
     decrypt-key: classpath:publickey.pem
+    enable-authenticate: true
+    enable-web-token-filter: on
