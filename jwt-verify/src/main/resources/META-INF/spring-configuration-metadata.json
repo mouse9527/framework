@@ -1,6 +1,16 @@
 {
   "properties": [
     {
+      "name": "security.jwt.verify-key",
+      "description": "jwt verify public key path. eg: classpath:public.pem",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "security.jwt.decrypt-key",
+      "description": "jwt decrypt public key path. eg: classpath:public.pem",
+      "type": "java.lang.String"
+    },
+    {
       "name": "security.jwt.authenticate.enable",
       "description": "enable QueryApplication and CommandApplication authenticate",
       "type": "java.lang.Boolean"

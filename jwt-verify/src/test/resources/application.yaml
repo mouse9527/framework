@@ -1,0 +1,4 @@
+security:
+  jwt:
+    verify-key: classpath:publickey.pem
+    decrypt-key: classpath:publickey.pem
