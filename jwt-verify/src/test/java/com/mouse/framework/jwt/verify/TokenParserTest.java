@@ -46,7 +46,7 @@ class TokenParserTest {
         keyPair = generator.generateKeyPair();
         verifier = mock(Verifier.class);
         given(verifier.verify(any(JWTString.class))).willReturn(true);
-        tokenParser = new JWTTokenParser(new RSADecryptor(keyPair.getPublic()), verifier, new ObjectMapper());
+        tokenParser = new JWTTokenParser(new RSADecryptor(keyPair.getPublic(), "RSA"), verifier, new ObjectMapper());
     }
 
     @Test

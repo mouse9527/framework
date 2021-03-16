@@ -13,11 +13,17 @@ import java.util.Optional;
 @ConfigurationProperties("security.jwt")
 public class JWTVerifyProperties {
     private static final String VERIFY_ALGORITHM = "SHA1WithRSA";
+    private static final String DECRYPT_TRANSFORMATION = "RSA";
     private String verifyKey;
     private String verifyAlgorithm;
     private String decryptKey;
+    private String decryptTransformation;
 
     public String getVerifyAlgorithm() {
         return Optional.ofNullable(verifyAlgorithm).orElse(VERIFY_ALGORITHM);
+    }
+
+    public String getDecryptTransformation() {
+        return Optional.ofNullable(decryptTransformation).orElse(DECRYPT_TRANSFORMATION);
     }
 }

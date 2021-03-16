@@ -38,8 +38,8 @@ public class JWTVerifyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(Decryptor.class)
-    public Decryptor decryptor(PublicKeyReader decryptorKeyReader) {
-        return new RSADecryptor(decryptorKeyReader.read());
+    public Decryptor decryptor(PublicKeyReader decryptorKeyReader, JWTVerifyProperties properties) {
+        return new RSADecryptor(decryptorKeyReader.read(), properties.getDecryptTransformation());
     }
 
     @Bean

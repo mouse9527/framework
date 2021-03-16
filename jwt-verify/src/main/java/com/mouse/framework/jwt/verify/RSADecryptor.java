@@ -15,14 +15,14 @@ import java.util.Base64;
 public class RSADecryptor implements Decryptor {
     private final Cipher cipher;
 
-    public RSADecryptor(PublicKey publicKey) {
-        this.cipher = getCipher(publicKey);
+    public RSADecryptor(PublicKey publicKey, String transformation) {
+        this.cipher = init(publicKey, transformation);
     }
 
     @Generated
-    private Cipher getCipher(PublicKey publicKey) {
+    private Cipher init(PublicKey publicKey, String transformation) {
         try {
-            Cipher cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance(transformation);
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
             return cipher;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {

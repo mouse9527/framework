@@ -17,6 +17,12 @@
       "type": "java.lang.String"
     },
     {
+      "name": "security.jwt.decrypt-transformation",
+      "description": "jwt decrypt transformation default: RSA",
+      "type": "java.lang.String",
+      "defaultValue": "RSA"
+    },
+    {
       "name": "security.jwt.enable-authenticate",
       "description": "enable QueryApplication and CommandApplication authenticate",
       "type": "java.lang.Boolean"
