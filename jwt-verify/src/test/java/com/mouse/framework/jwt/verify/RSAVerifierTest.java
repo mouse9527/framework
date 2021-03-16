@@ -9,7 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,9 +35,14 @@ public class RSAVerifierTest {
 
     @Test
     void should_be_able_to_verify_rsa_signature() {
-        String signature = Base64.getEncoder().encodeToString(signer.sign(CONTEXT));
+        JWTString jwt = getJWTString(CONTEXT);
 
-        assertThat(verifier.verify(new JWTString(String.format("%s.%s", CONTEXT, signature)))).isTrue();
+        assertThat(verifier.verify(jwt)).isTrue();
+    }
+
+    private JWTString getJWTString(String context) {
+        String signature = Base64.getEncoder().encodeToString(signer.sign(context));
+        return new JWTString(String.format("%s.%s", context, signature));
     }
 
     @Test
@@ -39,5 +50,21 @@ public class RSAVerifierTest {
         String signature = Base64.getEncoder().encodeToString("illegal-signature".getBytes(StandardCharsets.UTF_8));
 
         assertThat(verifier.verify(new JWTString(String.format("%s.%s", CONTEXT, signature)))).isFalse();
+    }
+
+    @Test
+    void should_be_able_to_verify_in_multithreading() throws InterruptedException {
+        int count = 100;
+        List<Boolean> results = Collections.synchronizedList(new ArrayList<>(count));
+        CountDownLatch countDownLatch = new CountDownLatch(count);
+        List<Thread> threads = IntStream.range(0, count).mapToObj(it -> new Thread(() -> {
+            results.add(verifier.verify(getJWTString(String.format("xx%s.xx%s", it, it))));
+            countDownLatch.countDown();
+        })).collect(Collectors.toList());
+
+        threads.forEach(Thread::start);
+
+        countDownLatch.await();
+        assertThat(results).allMatch(Boolean::booleanValue);
     }
 }

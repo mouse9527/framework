@@ -26,8 +26,10 @@ public class RSAVerifier implements Verifier {
     @Override
     public boolean verify(JWTString jwt) {
         try {
-            verifier.update(jwt.getSignatureContextBytes());
-            return verifier.verify(jwt.getSignatureBytes());
+            synchronized (verifier) {
+                verifier.update(jwt.getSignatureContextBytes());
+                return verifier.verify(jwt.getSignatureBytes());
+            }
         } catch (SignatureException e) {
             return false;
         }
