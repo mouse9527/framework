@@ -6,6 +6,12 @@
       "type": "java.lang.String"
     },
     {
+      "name": "security.jwt.verify-algorithm",
+      "description": "jwt verify algorithm. default: SHA1WithRSA",
+      "type": "java.lang.String",
+      "defaultValue": "SHA1WithRSA"
+    },
+    {
       "name": "security.jwt.decrypt-key",
       "description": "jwt decrypt public key path. eg: classpath:public.pem",
       "type": "java.lang.String"

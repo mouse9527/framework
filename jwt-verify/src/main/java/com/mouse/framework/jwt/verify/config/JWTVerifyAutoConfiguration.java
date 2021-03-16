@@ -26,8 +26,8 @@ public class JWTVerifyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(Verifier.class)
-    public Verifier verifier(PublicKeyReader verifyKeyReader) {
-        return new RSAVerifier(verifyKeyReader.read());
+    public Verifier verifier(PublicKeyReader verifyKeyReader, JWTVerifyProperties properties) {
+        return new RSAVerifier(verifyKeyReader.read(), properties.getVerifyAlgorithm());
     }
 
     @Bean

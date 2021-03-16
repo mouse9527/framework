@@ -8,14 +8,14 @@ import java.security.*;
 public class RSAVerifier implements Verifier {
     private final Signature verifier;
 
-    public RSAVerifier(PublicKey publicKey) {
-        this.verifier = init(publicKey);
+    public RSAVerifier(PublicKey publicKey, String algorithm) {
+        this.verifier = init(publicKey, algorithm);
     }
 
     @Generated
-    private Signature init(PublicKey publicKey) {
+    private Signature init(PublicKey publicKey, String algorithm) {
         try {
-            Signature signature = Signature.getInstance("SHA1WithRSA");
+            Signature signature = Signature.getInstance(algorithm);
             signature.initVerify(publicKey);
             return signature;
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {

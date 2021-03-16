@@ -30,7 +30,7 @@ public class RSAVerifierTest {
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
         signer = new RSASigner(keyPair.getPrivate());
-        verifier = new RSAVerifier(keyPair.getPublic());
+        verifier = new RSAVerifier(keyPair.getPublic(), "SHA1WithRSA");
     }
 
     @Test
