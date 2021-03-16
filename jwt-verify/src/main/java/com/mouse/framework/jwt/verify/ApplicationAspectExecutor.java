@@ -5,7 +5,6 @@ import com.mouse.framework.security.AuthenticationService;
 import java.util.Arrays;
 
 public class ApplicationAspectExecutor {
-
     private final AuthenticationService authenticationService;
 
     public ApplicationAspectExecutor(AuthenticationService authenticationService) {

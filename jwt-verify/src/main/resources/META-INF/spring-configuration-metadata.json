@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "security.jwt.authenticate.enable",
+      "description": "enable QueryApplication and CommandApplication authenticate",
+      "type": "java.lang.Boolean"
+    }
+  ]
+}
