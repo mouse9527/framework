@@ -7,8 +7,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-
 @Aspect
 @Component
 public class ApplicationAspect {
@@ -28,18 +26,11 @@ public class ApplicationAspect {
 
     @Before("inApplication() && anyPublicMethod() && @within(annotation)")
     public void beforeQuery(QueryApplication annotation) {
-        applicationAspectExecutor.execute(annotation.requireLogged(), getAuthorities(annotation.requireAuthorities()));
-    }
-
-    private String[] getAuthorities(String[] authorities) {
-        if (Arrays.equals(authorities, new String[]{""})) {
-            return null;
-        }
-        return authorities;
+        applicationAspectExecutor.execute(annotation.requireLogged(), annotation.requireAuthorities());
     }
 
     @Before("inApplication() && anyPublicMethod() && @within(annotation)")
     public void beforeCommand(CommandApplication annotation) {
-        applicationAspectExecutor.execute(annotation.requireLogged(), getAuthorities(annotation.requireAuthorities()));
+        applicationAspectExecutor.execute(annotation.requireLogged(), annotation.requireAuthorities());
     }
 }

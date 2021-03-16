@@ -41,4 +41,11 @@ class ApplicationAspectExecutorTest {
 
         then(authenticationService).shouldHaveNoInteractions();
     }
+
+    @Test
+    void should_be_able_to_do_nothing_with_empty_authorities() {
+        executor.execute(false, new String[]{""});
+
+        then(authenticationService).shouldHaveNoInteractions();
+    }
 }

@@ -41,7 +41,7 @@ public class ApplicationAspectTest {
     void should_be_able_to_hit_require_logged_query_application() {
         testRequireLoggedQueryApplication.execute();
 
-        then(applicationAspectExecutor).should(new Times(1)).execute(true, null);
+        then(applicationAspectExecutor).should(new Times(1)).execute(true, new String[]{""});
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ApplicationAspectTest {
     void should_be_able_to_hit_with_command_annotation() {
         testApplicationWithCommandApplication.execute();
 
-        then(applicationAspectExecutor).should(new Times(1)).execute(false, null);
+        then(applicationAspectExecutor).should(new Times(1)).execute(false, new String[]{""});
     }
 
     @QueryApplication(requireLogged = true)

@@ -2,6 +2,8 @@ package com.mouse.framework.jwt.verify;
 
 import com.mouse.framework.security.AuthenticationService;
 
+import java.util.Arrays;
+
 public class ApplicationAspectExecutor {
 
     private final AuthenticationService authenticationService;
@@ -13,7 +15,13 @@ public class ApplicationAspectExecutor {
     public void execute(Boolean requiredLogged, String[] requiredAuthorities) {
         if (requiredLogged) authenticationService.requireLogged();
 
-        if (requiredAuthorities != null && requiredAuthorities.length > 0)
+        if (isRequiredAuthorities(requiredAuthorities))
             authenticationService.requireAuthorities(requiredAuthorities);
+    }
+
+    private boolean isRequiredAuthorities(String[] requiredAuthorities) {
+        return requiredAuthorities != null
+                && requiredAuthorities.length > 0
+                && !Arrays.equals(new String[]{""}, requiredAuthorities);
     }
 }
