@@ -1,0 +1,7 @@
+dependencies {
+    api(project(":domain-core"))
+
+    optional("org.springframework:spring-core:5.3.1")
+    optional("org.springframework:spring-context:5.3.1")
+    optional("org.springframework:spring-tx:5.3.1")
+}
