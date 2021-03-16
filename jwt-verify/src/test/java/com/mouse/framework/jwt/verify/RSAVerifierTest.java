@@ -29,7 +29,7 @@ public class RSAVerifierTest {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
-        signer = new RSASigner(keyPair.getPrivate());
+        signer = new RSASigner(keyPair.getPrivate(), "SHA1WithRSA");
         verifier = new RSAVerifier(keyPair.getPublic(), "SHA1WithRSA");
     }
 

@@ -26,7 +26,7 @@ public class RSASignerTest {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
-        signer = new RSASigner(keyPair.getPrivate());
+        signer = new RSASigner(keyPair.getPrivate(), "SHA1WithRSA");
     }
 
     @Test

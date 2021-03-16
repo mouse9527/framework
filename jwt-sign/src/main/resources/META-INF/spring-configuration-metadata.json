@@ -6,6 +6,12 @@
       "type": "java.lang.String"
     },
     {
+      "name": "security.jwt.sign-algorithm",
+      "description": "jwt signer algorithm default: SHA1WithRSA",
+      "type": "java.lang.String",
+      "defaultValue": "SHA1WithRSA"
+    },
+    {
       "name": "security.jwt.encrypt-key",
       "description": "jwt encrypt private key path. eg: classpath:private.pem",
       "type": "java.lang.String"

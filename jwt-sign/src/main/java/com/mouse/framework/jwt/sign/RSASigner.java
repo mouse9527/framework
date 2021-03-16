@@ -11,15 +11,15 @@ public class RSASigner implements Signer {
     private final Signature signer;
     private final String type;
 
-    public RSASigner(PrivateKey privateKey) {
-        this.signer = init(privateKey);
+    public RSASigner(PrivateKey privateKey, String algorithm) {
+        this.signer = init(privateKey, algorithm);
         this.type = String.format("RS%d", ((RSAPrivateKey) privateKey).getModulus().bitLength());
     }
 
     @Generated
-    private Signature init(PrivateKey privateKey) {
+    private Signature init(PrivateKey privateKey, String algorithm) {
         try {
-            Signature signer = Signature.getInstance("SHA1WithRSA");
+            Signature signer = Signature.getInstance(algorithm);
             signer.initSign(privateKey);
             return signer;
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
