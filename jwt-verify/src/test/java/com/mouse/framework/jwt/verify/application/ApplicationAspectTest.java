@@ -2,32 +2,21 @@ package com.mouse.framework.jwt.verify.application;
 
 import com.mouse.framework.application.CommandApplication;
 import com.mouse.framework.application.QueryApplication;
-import com.mouse.framework.jwt.sign.config.JWTSignAutoConfiguration;
-import com.mouse.framework.jwt.verify.ApplicationAspect;
 import com.mouse.framework.jwt.verify.ApplicationAspectExecutor;
 import com.mouse.framework.jwt.verify.TestApplicationInIllegalPackage;
-import com.mouse.framework.jwt.verify.config.JWTVerifyAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.verification.Times;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
 
 import static org.mockito.BDDMockito.then;
 
-@SpringBootTest(classes = ApplicationAspectTest.Application.class)
-@ContextConfiguration
-@EnableAspectJAutoProxy
-@Import({ApplicationAspect.class,
-        ApplicationAspectTest.TestRequireLoggedQueryApplication.class,
+@SpringBootTest(classes = TestApplication.class)
+@Import({ApplicationAspectTest.TestRequireLoggedQueryApplication.class,
         TestApplicationInIllegalPackage.class,
         ApplicationAspectTest.TestApplicationWithoutAnnotation.class,
         ApplicationAspectTest.TestApplicationWithCommandApplication.class,
@@ -91,10 +80,4 @@ public class ApplicationAspectTest {
         }
     }
 
-    @SpringBootApplication(exclude = {JWTSignAutoConfiguration.class, GsonAutoConfiguration.class, JWTVerifyAutoConfiguration.class})
-    public static class Application {
-        public static void main(String[] args) {
-            SpringApplication.run(Application.class, args);
-        }
-    }
 }
