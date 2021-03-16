@@ -55,7 +55,7 @@ class TokenParserTest {
         Instant exp = Instant.parse("2021-03-12T00:00:00Z");
         Instant iat = Instant.parse("2021-03-11T00:00:00Z");
         SequenceSetter.set(() -> 1L);
-        TokenFormat tokenFormat = new JWTFormat(new RSAEncryptor(keyPair.getPrivate()), new RSASigner(keyPair.getPrivate(), "SHA1WithRSA"), new ObjectMapper());
+        TokenFormat tokenFormat = new JWTFormat(new RSAEncryptor(keyPair.getPrivate(), "RSA"), new RSASigner(keyPair.getPrivate(), "SHA1WithRSA"), new ObjectMapper());
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);

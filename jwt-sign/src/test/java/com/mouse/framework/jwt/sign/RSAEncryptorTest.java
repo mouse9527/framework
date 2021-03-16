@@ -30,7 +30,7 @@ class RSAEncryptorTest {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
-        encryptor = new RSAEncryptor(keyPair.getPrivate());
+        encryptor = new RSAEncryptor(keyPair.getPrivate(), "RSA");
         decrypt = Cipher.getInstance("RSA");
         decrypt.init(Cipher.DECRYPT_MODE, keyPair.getPublic());
     }

@@ -17,15 +17,15 @@ public class RSAEncryptor implements Encryptor {
     private final Cipher cipher;
     private final Base64.Encoder encoder;
 
-    public RSAEncryptor(PrivateKey privateKey) {
-        this.cipher = init(privateKey);
+    public RSAEncryptor(PrivateKey privateKey, String transformation) {
+        this.cipher = init(privateKey, transformation);
         this.encoder = Base64.getEncoder();
     }
 
     @Generated
-    private Cipher init(PrivateKey privateKey) {
+    private Cipher init(PrivateKey privateKey, String transformation) {
         try {
-            Cipher cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance(transformation);
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             return cipher;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {

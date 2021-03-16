@@ -29,8 +29,8 @@ public class JWTSignAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(Encryptor.class)
-    public Encryptor encryptor(PrivateKeyReader encryptorKeyReader) {
-        return new RSAEncryptor(encryptorKeyReader.read());
+    public Encryptor encryptor(PrivateKeyReader encryptorKeyReader, JWTSignProperties properties) {
+        return new RSAEncryptor(encryptorKeyReader.read(), properties.getEncryptTransformation());
     }
 
     @Bean

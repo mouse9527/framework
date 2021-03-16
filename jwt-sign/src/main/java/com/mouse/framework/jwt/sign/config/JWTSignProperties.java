@@ -13,12 +13,18 @@ import java.util.Optional;
 @ConfigurationProperties("security.jwt")
 public class JWTSignProperties {
     private static final String SIGN_ALGORITHM = "SHA1WithRSA";
+    private static final String ENCRYPT_TRANSFORMATION = "RSA";
     private String signKey;
     private String signAlgorithm;
 
     private String encryptKey;
+    private String encryptTransformation;
 
     public String getSignAlgorithm() {
         return Optional.ofNullable(signAlgorithm).orElse(SIGN_ALGORITHM);
+    }
+
+    public String getEncryptTransformation() {
+        return Optional.ofNullable(encryptTransformation).orElse(ENCRYPT_TRANSFORMATION);
     }
 }
