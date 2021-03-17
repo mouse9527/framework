@@ -1,7 +1,6 @@
 package com.mouse.framework.security;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
-import com.mouse.framework.domain.core.Token;
 import com.mouse.framework.domain.core.User;
 
 import java.util.Set;

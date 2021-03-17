@@ -1,9 +1,11 @@
-package com.mouse.framework.security;
+package com.mouse.framework.security.authentication;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.Authority;
-import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.security.Token;
 import com.mouse.framework.domain.core.User;
+import com.mouse.framework.security.*;
+import com.mouse.framework.security.SecurityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

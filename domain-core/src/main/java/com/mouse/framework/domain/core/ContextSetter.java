@@ -10,11 +10,11 @@ public final class ContextSetter {
         Context.setClock(clock);
     }
 
-    public static void reset() {
+    public static void resetClock() {
         Context.setClock(Clock.systemUTC());
     }
 
-    public static void set(TokenHolder tokenHolder) {
-        Context.set(tokenHolder);
+    public static void set(ContextHolder contextHolder) {
+        Context.set(contextHolder);
     }
 }

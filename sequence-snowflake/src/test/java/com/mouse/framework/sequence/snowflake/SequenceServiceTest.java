@@ -1,9 +1,6 @@
 package com.mouse.framework.sequence.snowflake;
 
 import com.mouse.framework.domain.core.SequenceService;
-import com.mouse.framework.sequence.snowflake.IllegalWorkerIdException;
-import com.mouse.framework.sequence.snowflake.SnowFlakeProperties;
-import com.mouse.framework.sequence.snowflake.SnowFlakeSequenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,6 +34,14 @@ class SequenceServiceTest {
 
         assertThat(id).isNotNull();
         assertThat(id).isGreaterThan(0);
+    }
+
+    @Test
+    void should_be_able_to_create_next_srt() {
+        String id = sequenceService.nextStr();
+
+        assertThat(id).isNotEmpty();
+        assertThat(Long.valueOf(id)).isGreaterThan(0);
     }
 
     @Test

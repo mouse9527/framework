@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.verify;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.security.Token;
 import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.Payload;
 import com.mouse.framework.security.IllegalTokenException;

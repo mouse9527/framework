@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public final class Context {
     private static Clock clock = Clock.systemUTC();
-    private static TokenHolder tokenHolder;
+    private static ContextHolder contextHolder;
 
     private Context() {
     }
@@ -15,9 +15,9 @@ public final class Context {
         return clock.instant();
     }
 
-    public static Optional<Token> current() {
-        if (tokenHolder == null) throw new ContextException("Context.tokenHolder is null, please init it");
-        return tokenHolder.get();
+    public static Optional<User> current() {
+        if (contextHolder == null) throw new ContextException("Context.contextHolder is null, please init it");
+        return contextHolder.getUser();
     }
 
     static void setClock(Clock clock) {
@@ -26,9 +26,9 @@ public final class Context {
         }
     }
 
-    static void set(TokenHolder tokenHolder) {
+    static void set(ContextHolder contextHolder) {
         synchronized (Context.class) {
-            Context.tokenHolder = tokenHolder;
+            Context.contextHolder = contextHolder;
         }
     }
 }

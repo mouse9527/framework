@@ -1,6 +1,7 @@
 package com.mouse.framework.jwt;
 
 import com.mouse.framework.domain.core.*;
+import com.mouse.framework.security.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.mock;
 
 class JWTTest {
     private static final String AUTHORITY_1 = "authority-1";
-    private static final String MOCK_JTI = "1";
+    private static final String MOCK_JTI = "mock-jti";
     private static final String MOCK_USER_ID = "mock-user-id";
     private static final String MOCK_USERNAME = "mock-username";
     private Instant iat;
@@ -28,7 +29,7 @@ class JWTTest {
 
     @Test
     void should_be_able_to_create() {
-        SequenceSetter.set(() -> 1L);
+        SequenceSetter.set(new FixedSequenceService(MOCK_JTI));
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);

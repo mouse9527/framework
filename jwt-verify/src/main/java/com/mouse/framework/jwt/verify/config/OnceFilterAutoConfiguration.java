@@ -1,6 +1,6 @@
 package com.mouse.framework.jwt.verify.config;
 
-import com.mouse.framework.domain.core.TokenHolder;
+import com.mouse.framework.security.TokenHolder;
 import com.mouse.framework.jwt.verify.filter.TokenLoaderFilter;
 import com.mouse.framework.security.TokenParser;
 import lombok.Generated;

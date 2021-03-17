@@ -1,7 +1,5 @@
 package com.mouse.framework.security;
 
-import com.mouse.framework.domain.core.Token;
-import com.mouse.framework.domain.core.TokenHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

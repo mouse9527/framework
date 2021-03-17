@@ -3,6 +3,7 @@ package com.mouse.framework.jwt.sign;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.*;
 import com.mouse.framework.jwt.JWT;
+import com.mouse.framework.security.Token;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.test.TestJsonObject;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class JWTFormatTest {
 
     @Test
     void should_be_able_to_parse_jwt_token_to_string() {
-        SequenceSetter.set(() -> 1L);
+        SequenceSetter.set(new FixedSequenceService("mock-jti"));
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);
@@ -51,7 +52,7 @@ class JWTFormatTest {
         assertThat(header.strVal("$.typ")).isEqualTo("JWT");
         assertThat(header.strVal("$.alg")).isEqualTo(RS_1024);
         TestJsonObject payload = new TestJsonObject(new String(Base64.getDecoder().decode(split[1])));
-        assertThat(payload.strVal("$.jti")).isEqualTo("1");
+        assertThat(payload.strVal("$.jti")).isEqualTo("mock-jti");
         assertThat(payload.strVal("$.nam")).isEqualTo(MOCK_USERNAME);
         assertThat(payload.<List<String>>value("$.aut")).containsOnly(AUTHORITY_1);
         assertThat(payload.intVal("$.iat")).isEqualTo(iat.getEpochSecond());

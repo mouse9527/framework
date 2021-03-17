@@ -1,4 +1,4 @@
-package com.mouse.framework.domain.core;
+package com.mouse.framework.security;
 
 import java.util.Optional;
 

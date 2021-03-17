@@ -6,6 +6,7 @@ import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.sign.JWTFormat;
 import com.mouse.framework.jwt.sign.RSAEncryptor;
 import com.mouse.framework.jwt.sign.RSASigner;
+import com.mouse.framework.security.Token;
 import com.mouse.framework.security.TokenFormat;
 import com.mouse.framework.security.TokenParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +55,7 @@ class TokenParserTest {
         AuthoritiesSet authorities = new AuthoritiesSet(new Authority("authority-1"));
         Instant exp = Instant.parse("2021-03-12T00:00:00Z");
         Instant iat = Instant.parse("2021-03-11T00:00:00Z");
-        SequenceSetter.set(() -> 1L);
+        SequenceSetter.set(new FixedSequenceService("mock-id"));
         TokenFormat tokenFormat = new JWTFormat(new RSAEncryptor(keyPair.getPrivate(), "RSA"), new RSASigner(keyPair.getPrivate(), "SHA1WithRSA"), new ObjectMapper());
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
@@ -65,7 +66,7 @@ class TokenParserTest {
 
         assertThat(optional).isPresent();
         Token token = optional.get();
-        assertThat(token.getId()).isEqualTo("1");
+        assertThat(token.getId()).isEqualTo("mock-id");
         assertThat(token.getUser().getId()).isEqualTo(MOCK_USER_ID);
         assertThat(token.getUser().getUsername()).isEqualTo(MOCK_USERNAME);
         assertThat(token.getExpirationTime()).isEqualTo(exp);

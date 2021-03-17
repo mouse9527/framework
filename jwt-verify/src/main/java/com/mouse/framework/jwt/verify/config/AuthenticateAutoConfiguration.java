@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.verify.config;
 
 import com.mouse.framework.domain.core.ContextSetter;
-import com.mouse.framework.domain.core.TokenHolder;
+import com.mouse.framework.security.TokenHolder;
 import com.mouse.framework.jwt.verify.ApplicationAspect;
 import com.mouse.framework.jwt.verify.ApplicationAspectExecutor;
 import com.mouse.framework.security.AuthenticationService;
@@ -37,7 +37,7 @@ public class AuthenticateAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(TokenHolder.class)
     public TokenHolder tokenHolder() {
-        TokenHolder tokenHolder = new ThreadLocalTokenHolder();
+        ThreadLocalTokenHolder tokenHolder = new ThreadLocalTokenHolder();
         ContextSetter.set(tokenHolder);
         return tokenHolder;
     }

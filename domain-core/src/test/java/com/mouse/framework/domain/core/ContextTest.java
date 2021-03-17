@@ -31,22 +31,19 @@ public class ContextTest {
         assertThat(Context.now()).isEqualTo(fixedInstant);
         assertThat(Context.now()).isEqualTo(Context.now());
 
-        ContextSetter.reset();
+        ContextSetter.resetClock();
     }
 
     @Test
     void should_be_able_to_get_token() {
-        Token token = mock(Token.class);
-        given(token.getId()).willReturn("mock-id");
-        given(token.getUser()).willReturn(mock(User.class));
-        given(token.getAuthorities()).willReturn(new AuthoritiesSet(new Authority("mock-authority")));
-        TokenHolder tokenHolder = mock(TokenHolder.class);
-        given(tokenHolder.get()).willReturn(Optional.of(token));
-        ContextSetter.set(tokenHolder);
+        User user = mock(User.class);
+        ContextHolder contextHolder = mock(ContextHolder.class);
+        given(contextHolder.getUser()).willReturn(Optional.of(user));
+        ContextSetter.set(contextHolder);
 
-        assertThat(Context.current()).isEqualTo(Optional.of(token));
+        assertThat(Context.current()).isEqualTo(Optional.of(user));
 
-        ContextSetter.set((TokenHolder) null);
+        ContextSetter.set((ContextHolder) null);
     }
 
     @Test
@@ -55,6 +52,6 @@ public class ContextTest {
 
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(ContextException.class);
-        assertThat(throwable).hasMessage("Context.tokenHolder is null, please init it");
+        assertThat(throwable).hasMessage("Context.contextHolder is null, please init it");
     }
 }

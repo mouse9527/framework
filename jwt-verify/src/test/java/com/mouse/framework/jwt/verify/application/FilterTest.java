@@ -3,8 +3,7 @@ package com.mouse.framework.jwt.verify.application;
 import com.mouse.framework.application.QueryApplication;
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.Authority;
-import com.mouse.framework.domain.core.Context;
-import com.mouse.framework.domain.core.Token;
+import com.mouse.framework.security.Token;
 import com.mouse.framework.security.TokenParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,13 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -48,8 +44,7 @@ public class FilterTest {
 
         ResultActions actions = mockMvc.perform(requestBuilder);
 
-        actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value("authority-1"));
+        actions.andExpect(status().isOk());
     }
 
     @RestController
@@ -58,21 +53,14 @@ public class FilterTest {
         private TestQueryApplication testQueryApplication;
 
         @GetMapping("/get")
-        public Object get() {
-            return testQueryApplication.execute();
+        public void get() {
+            testQueryApplication.execute();
         }
     }
 
     @QueryApplication("authority-1")
     public static class TestQueryApplication {
-        public Set<String> execute() {
-            return Context.current()
-                    .get()
-                    .getAuthorities()
-                    .getAuthorities()
-                    .stream()
-                    .map(Authority::getAuthority)
-                    .collect(Collectors.toSet());
+        public void execute() {
         }
     }
 }

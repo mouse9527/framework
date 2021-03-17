@@ -1,11 +1,11 @@
 package com.mouse.framework.security;
 
-import com.mouse.framework.domain.core.Token;
-import com.mouse.framework.domain.core.TokenHolder;
+import com.mouse.framework.domain.core.ContextHolder;
+import com.mouse.framework.domain.core.User;
 
 import java.util.Optional;
 
-public class ThreadLocalTokenHolder implements TokenHolder {
+public class ThreadLocalTokenHolder implements TokenHolder, ContextHolder {
     private final ThreadLocal<Token> holder;
 
     public ThreadLocalTokenHolder() {
@@ -25,5 +25,10 @@ public class ThreadLocalTokenHolder implements TokenHolder {
     @Override
     public void clean() {
         this.holder.remove();
+    }
+
+    @Override
+    public Optional<User> getUser() {
+        return get().map(Token::getUser);
     }
 }

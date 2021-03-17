@@ -7,17 +7,21 @@ public final class Sequence {
     }
 
     public static Long next() {
+        return getService().next();
+    }
+
+    public static String nextStr() {
+        return getService().nextStr();
+    }
+
+    private static SequenceService getService() {
         if (sequenceService == null) throw new SequenceNotInitException();
-        return sequenceService.next();
+        return Sequence.sequenceService;
     }
 
     static void set(SequenceService sequenceService) {
         synchronized (Sequence.class) {
             Sequence.sequenceService = sequenceService;
         }
-    }
-
-    public static String nextStr() {
-        return String.valueOf(next());
     }
 }

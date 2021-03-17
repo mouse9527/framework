@@ -1,6 +1,7 @@
 package com.mouse.framework.jwt;
 
 import com.mouse.framework.domain.core.*;
+import com.mouse.framework.security.Token;
 import lombok.Getter;
 
 import java.time.Instant;

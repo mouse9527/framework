@@ -1,4 +1,8 @@
-package com.mouse.framework.domain.core;
+package com.mouse.framework.security;
+
+import com.mouse.framework.domain.core.AuthoritiesSet;
+import com.mouse.framework.domain.core.Context;
+import com.mouse.framework.domain.core.User;
 
 import java.time.Instant;
 

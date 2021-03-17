@@ -54,6 +54,11 @@ public class SnowFlakeSequenceService implements SequenceService {
                 | sequence;
     }
 
+    @Override
+    public String nextStr() {
+        return String.valueOf(next());
+    }
+
     private long nextMillis(long lastTimestamp) {
         long timestamp = now();
         while (timestamp <= lastTimestamp) {
