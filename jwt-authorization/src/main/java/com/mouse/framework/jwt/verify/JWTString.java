@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.verify;
 
 import com.google.common.base.Strings;
-import com.mouse.framework.security.authorization.IllegalTokenException;
+import com.mouse.framework.jwt.JWTException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -15,11 +15,11 @@ public class JWTString {
 
     public JWTString(String text) {
         if (Strings.isNullOrEmpty(text)) {
-            throw new IllegalTokenException();
+            throw new JWTException("error.illegal-token");
         }
         String[] split = text.split("\\.");
         if (split.length != JWT_LENGTH) {
-            throw new IllegalTokenException();
+            throw new JWTException("error.illegal-token");
         }
         this.header = split[0];
         this.payload = split[1];
@@ -27,7 +27,7 @@ public class JWTString {
         try {
             this.signatureBytes = Base64.getDecoder().decode(this.signature);
         } catch (Exception e) {
-            throw new IllegalTokenException(e);
+            throw new JWTException("error.illegal-token", e);
         }
     }
 

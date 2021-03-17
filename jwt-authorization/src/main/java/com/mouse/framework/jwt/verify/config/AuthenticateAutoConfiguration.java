@@ -1,11 +1,12 @@
 package com.mouse.framework.jwt.verify.config;
 
+import com.mouse.framework.domain.core.ContextHolder;
 import com.mouse.framework.domain.core.ContextSetter;
-import com.mouse.framework.security.authorization.TokenHolder;
 import com.mouse.framework.jwt.verify.ApplicationAspect;
 import com.mouse.framework.jwt.verify.ApplicationAspectExecutor;
 import com.mouse.framework.security.authorization.AuthorizationService;
 import com.mouse.framework.security.authorization.ThreadLocalTokenHolder;
+import com.mouse.framework.security.authorization.TokenHolder;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,8 +36,8 @@ public class AuthenticateAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(TokenHolder.class)
-    public TokenHolder tokenHolder() {
+    @ConditionalOnMissingBean({TokenHolder.class, ContextHolder.class})
+    public ThreadLocalTokenHolder threadLocalTokenHolder() {
         ThreadLocalTokenHolder tokenHolder = new ThreadLocalTokenHolder();
         ContextSetter.set(tokenHolder);
         return tokenHolder;

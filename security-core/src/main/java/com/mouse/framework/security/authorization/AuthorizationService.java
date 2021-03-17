@@ -11,7 +11,7 @@ public class AuthorizationService {
 
     public void requireLogged() {
         if (tokenHolder.get().isEmpty())
-            throw new IllegalTokenException();
+            throw new UnLoggedException("error.un-logged");
     }
 
     public void requireAuthorities(String... authorities) {

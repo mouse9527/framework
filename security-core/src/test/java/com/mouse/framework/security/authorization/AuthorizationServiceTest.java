@@ -2,7 +2,7 @@ package com.mouse.framework.security.authorization;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.Authority;
-import com.mouse.framework.security.*;
+import com.mouse.framework.security.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,8 +39,8 @@ public class AuthorizationServiceTest {
         Throwable throwable = catchThrowable(authorizationService::requireLogged);
 
         assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(IllegalTokenException.class);
-        assertThat(throwable).hasMessage("error.illegal-token");
+        assertThat(throwable).isInstanceOf(UnLoggedException.class);
+        assertThat(throwable).hasMessage("error.un-logged");
     }
 
     @Test
@@ -63,8 +63,8 @@ public class AuthorizationServiceTest {
         Throwable unLogin = catchThrowable(() -> authorizationService.requireAuthorities("authority-1"));
 
         assertThat(unLogin).isNotNull();
-        assertThat(unLogin).isInstanceOf(IllegalTokenException.class);
-        assertThat(unLogin).hasMessage("error.illegal-token");
+        assertThat(unLogin).isInstanceOf(UnLoggedException.class);
+        assertThat(unLogin).hasMessage("error.un-logged");
     }
 
 }

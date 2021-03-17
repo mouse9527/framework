@@ -1,6 +1,6 @@
 package com.mouse.framework.jwt.verify;
 
-import com.mouse.framework.security.authorization.IllegalTokenException;
+import com.mouse.framework.jwt.JWTException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,7 +41,7 @@ class JWTStringTest {
         Throwable throwable = catchThrowable(() -> new JWTString(illegalText));
 
         assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(IllegalTokenException.class);
+        assertThat(throwable).isInstanceOf(JWTException.class);
         assertThat(throwable).hasMessage("error.illegal-token");
     }
 }

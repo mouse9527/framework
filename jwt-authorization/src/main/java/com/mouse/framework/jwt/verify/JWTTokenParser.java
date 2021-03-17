@@ -1,10 +1,10 @@
 package com.mouse.framework.jwt.verify;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouse.framework.security.Token;
 import com.mouse.framework.jwt.JWT;
+import com.mouse.framework.jwt.JWTException;
 import com.mouse.framework.jwt.Payload;
-import com.mouse.framework.security.authorization.IllegalTokenException;
+import com.mouse.framework.security.Token;
 import com.mouse.framework.security.authorization.TokenParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +50,7 @@ public class JWTTokenParser implements TokenParser {
             return objectMapper.readValue(decoder.decode(payload), Payload.class);
         } catch (Exception e) {
             logger.error("Failed to read jwt.payload", e);
-            throw new IllegalTokenException(e);
+            throw new JWTException(e);
         }
     }
 }
