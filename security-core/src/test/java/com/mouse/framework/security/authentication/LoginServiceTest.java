@@ -47,7 +47,7 @@ class LoginServiceTest {
     @Test
     void should_be_able_to_raise_exception_when_failed_to_authenticate() {
         LoginCommand loginCommand = mock(LoginCommand.class);
-        given(identificationService.identify(loginCommand)).willThrow(new UsernameNotFoundException());
+        given(identificationService.identify(loginCommand)).willThrow(new UserNotFoundException());
 
         Throwable throwable = catchThrowable(() -> loginService.login(loginCommand));
 
