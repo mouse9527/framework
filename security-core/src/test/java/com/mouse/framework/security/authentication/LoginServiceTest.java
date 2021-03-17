@@ -19,14 +19,14 @@ import static org.mockito.Mockito.mock;
 class LoginServiceTest {
     private LoginService loginService;
     private IdentificationService identificationService;
-    private AuthorizationService authorizationService;
+    private AuthenticationProvider authorizationService;
     private TokenAllocator tokenAllocator;
 
     @BeforeEach
     void setUp() {
         identificationService = mock(IdentificationService.class);
         given(identificationService.isSupport(any())).willReturn(true);
-        authorizationService = mock(AuthorizationService.class);
+        authorizationService = mock(AuthenticationProvider.class);
         tokenAllocator = mock(TokenAllocator.class);
         loginService = new LoginService(Collections.singleton(identificationService), authorizationService, tokenAllocator);
     }
@@ -37,7 +37,7 @@ class LoginServiceTest {
         User user = mock(User.class);
         given(identificationService.identify(command)).willReturn(user);
         AuthoritiesSet authorities = new AuthoritiesSet(new Authority("authority-1"));
-        given(authorizationService.authorize(user, command)).willReturn(authorities);
+        given(authorizationService.authenticate(user, command)).willReturn(authorities);
         Token token = mock(Token.class);
         given(tokenAllocator.allocate(user, authorities, command)).willReturn(token);
 

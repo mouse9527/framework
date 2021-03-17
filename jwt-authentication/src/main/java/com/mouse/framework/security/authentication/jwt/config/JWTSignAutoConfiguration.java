@@ -1,6 +1,6 @@
 package com.mouse.framework.security.authentication.jwt.config;
 
-import com.mouse.framework.security.authentication.AuthorizationService;
+import com.mouse.framework.security.authentication.AuthenticationProvider;
 import com.mouse.framework.security.authentication.IdentificationService;
 import com.mouse.framework.security.authentication.LoginService;
 import com.mouse.framework.security.authentication.TokenAllocator;
@@ -55,7 +55,7 @@ public class JWTSignAutoConfiguration {
     @ConditionalOnMissingBean(LoginService.class)
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public LoginService loginService(Set<IdentificationService> identificationServices,
-                                     AuthorizationService authorizationService,
+                                     AuthenticationProvider authorizationService,
                                      TokenAllocator tokenAllocator) {
         return new LoginService(identificationServices, authorizationService, tokenAllocator);
     }

@@ -8,18 +8,20 @@ import java.util.Set;
 
 public class LoginService {
     private final Set<IdentificationService> identificationServices;
-    private final AuthorizationService authorizationService;
+    private final AuthenticationProvider authenticationProvider;
     private final TokenAllocator tokenAllocator;
 
-    public LoginService(Set<IdentificationService> identificationServices, AuthorizationService authorizationService, TokenAllocator tokenAllocator) {
+    public LoginService(Set<IdentificationService> identificationServices,
+                        AuthenticationProvider authenticationProvider,
+                        TokenAllocator tokenAllocator) {
         this.identificationServices = identificationServices;
-        this.authorizationService = authorizationService;
+        this.authenticationProvider = authenticationProvider;
         this.tokenAllocator = tokenAllocator;
     }
 
     public Token login(LoginCommand command) {
         User user = findAuthenticationService(command).identify(command);
-        AuthoritiesSet authorities = authorizationService.authorize(user, command);
+        AuthoritiesSet authorities = authenticationProvider.authenticate(user, command);
         return tokenAllocator.allocate(user, authorities, command);
     }
 

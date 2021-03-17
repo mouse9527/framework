@@ -7,5 +7,5 @@ import com.mouse.framework.security.Token;
 public interface TokenAllocator {
     Token allocate(User user, AuthoritiesSet authoritiesSet, LoginCommand command);
 
-    Token allocateRefreshToken(Token token);
+    Token allocateRefreshToken(Token token, LoginCommand command);
 }
