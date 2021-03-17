@@ -9,4 +9,4 @@
 
 rootProject.name = "framework"
 
-include "domain-core", "application-core", "test", "data-mongo", "sequence-snowflake", "security-core", "jwt-core", "jwt-sign", "jwt-verify"
+include "domain-core", "application-core", "test", "data-mongo", "sequence-snowflake", "security-core", "jwt-core", "jwt-authentication", "jwt-authorization"
