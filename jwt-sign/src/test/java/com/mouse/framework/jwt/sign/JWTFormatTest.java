@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.*;
 import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.security.Token;
-import com.mouse.framework.security.TokenFormat;
+import com.mouse.framework.security.authentication.TokenFormat;
 import com.mouse.framework.test.TestJsonObject;
 import org.junit.jupiter.api.Test;
 

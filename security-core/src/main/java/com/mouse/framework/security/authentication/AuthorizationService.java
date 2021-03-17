@@ -1,4 +1,4 @@
-package com.mouse.framework.security;
+package com.mouse.framework.security.authentication;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.User;

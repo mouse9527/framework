@@ -1,5 +1,6 @@
-package com.mouse.framework.security;
+package com.mouse.framework.security.authorization;
 
+import com.mouse.framework.security.SecurityException;
 import lombok.Generated;
 
 @Generated

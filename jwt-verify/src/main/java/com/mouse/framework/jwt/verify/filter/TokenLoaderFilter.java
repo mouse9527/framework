@@ -2,8 +2,8 @@ package com.mouse.framework.jwt.verify.filter;
 
 import com.google.common.net.HttpHeaders;
 import com.mouse.framework.security.Token;
-import com.mouse.framework.security.TokenHolder;
-import com.mouse.framework.security.TokenParser;
+import com.mouse.framework.security.authorization.TokenHolder;
+import com.mouse.framework.security.authorization.TokenParser;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

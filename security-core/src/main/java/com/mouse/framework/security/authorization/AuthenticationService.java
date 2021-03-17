@@ -1,4 +1,6 @@
-package com.mouse.framework.security;
+package com.mouse.framework.security.authorization;
+
+import com.mouse.framework.security.Token;
 
 public class AuthenticationService {
     private final TokenHolder tokenHolder;

@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.verify;
 
 import com.google.common.base.Strings;
-import com.mouse.framework.security.IllegalTokenException;
+import com.mouse.framework.security.authorization.IllegalTokenException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

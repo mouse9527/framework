@@ -1,8 +1,8 @@
 package com.mouse.framework.jwt.verify.config;
 
-import com.mouse.framework.security.TokenHolder;
+import com.mouse.framework.security.authorization.TokenHolder;
 import com.mouse.framework.jwt.verify.filter.TokenLoaderFilter;
-import com.mouse.framework.security.TokenParser;
+import com.mouse.framework.security.authorization.TokenParser;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

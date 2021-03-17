@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.security.Token;
 import com.mouse.framework.jwt.JWT;
 import com.mouse.framework.jwt.Payload;
-import com.mouse.framework.security.IllegalTokenException;
-import com.mouse.framework.security.TokenParser;
+import com.mouse.framework.security.authorization.IllegalTokenException;
+import com.mouse.framework.security.authorization.TokenParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

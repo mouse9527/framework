@@ -1,11 +1,11 @@
 package com.mouse.framework.jwt.verify.config;
 
 import com.mouse.framework.domain.core.ContextSetter;
-import com.mouse.framework.security.TokenHolder;
+import com.mouse.framework.security.authorization.TokenHolder;
 import com.mouse.framework.jwt.verify.ApplicationAspect;
 import com.mouse.framework.jwt.verify.ApplicationAspectExecutor;
-import com.mouse.framework.security.AuthenticationService;
-import com.mouse.framework.security.ThreadLocalTokenHolder;
+import com.mouse.framework.security.authorization.AuthenticationService;
+import com.mouse.framework.security.authorization.ThreadLocalTokenHolder;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

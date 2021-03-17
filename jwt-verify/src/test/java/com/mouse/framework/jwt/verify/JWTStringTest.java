@@ -1,6 +1,6 @@
 package com.mouse.framework.jwt.verify;
 
-import com.mouse.framework.security.IllegalTokenException;
+import com.mouse.framework.security.authorization.IllegalTokenException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

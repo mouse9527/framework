@@ -2,7 +2,7 @@ package com.mouse.framework.jwt.verify.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.jwt.verify.*;
-import com.mouse.framework.security.TokenParser;
+import com.mouse.framework.security.authorization.TokenParser;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

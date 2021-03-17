@@ -7,7 +7,7 @@ import com.mouse.framework.security.Token;
 import com.mouse.framework.jwt.Header;
 import com.mouse.framework.jwt.JWTException;
 import com.mouse.framework.jwt.Payload;
-import com.mouse.framework.security.TokenFormat;
+import com.mouse.framework.security.authentication.TokenFormat;
 import lombok.Generated;
 
 import java.util.Base64;

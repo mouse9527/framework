@@ -1,7 +1,8 @@
-package com.mouse.framework.security;
+package com.mouse.framework.security.authorization;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.Authority;
+import com.mouse.framework.security.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class AuthenticationServiceTest {
-
     private AuthenticationService authenticationService;
     private TokenHolder tokenHolder;
 

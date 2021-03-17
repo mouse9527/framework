@@ -1,7 +1,8 @@
-package com.mouse.framework.security;
+package com.mouse.framework.security.authorization;
 
 import com.mouse.framework.domain.core.ContextHolder;
 import com.mouse.framework.domain.core.User;
+import com.mouse.framework.security.Token;
 
 import java.util.Optional;
 

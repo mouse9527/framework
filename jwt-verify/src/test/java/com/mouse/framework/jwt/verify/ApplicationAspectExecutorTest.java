@@ -1,6 +1,6 @@
 package com.mouse.framework.jwt.verify;
 
-import com.mouse.framework.security.AuthenticationService;
+import com.mouse.framework.security.authorization.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.verification.Times;

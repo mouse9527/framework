@@ -4,7 +4,7 @@ import com.mouse.framework.application.QueryApplication;
 import com.mouse.framework.domain.core.AuthoritiesSet;
 import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.security.Token;
-import com.mouse.framework.security.TokenParser;
+import com.mouse.framework.security.authorization.TokenParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
