@@ -4,7 +4,7 @@ import com.mouse.framework.domain.core.ContextSetter;
 import com.mouse.framework.security.authorization.TokenHolder;
 import com.mouse.framework.jwt.verify.ApplicationAspect;
 import com.mouse.framework.jwt.verify.ApplicationAspectExecutor;
-import com.mouse.framework.security.authorization.AuthenticationService;
+import com.mouse.framework.security.authorization.AuthorizationService;
 import com.mouse.framework.security.authorization.ThreadLocalTokenHolder;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,13 +25,13 @@ public class AuthenticateAutoConfiguration {
     }
 
     @Bean
-    public ApplicationAspectExecutor applicationAspectExecutor(AuthenticationService authenticationService) {
-        return new ApplicationAspectExecutor(authenticationService);
+    public ApplicationAspectExecutor applicationAspectExecutor(AuthorizationService authorizationService) {
+        return new ApplicationAspectExecutor(authorizationService);
     }
 
     @Bean
-    public AuthenticationService authenticationService(TokenHolder tokenHolder) {
-        return new AuthenticationService(tokenHolder);
+    public AuthorizationService authenticationService(TokenHolder tokenHolder) {
+        return new AuthorizationService(tokenHolder);
     }
 
     @Bean

@@ -2,10 +2,10 @@ package com.mouse.framework.security.authorization;
 
 import com.mouse.framework.security.Token;
 
-public class AuthenticationService {
+public class AuthorizationService {
     private final TokenHolder tokenHolder;
 
-    public AuthenticationService(TokenHolder tokenHolder) {
+    public AuthorizationService(TokenHolder tokenHolder) {
         this.tokenHolder = tokenHolder;
     }
 
@@ -20,6 +20,6 @@ public class AuthenticationService {
         //noinspection OptionalGetWithoutIsPresent
         Token token = tokenHolder.get().get();
         if (!token.getAuthorities().contains(authorities))
-            throw new AuthenticationException("error.failed-to-authentication");
+            throw new AccessDeniedException("error.access-denied");
     }
 }

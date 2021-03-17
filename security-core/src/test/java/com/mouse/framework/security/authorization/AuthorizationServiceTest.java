@@ -13,21 +13,21 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class AuthenticationServiceTest {
-    private AuthenticationService authenticationService;
+public class AuthorizationServiceTest {
+    private AuthorizationService authorizationService;
     private TokenHolder tokenHolder;
 
     @BeforeEach
     void setUp() {
         tokenHolder = mock(TokenHolder.class);
-        authenticationService = new AuthenticationService(tokenHolder);
+        authorizationService = new AuthorizationService(tokenHolder);
     }
 
     @Test
     void should_be_able_to_require_logged() {
         given(tokenHolder.get()).willReturn(Optional.of(mock(Token.class)));
 
-        Throwable throwable = catchThrowable(authenticationService::requireLogged);
+        Throwable throwable = catchThrowable(authorizationService::requireLogged);
 
         assertThat(throwable).isNull();
     }
@@ -36,7 +36,7 @@ public class AuthenticationServiceTest {
     void should_be_able_to_raise_exception_when_not_login() {
         given(tokenHolder.get()).willReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(authenticationService::requireLogged);
+        Throwable throwable = catchThrowable(authorizationService::requireLogged);
 
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(IllegalTokenException.class);
@@ -49,18 +49,18 @@ public class AuthenticationServiceTest {
         given(token.getAuthorities()).willReturn(new AuthoritiesSet(new Authority("authority-1"), new Authority("authority-2")));
         given(tokenHolder.get()).willReturn(Optional.of(token));
 
-        Throwable throwable = catchThrowable(() -> authenticationService.requireAuthorities("authority-1", "authority-2"));
+        Throwable throwable = catchThrowable(() -> authorizationService.requireAuthorities("authority-1", "authority-2"));
 
         assertThat(throwable).isNull();
 
-        Throwable forbidden = catchThrowable(() -> authenticationService.requireAuthorities("authority-1", "authority-3"));
+        Throwable forbidden = catchThrowable(() -> authorizationService.requireAuthorities("authority-1", "authority-3"));
         assertThat(forbidden).isNotNull();
-        assertThat(forbidden).isInstanceOf(AuthenticationException.class);
-        assertThat(forbidden).hasMessage("error.failed-to-authentication");
+        assertThat(forbidden).isInstanceOf(AccessDeniedException.class);
+        assertThat(forbidden).hasMessage("error.access-denied");
 
         given(tokenHolder.get()).willReturn(Optional.empty());
 
-        Throwable unLogin = catchThrowable(() -> authenticationService.requireAuthorities("authority-1"));
+        Throwable unLogin = catchThrowable(() -> authorizationService.requireAuthorities("authority-1"));
 
         assertThat(unLogin).isNotNull();
         assertThat(unLogin).isInstanceOf(IllegalTokenException.class);
