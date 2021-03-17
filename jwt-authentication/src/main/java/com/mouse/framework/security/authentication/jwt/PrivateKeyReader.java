@@ -1,4 +1,4 @@
-package com.mouse.framework.jwt.sign;
+package com.mouse.framework.security.authentication.jwt;
 
 import java.security.PrivateKey;
 

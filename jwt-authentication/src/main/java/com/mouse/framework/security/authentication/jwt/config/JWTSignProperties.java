@@ -1,4 +1,4 @@
-package com.mouse.framework.jwt.sign.config;
+package com.mouse.framework.security.authentication.jwt.config;
 
 import lombok.Generated;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.mouse.framework.jwt.verify.application;
 
-import com.mouse.framework.jwt.sign.config.JWTSignAutoConfiguration;
+import com.mouse.framework.security.authentication.jwt.config.JWTSignAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;

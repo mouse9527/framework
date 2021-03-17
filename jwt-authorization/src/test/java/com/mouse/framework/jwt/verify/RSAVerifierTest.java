@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.verify;
 
-import com.mouse.framework.jwt.sign.RSASigner;
-import com.mouse.framework.jwt.sign.Signer;
+import com.mouse.framework.security.authentication.jwt.RSASigner;
+import com.mouse.framework.security.authentication.jwt.Signer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

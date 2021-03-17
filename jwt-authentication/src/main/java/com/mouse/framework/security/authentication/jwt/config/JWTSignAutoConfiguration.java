@@ -1,10 +1,10 @@
-package com.mouse.framework.jwt.sign.config;
+package com.mouse.framework.security.authentication.jwt.config;
 
-import com.mouse.framework.jwt.sign.*;
-import com.mouse.framework.security.authentication.IdentificationService;
 import com.mouse.framework.security.authentication.AuthorizationService;
+import com.mouse.framework.security.authentication.IdentificationService;
 import com.mouse.framework.security.authentication.LoginService;
 import com.mouse.framework.security.authentication.TokenAllocator;
+import com.mouse.framework.security.authentication.jwt.*;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
