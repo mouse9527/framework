@@ -66,7 +66,7 @@ class ApplicationAssertionsTest {
     private static class RequireAuthoritiesQueryApplication {
     }
 
-    @CommandApplication({"authority-1", "authority-2"})
+    @CommandApplication(requireAuthorities = {"authority-1", "authority-2"})
     private static class RequireAuthoritiesCommandApplication {
     }
 }

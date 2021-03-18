@@ -3,6 +3,7 @@ package com.mouse.framework.test.application;
 
 import com.mouse.framework.application.CommandApplication;
 import com.mouse.framework.application.QueryApplication;
+import lombok.Generated;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -28,11 +29,12 @@ public final class ApplicationAssertions {
                 .orElseGet(ApplicationAssert::new);
     }
 
+    @Generated
     public static final class ApplicationAssert {
-        private final Boolean required;
+        private final boolean required;
         private final String[] value;
         private final String[] authorities;
-        private final Boolean hasAnnotation;
+        private final boolean hasAnnotation;
 
         private ApplicationAssert(Boolean required, String[] value, String[] authorities) {
             this.required = required;
@@ -42,7 +44,7 @@ public final class ApplicationAssertions {
         }
 
         private ApplicationAssert() {
-            this.required = null;
+            this.required = false;
             this.value = null;
             this.authorities = null;
             this.hasAnnotation = false;
@@ -50,7 +52,7 @@ public final class ApplicationAssertions {
 
         public void requiredLogged() {
             requireHasAnnotation();
-            assert required != null && required : "Please set requireLogged = true";
+            assert required : "Please set requireLogged = true";
         }
 
         public void requiredAuthorities(String... authorities) {
@@ -59,14 +61,16 @@ public final class ApplicationAssertions {
         }
 
         private String[] getActualAuthorities() {
-            if (value != null && value.length == 1 && value[0].equals("")) {
+            // value must not be null
+            //noinspection ConstantConditions
+            if (value.length == 1 && value[0].equals("")) {
                 return this.authorities;
             }
             return value;
         }
 
         private void requireHasAnnotation() {
-            assert this.hasAnnotation : "No CommandApplication or QueryApplication annotation";
+            assert hasAnnotation : "No CommandApplication or QueryApplication annotation";
         }
     }
 }
