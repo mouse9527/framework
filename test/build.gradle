@@ -11,11 +11,14 @@ dependencies {
 
     implementation("com.jayway.jsonpath:json-path:$jsonPathVersion")
 
+    implementation(project(":application-core"))
+
     optional("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     optional("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     optional("org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion")
     optional("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
 
+    testImplementation(project(":application-core"))
     testImplementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
