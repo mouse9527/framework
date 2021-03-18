@@ -5,6 +5,7 @@ import com.mouse.framework.application.CommandApplication;
 import com.mouse.framework.application.QueryApplication;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,43 +14,59 @@ public final class ApplicationAssertions {
     }
 
     public static ApplicationAssert assertApplication(Class<?> clazz) {
-        QueryApplication queryApplication = clazz.getAnnotation(QueryApplication.class);
-        return Optional.ofNullable(queryApplication)
-                .map(annotation -> new ApplicationAssert(annotation.requireLogged(), annotation.value(), annotation.requireAuthorities()))
-                .or(() -> Optional.ofNullable(clazz.getAnnotation(CommandApplication.class))
-                        .map(annotation -> new ApplicationAssert(annotation.requireLogged(), annotation.value(), annotation.requireAuthorities()))
-                        .or(() -> Optional.of(new ApplicationAssert()))).get();
+        return getQueryApplication(clazz).orElseGet(getCommandApplicationAssert(clazz));
     }
 
-    public static class ApplicationAssert {
+    private static Optional<ApplicationAssert> getQueryApplication(Class<?> clazz) {
+        return Optional.ofNullable(clazz.getAnnotation(QueryApplication.class))
+                .map(it -> new ApplicationAssert(it.requireLogged(), it.value(), it.requireAuthorities()));
+    }
+
+    private static Supplier<ApplicationAssert> getCommandApplicationAssert(Class<?> clazz) {
+        return () -> Optional.ofNullable(clazz.getAnnotation(CommandApplication.class))
+                .map(it -> new ApplicationAssert(it.requireLogged(), it.value(), it.requireAuthorities()))
+                .orElseGet(ApplicationAssert::new);
+    }
+
+    public static final class ApplicationAssert {
         private final Boolean required;
         private final String[] value;
         private final String[] authorities;
+        private final Boolean hasAnnotation;
 
-        public ApplicationAssert(Boolean required, String[] value, String[] authorities) {
+        private ApplicationAssert(Boolean required, String[] value, String[] authorities) {
             this.required = required;
             this.value = value;
             this.authorities = authorities;
+            this.hasAnnotation = true;
         }
 
-        public ApplicationAssert() {
+        private ApplicationAssert() {
             this.required = null;
             this.value = null;
             this.authorities = null;
+            this.hasAnnotation = false;
         }
 
         public void requiredLogged() {
-            assert required != null : "No CommandApplication or QueryApplication annotation";
-            assert required : "Please set requireLogged = true";
+            requireHasAnnotation();
+            assert required != null && required : "Please set requireLogged = true";
         }
 
         public void requiredAuthorities(String... authorities) {
-            assert value != null || this.authorities != null : "No CommandApplication or QueryApplication annotation";
-            String[] actual = value;
+            requireHasAnnotation();
+            assertThat(getActualAuthorities()).isEqualTo(authorities);
+        }
+
+        private String[] getActualAuthorities() {
             if (value != null && value.length == 1 && value[0].equals("")) {
-                actual = this.authorities;
+                return this.authorities;
             }
-            assertThat(actual).isEqualTo(authorities);
+            return value;
+        }
+
+        private void requireHasAnnotation() {
+            assert this.hasAnnotation : "No CommandApplication or QueryApplication annotation";
         }
     }
 }
