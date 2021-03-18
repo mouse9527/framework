@@ -1,5 +1,10 @@
 plugins {
     id "java-gradle-plugin"
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
 }
 
 sourceCompatibility = 14

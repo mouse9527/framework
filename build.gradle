@@ -2,18 +2,14 @@ plugins {
     id 'java'
 }
 
-allprojects {
-    apply plugin: 'com.mouse.build.optional'
-}
-
-
 subprojects {
     apply plugin: 'java-library'
-    apply from: "$rootDir/gradle/config/scripts/java.gradle"
-    apply from: "$rootDir/gradle/config/scripts/junit.gradle"
-    apply from: "$rootDir/gradle/config/scripts/style.gradle"
-    apply from: "$rootDir/gradle/config/scripts/publish.gradle"
-    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+    apply plugin: 'com.mouse-junit'
+    apply plugin: 'com.mouse-publish'
+    apply plugin: 'com.mouse-java'
+    apply plugin: 'com.mouse-style'
+    apply plugin: 'com.mouse-coverage'
+    apply plugin: 'com.mouse-optional'
 
     group 'com.mouse.framework'
     version '0.0.1-SNAPSHOT'

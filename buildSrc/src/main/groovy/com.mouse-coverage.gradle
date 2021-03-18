@@ -1,0 +1,36 @@
+plugins {
+    id 'jacoco'
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled true
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'PACKAGE'
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.8
+            }
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+        }
+    }
+}
+
+jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
+check.dependsOn(jacocoTestCoverageVerification)
