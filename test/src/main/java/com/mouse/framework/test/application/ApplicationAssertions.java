@@ -4,7 +4,7 @@ package com.mouse.framework.test.application;
 import com.mouse.framework.application.CommandApplication;
 import com.mouse.framework.application.QueryApplication;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,23 +14,11 @@ public final class ApplicationAssertions {
 
     public static ApplicationAssert assertApplication(Class<?> clazz) {
         QueryApplication queryApplication = clazz.getAnnotation(QueryApplication.class);
-        boolean required;
-        String[] authorities;
-        String[] value;
-        if (Objects.isNull(queryApplication)) {
-            CommandApplication commandApplication = clazz.getAnnotation(CommandApplication.class);
-            if (Objects.isNull(commandApplication)) {
-                return new ApplicationAssert(null, null, null);
-            }
-            required = commandApplication.requireLogged();
-            value = commandApplication.value();
-            authorities = commandApplication.requireAuthorities();
-        } else {
-            required = queryApplication.requireLogged();
-            value = queryApplication.value();
-            authorities = queryApplication.requireAuthorities();
-        }
-        return new ApplicationAssert(required, value, authorities);
+        return Optional.ofNullable(queryApplication)
+                .map(annotation -> new ApplicationAssert(annotation.requireLogged(), annotation.value(), annotation.requireAuthorities()))
+                .or(() -> Optional.ofNullable(clazz.getAnnotation(CommandApplication.class))
+                        .map(annotation -> new ApplicationAssert(annotation.requireLogged(), annotation.value(), annotation.requireAuthorities()))
+                        .or(() -> Optional.of(new ApplicationAssert()))).get();
     }
 
     public static class ApplicationAssert {
@@ -42,6 +30,12 @@ public final class ApplicationAssertions {
             this.required = required;
             this.value = value;
             this.authorities = authorities;
+        }
+
+        public ApplicationAssert() {
+            this.required = null;
+            this.value = null;
+            this.authorities = null;
         }
 
         public void requiredLogged() {
