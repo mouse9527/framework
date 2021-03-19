@@ -1,9 +1,7 @@
 package com.mouse.framework.security.authentication.jwt.config;
 
-import com.mouse.framework.security.authentication.AuthenticationProvider;
-import com.mouse.framework.security.authentication.IdentificationService;
-import com.mouse.framework.security.authentication.LoginService;
-import com.mouse.framework.security.authentication.TokenAllocator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mouse.framework.security.authentication.*;
 import com.mouse.framework.security.authentication.jwt.*;
 import lombok.Generated;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -58,5 +56,17 @@ public class JWTSignAutoConfiguration {
                                      AuthenticationProvider authorizationService,
                                      TokenAllocator tokenAllocator) {
         return new LoginService(identificationServices, authorizationService, tokenAllocator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(TokenFormat.class)
+    public TokenFormat tokenFormat(Encryptor encryptor, Signer signer, ObjectMapper objectmapper) {
+        return new JWTFormat(encryptor, signer, objectmapper);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ObjectMapper.class)
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
