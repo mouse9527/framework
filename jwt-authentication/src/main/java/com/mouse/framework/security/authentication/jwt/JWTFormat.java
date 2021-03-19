@@ -2,7 +2,6 @@ package com.mouse.framework.security.authentication.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.security.Token;
 import com.mouse.framework.jwt.Header;
 import com.mouse.framework.jwt.JWTException;
@@ -11,7 +10,6 @@ import com.mouse.framework.security.authentication.TokenFormat;
 import lombok.Generated;
 
 import java.util.Base64;
-import java.util.stream.Collectors;
 
 public class JWTFormat implements TokenFormat {
     private final Encryptor encryptor;
@@ -34,7 +32,7 @@ public class JWTFormat implements TokenFormat {
                 .expirationTime(token.getExpirationTime().getEpochSecond())
                 .name(token.getUser().getUsername())
                 .ciphertext(encryptor.encrypt(token.getUser().getId()))
-                .authorities(token.getAuthorities().getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList()))
+                .authorities(token.getAuthorities().getAuthorities())
                 .build();
         String headerStr = encoder.encodeToString(writeValueAsBytes(header));
         String payloadStr = encoder.encodeToString(writeValueAsBytes(payload));

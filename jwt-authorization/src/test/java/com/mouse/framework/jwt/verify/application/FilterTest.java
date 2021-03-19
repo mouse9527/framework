@@ -2,7 +2,6 @@ package com.mouse.framework.jwt.verify.application;
 
 import com.mouse.framework.application.QueryApplication;
 import com.mouse.framework.domain.core.AuthoritiesSet;
-import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.security.Token;
 import com.mouse.framework.security.authorization.TokenParser;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ public class FilterTest {
     @Test
     void should_be_able_to_load_token_with_request() throws Exception {
         Token token = mock(Token.class);
-        given(token.getAuthorities()).willReturn(new AuthoritiesSet(new Authority("authority-1")));
+        given(token.getAuthorities()).willReturn(new AuthoritiesSet(() -> "authority-1"));
         given(tokenParser.parse("mock-token")).willReturn(Optional.of(token));
         MockHttpServletRequestBuilder requestBuilder = get("/get")
                 .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", "mock-token"));

@@ -1,6 +1,9 @@
 package com.mouse.framework.jwt;
 
-import com.mouse.framework.domain.core.*;
+import com.mouse.framework.domain.core.AuthoritiesSet;
+import com.mouse.framework.domain.core.Authority;
+import com.mouse.framework.domain.core.Sequence;
+import com.mouse.framework.domain.core.User;
 import com.mouse.framework.security.Token;
 import lombok.Getter;
 
@@ -30,7 +33,7 @@ public class JWT implements Token {
         this.issuedAt = Instant.ofEpochSecond(payload.getIat());
         this.expirationTime = Instant.ofEpochSecond(payload.getExp());
         Set<Authority> collect = payload.getAut()
-                .stream().map(Authority::new)
+                .stream().map(it -> (Authority) () -> it)
                 .collect(Collectors.toSet());
         this.authorities = new AuthoritiesSet(collect);
     }

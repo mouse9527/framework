@@ -34,7 +34,7 @@ class JWTTest {
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);
 
-        JWT jwt = new JWT(user, new AuthoritiesSet(new Authority(AUTHORITY_1)), iat, exp);
+        JWT jwt = new JWT(user, new AuthoritiesSet(() -> AUTHORITY_1), iat, exp);
 
         assertJWT(jwt);
     }
@@ -50,7 +50,7 @@ class JWTTest {
 
     private void assertJWT(Token jwt) {
         assertThat(jwt.getId()).isEqualTo(MOCK_JTI);
-        assertThat(jwt.getAuthorities()).isEqualTo(new AuthoritiesSet(new Authority(AUTHORITY_1)));
+        assertThat(jwt.getAuthorities()).isEqualTo(new AuthoritiesSet(() -> AUTHORITY_1));
         assertThat(jwt.getIssuedAt()).isEqualTo(iat);
         assertThat(jwt.getExpirationTime()).isEqualTo(exp);
         assertThat(jwt.getUser().getId()).isEqualTo(MOCK_USER_ID);

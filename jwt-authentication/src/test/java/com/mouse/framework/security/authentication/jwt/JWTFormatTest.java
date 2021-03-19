@@ -33,7 +33,7 @@ class JWTFormatTest {
         User user = mock(User.class);
         given(user.getId()).willReturn(MOCK_USER_ID);
         given(user.getUsername()).willReturn(MOCK_USERNAME);
-        AuthoritiesSet authorities = new AuthoritiesSet(new Authority(AUTHORITY_1));
+        AuthoritiesSet authorities = new AuthoritiesSet(() -> AUTHORITY_1);
         Instant iat = Instant.now();
         Instant exp = iat.plus(1, DAYS);
         Token jwt = new JWT(user, authorities, iat, exp);

@@ -52,7 +52,7 @@ class TokenParserTest {
 
     @Test
     void should_be_able_to_parse_token_from_string() {
-        AuthoritiesSet authorities = new AuthoritiesSet(new Authority("authority-1"));
+        AuthoritiesSet authorities = new AuthoritiesSet(() -> "authority-1");
         Instant exp = Instant.parse("2021-03-12T00:00:00Z");
         Instant iat = Instant.parse("2021-03-11T00:00:00Z");
         SequenceSetter.set(new FixedSequenceService("mock-id"));

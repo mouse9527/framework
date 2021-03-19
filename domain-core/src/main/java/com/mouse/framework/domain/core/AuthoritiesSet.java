@@ -1,15 +1,14 @@
 package com.mouse.framework.domain.core;
 
 import com.google.common.collect.Sets;
-import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@EqualsAndHashCode
 public class AuthoritiesSet {
     private Set<Authority> authorities;
 
@@ -25,19 +24,35 @@ public class AuthoritiesSet {
     }
 
     public AuthoritiesSet merge(AuthoritiesSet authoritiesSet) {
-        Set<Authority> current = Sets.newHashSet(getAuthorities());
-        current.addAll(authoritiesSet.getAuthorities());
+        Set<Authority> current = Sets.newHashSet(getValues());
+        current.addAll(authoritiesSet.getValues());
         return new AuthoritiesSet(current);
     }
 
-    public Set<Authority> getAuthorities() {
+    public Set<Authority> getValues() {
         return Optional.ofNullable(authorities).orElseGet(HashSet::new);
     }
 
-    public Boolean contains(String... authorities) {
-        Set<String> authorityValues = getAuthorities().stream()
+    public Set<String> getAuthorities() {
+        return getValues().stream()
                 .map(Authority::getAuthority)
                 .collect(Collectors.toSet());
-        return Stream.of(authorities).allMatch(authorityValues::contains);
+    }
+
+    public Boolean contains(String... authorities) {
+        return Stream.of(authorities).allMatch(getAuthorities()::contains);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthoritiesSet that = (AuthoritiesSet) o;
+        return Objects.equals(getAuthorities(), that.getAuthorities());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAuthorities());
     }
 }

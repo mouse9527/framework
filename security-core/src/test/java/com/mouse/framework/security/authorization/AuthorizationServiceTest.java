@@ -1,7 +1,6 @@
 package com.mouse.framework.security.authorization;
 
 import com.mouse.framework.domain.core.AuthoritiesSet;
-import com.mouse.framework.domain.core.Authority;
 import com.mouse.framework.security.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class AuthorizationServiceTest {
+    private static final String AUTHORITY_1 = "authority-1";
+    private static final String AUTHORITY_2 = "authority-2";
     private AuthorizationService authorizationService;
     private TokenHolder tokenHolder;
 
@@ -46,21 +47,21 @@ public class AuthorizationServiceTest {
     @Test
     void should_be_able_to_authenticate_authorities() {
         Token token = mock(Token.class);
-        given(token.getAuthorities()).willReturn(new AuthoritiesSet(new Authority("authority-1"), new Authority("authority-2")));
+        given(token.getAuthorities()).willReturn(new AuthoritiesSet(() -> AUTHORITY_1, () -> AUTHORITY_2));
         given(tokenHolder.get()).willReturn(Optional.of(token));
 
-        Throwable throwable = catchThrowable(() -> authorizationService.requireAuthorities("authority-1", "authority-2"));
+        Throwable throwable = catchThrowable(() -> authorizationService.requireAuthorities(AUTHORITY_1, AUTHORITY_2));
 
         assertThat(throwable).isNull();
 
-        Throwable forbidden = catchThrowable(() -> authorizationService.requireAuthorities("authority-1", "authority-3"));
+        Throwable forbidden = catchThrowable(() -> authorizationService.requireAuthorities(AUTHORITY_1, "authority-3"));
         assertThat(forbidden).isNotNull();
         assertThat(forbidden).isInstanceOf(AccessDeniedException.class);
         assertThat(forbidden).hasMessage("error.access-denied");
 
         given(tokenHolder.get()).willReturn(Optional.empty());
 
-        Throwable unLogin = catchThrowable(() -> authorizationService.requireAuthorities("authority-1"));
+        Throwable unLogin = catchThrowable(() -> authorizationService.requireAuthorities(AUTHORITY_1));
 
         assertThat(unLogin).isNotNull();
         assertThat(unLogin).isInstanceOf(UnLoggedException.class);
