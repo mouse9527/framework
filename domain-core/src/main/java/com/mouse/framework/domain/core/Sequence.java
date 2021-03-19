@@ -20,8 +20,6 @@ public final class Sequence {
     }
 
     static void set(SequenceService sequenceService) {
-        synchronized (Sequence.class) {
-            Sequence.sequenceService = sequenceService;
-        }
+        Sequence.sequenceService = sequenceService;
     }
 }

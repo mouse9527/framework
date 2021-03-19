@@ -23,20 +23,6 @@ public class AuthoritiesSetTest {
     }
 
     @Test
-    void should_be_able_to_equally() {
-        AuthoritiesSet one = new AuthoritiesSet(() -> "authority-1");
-        AuthoritiesSet two = new AuthoritiesSet(() -> "authority-1");
-        AuthoritiesSet three = new AuthoritiesSet(() -> "authority-2");
-        AuthoritiesSet four = new AuthoritiesSet();
-        AuthoritiesSet five = new AuthoritiesSet(() -> "authority-1", () -> "authority-2");
-
-        assertThat(one).isEqualTo(two);
-        assertThat(one).isNotEqualTo(three);
-        assertThat(one).isNotEqualTo(four);
-        assertThat(one).isNotEqualTo(five);
-    }
-
-    @Test
     void should_be_able_to_contains_authorities() {
         AuthoritiesSet authorities = new AuthoritiesSet(() -> "authority-1", () -> "authority-2");
 

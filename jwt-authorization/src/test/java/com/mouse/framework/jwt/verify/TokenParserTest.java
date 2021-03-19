@@ -71,7 +71,7 @@ class TokenParserTest {
         assertThat(token.getUser().getUsername()).isEqualTo(MOCK_USERNAME);
         assertThat(token.getExpirationTime()).isEqualTo(exp);
         assertThat(token.getIssuedAt()).isEqualTo(iat);
-        assertThat(token.getAuthorities()).isEqualTo(authorities);
+        assertThat(token.getAuthorities().getAuthorities()).containsOnly("authority-1");
     }
 
     @ParameterizedTest

@@ -3,7 +3,6 @@ package com.mouse.framework.domain.core;
 import com.google.common.collect.Sets;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,18 +40,5 @@ public class AuthoritiesSet {
 
     public Boolean contains(String... authorities) {
         return Stream.of(authorities).allMatch(getAuthorities()::contains);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AuthoritiesSet that = (AuthoritiesSet) o;
-        return Objects.equals(getAuthorities(), that.getAuthorities());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getAuthorities());
     }
 }

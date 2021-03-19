@@ -21,14 +21,10 @@ public final class Context {
     }
 
     static void setClock(Clock clock) {
-        synchronized (Context.class) {
-            Context.clock = clock;
-        }
+        Context.clock = clock;
     }
 
     static void set(ContextHolder contextHolder) {
-        synchronized (Context.class) {
-            Context.contextHolder = contextHolder;
-        }
+        Context.contextHolder = contextHolder;
     }
 }
