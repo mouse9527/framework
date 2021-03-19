@@ -32,7 +32,7 @@ public class JWTFormat implements TokenFormat {
                 .expirationTime(token.getExpirationTime().getEpochSecond())
                 .name(token.getUser().getUsername())
                 .ciphertext(encryptor.encrypt(token.getUser().getId()))
-                .authorities(token.getAuthorities().getAuthorities())
+                .authorities(token.getAuthorities().getValues())
                 .build();
         String headerStr = encoder.encodeToString(writeValueAsBytes(header));
         String payloadStr = encoder.encodeToString(writeValueAsBytes(payload));

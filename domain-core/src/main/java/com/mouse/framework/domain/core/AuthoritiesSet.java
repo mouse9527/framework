@@ -23,22 +23,22 @@ public class AuthoritiesSet {
     }
 
     public AuthoritiesSet merge(AuthoritiesSet authoritiesSet) {
-        Set<Authority> current = Sets.newHashSet(getValues());
-        current.addAll(authoritiesSet.getValues());
+        Set<Authority> current = Sets.newHashSet(getAuthorities());
+        current.addAll(authoritiesSet.getAuthorities());
         return new AuthoritiesSet(current);
     }
 
-    public Set<Authority> getValues() {
+    public Set<Authority> getAuthorities() {
         return Optional.ofNullable(authorities).orElseGet(HashSet::new);
     }
 
-    public Set<String> getAuthorities() {
-        return getValues().stream()
+    public Set<String> getValues() {
+        return getAuthorities().stream()
                 .map(Authority::getAuthority)
                 .collect(Collectors.toSet());
     }
 
     public Boolean contains(String... authorities) {
-        return Stream.of(authorities).allMatch(getAuthorities()::contains);
+        return Stream.of(authorities).allMatch(getValues()::contains);
     }
 }

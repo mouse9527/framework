@@ -17,9 +17,9 @@ public class AuthoritiesSetTest {
 
         AuthoritiesSet result = authoritiesSet.merge(authoritiesSet1);
 
-        assertThat(authoritiesSet.getValues()).isEqualTo(Set.of(authorityOne, authorityTwo));
-        assertThat(result.getValues()).isEqualTo(Set.of(authorityOne, authorityTwo, authorityThree));
-        assertThat(authoritiesSet1.getValues()).isEqualTo(Set.of(authorityOne, authorityThree));
+        assertThat(authoritiesSet.getAuthorities()).isEqualTo(Set.of(authorityOne, authorityTwo));
+        assertThat(result.getAuthorities()).isEqualTo(Set.of(authorityOne, authorityTwo, authorityThree));
+        assertThat(authoritiesSet1.getAuthorities()).isEqualTo(Set.of(authorityOne, authorityThree));
     }
 
     @Test
